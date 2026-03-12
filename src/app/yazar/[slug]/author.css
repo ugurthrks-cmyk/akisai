@@ -1,0 +1,217 @@
+/* Author Page Layout Styles */
+.author-profile-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+}
+
+.author-hero {
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 32px;
+  padding: 3rem;
+  margin-bottom: 4rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.author-header-grid {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.author-avatar-large {
+  flex-shrink: 0;
+}
+
+.author-avatar-large img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--accent);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+}
+
+.avatar-placeholder-large {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, #1e1e24 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 800;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+}
+
+.author-role-badge {
+  display: inline-block;
+  background: rgba(138, 43, 226, 0.2);
+  color: #d8b4fe;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.author-name-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-base);
+  letter-spacing: -0.02em;
+}
+
+.author-bio-large {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.author-trust-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.trust-badge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  color: #a1a1aa;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.author-methodology-section {
+  margin-bottom: 3rem;
+}
+
+.author-methodology-section p {
+  max-width: 72ch;
+}
+
+.author-expertise-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.author-expertise-list li {
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.author-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.author-link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-base);
+  text-decoration: none;
+  font-size: 0.88rem;
+}
+
+/* Articles Grid */
+.author-works-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: var(--text-base);
+}
+
+.author-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.author-article-card {
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.author-article-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-subtle);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.article-type {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #3b82f6;
+  margin-bottom: 0.5rem;
+}
+
+.article-type.guide {
+  color: #10b981;
+}
+
+.author-article-card h3 {
+  font-size: 1.2rem;
+  color: var(--text-base);
+  margin: 0 0 0.8rem 0;
+  line-height: 1.4;
+}
+
+.author-article-card p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.author-guides-section {
+  margin-top: 4rem;
+}
+
+.empty-state {
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .author-header-grid {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+  
+  .author-trust-meta {
+    justify-content: center;
+  }
+}

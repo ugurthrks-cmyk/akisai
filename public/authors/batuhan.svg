@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="batuhanTitle batuhanDesc">
+  <title id="batuhanTitle">Batuhan Arı profil görseli</title>
+  <desc id="batuhanDesc">Batuhan Arı için oluşturulmuş illüstratif profil görseli.</desc>
+  <defs>
+    <linearGradient id="batuhanBg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+    <linearGradient id="batuhanRing" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#86efac" />
+      <stop offset="100%" stop-color="#2dd4bf" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="64" fill="url(#batuhanBg)" />
+  <circle cx="160" cy="160" r="108" fill="#07121b" stroke="url(#batuhanRing)" stroke-width="12" />
+  <circle cx="160" cy="132" r="42" fill="#d1fae5" />
+  <path d="M94 240c13-35 38-53 66-53s53 18 66 53" fill="#d1fae5" />
+  <text x="160" y="286" fill="#99f6e4" font-family="Arial, sans-serif" font-size="24" font-weight="700" text-anchor="middle">Batuhan</text>
+</svg>

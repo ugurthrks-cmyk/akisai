@@ -1,0 +1,181 @@
+import { defineField, defineType } from "sanity";
+import { richContentField } from "@/sanity/schemaTypes/fields/richContent";
+
+export const guide = defineType({
+  name: "guide",
+  title: "Rehber",
+  type: "document",
+  description: "Adim adim yapay zeka rehberleri ve workflow icerikleri.",
+  groups: [
+    { name: "editorial", title: "Editoryal" },
+    { name: "taxonomy", title: "Baglantilar" },
+    { name: "media", title: "Medya" },
+    { name: "trust", title: "Guven" },
+    { name: "seo", title: "SEO" },
+  ],
+  fields: [
+    defineField({
+      name: "title",
+      title: "Title",
+      type: "string",
+      group: "editorial",
+      validation: (rule) => rule.required(),
+      description: "Tarayici sekmesi, Google basligi ve varsayilan sosyal baslik icin kullanilir.",
+    }),
+    defineField({
+      name: "h1",
+      title: "H1 override",
+      type: "string",
+      group: "editorial",
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      group: "editorial",
+      options: {
+        source: "title",
+        maxLength: 120,
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "description",
+      title: "Kisa aciklama",
+      type: "text",
+      rows: 3,
+      group: "editorial",
+      validation: (rule) => rule.required(),
+      description: "Kartlarda, listelemelerde ve sayfa icindeki gorunen kisa ozet alanlarinda kullanilir.",
+    }),
+    defineField({
+      name: "metaDescription",
+      title: "Meta aciklama",
+      type: "text",
+      rows: 3,
+      group: "seo",
+      validation: (rule) => rule.max(160).warning("Meta aciklama 160 karakteri gecmemeli."),
+      description: "Sadece SEO meta aciklamasi icin kullanilir. Bos birakilirsa kisa aciklama kullanilir.",
+    }),
+    defineField({
+      name: "heroIntro",
+      title: "Hero girisi",
+      type: "text",
+      rows: 4,
+      group: "editorial",
+    }),
+    defineField({
+      name: "bodyMarkdown",
+      title: "Eski MDX govdesi",
+      type: "text",
+      rows: 24,
+      group: "editorial",
+      hidden: ({ document }) => !document?.bodyMarkdown,
+      description:
+        "Sadece daha once MDX'ten tasinmis eski iceriklerde gorunur.",
+    }),
+    richContentField("body", "Rehber govdesi"),
+    defineField({
+      name: "author",
+      title: "Yazar",
+      type: "reference",
+      group: "taxonomy",
+      to: [{ type: "author" }],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "category",
+      title: "Kategori",
+      type: "reference",
+      group: "taxonomy",
+      to: [{ type: "category" }],
+    }),
+    defineField({
+      name: "relatedTools",
+      title: "Ilgili toollar",
+      type: "array",
+      group: "taxonomy",
+      of: [
+        defineField({
+          name: "toolRef",
+          title: "Tool",
+          type: "reference",
+          to: [{ type: "tool" }],
+        }),
+      ],
+      description: "Bu rehberle dogrudan ilgili araclari baglayin.",
+    }),
+    defineField({
+      name: "difficulty",
+      title: "Zorluk",
+      type: "string",
+      group: "editorial",
+      options: {
+        list: [
+          { title: "Baslangic", value: "Baslangic" },
+          { title: "Orta", value: "Orta" },
+          { title: "Ileri", value: "Ileri" },
+        ],
+      },
+    }),
+    defineField({
+      name: "estimatedTimeMinutes",
+      title: "Tahmini sure (dakika)",
+      type: "number",
+      group: "editorial",
+      validation: (rule) => rule.min(1),
+      description: "Public tarafta 'Süre' bilgisi olarak gorunur.",
+    }),
+    defineField({
+      name: "featuredImage",
+      title: "One cikarilan gorsel",
+      type: "image",
+      group: "media",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt metni",
+          type: "string",
+        }),
+      ],
+    }),
+    defineField({
+      name: "faqs",
+      title: "SSS",
+      type: "array",
+      group: "trust",
+      of: [{ type: "faqItem" }],
+      validation: (rule) => rule.required().min(1).error("Her rehber iceriginde en az 1 SSS maddesi olmali."),
+    }),
+    defineField({
+      name: "datePublished",
+      title: "Yayin tarihi",
+      type: "datetime",
+      group: "trust",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "dateModified",
+      title: "Guncelleme tarihi",
+      type: "datetime",
+      group: "trust",
+    }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seoMetadata",
+      group: "seo",
+      description: "Sadece canonical veya noindex gibi istisnai durumlarda kullanin.",
+    }),
+  ],
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "description",
+      media: "featuredImage",
+    },
+  },
+});

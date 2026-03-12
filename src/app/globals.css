@@ -1,42 +1,600 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Luminous Soft-Dark Aesthetic (High Energy, Maximum Readability) */
+  --bg-base: #0f1115; /* Energetic Charcoal/Slate, prevents sleepiness */
+  --bg-surface: rgba(30, 33, 40, 0.7); /* Brighter glassy cards for distinct separation */
+  --bg-surface-hover: rgba(42, 46, 56, 0.9);
+  
+  --text-main: #ffffff; /* Crisp white */
+  --text-muted: #cbd5e1; /* Slate 300 - Much brighter for effortless long-form reading */
+  --text-base: var(--text-main);
+  --text-light: var(--text-muted);
+  
+  --border-subtle: rgba(255, 255, 255, 0.12); /* Brighter, more defined borders */
+  --border-strong: rgba(255, 255, 255, 0.25);
+  --border-glow: rgba(0, 112, 243, 0.5);
+  --border-color: var(--border-subtle);
+  
+  --accent-primary: #3b82f6; /* Trustworthy, vibrant Blue */
+  --accent-secondary: #8b5cf6; /* Vibrant Purple */
+  --accent-success: #10b981; 
+  --accent: var(--accent-primary);
+  --accent-subtle: #93c5fd;
+  --primary-color: var(--accent-primary);
+  
+  --font-serif: 'Instrument Serif', serif;
+  --font-sans: 'Inter', sans-serif;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: #fff;
+}
+
+/* Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans); /* Keep structural AEO consistency */
+  color: var(--text-main);
+  line-height: 1.25; /* Increased from 1.1 to give letters more breathing room */
+  letter-spacing: -0.04em;
+}
+
+h1 {
+  font-size: clamp(3rem, 7vw, 4.5rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.1em; /* Critical fix: prevents background-clip from slicing off tails of letters like y, g, p */
+  /* Brighter, more vivid white-to-silver gradient */
+  background: linear-gradient(180deg, #FFFFFF 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 700;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+p {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
 }
 
 a {
-  color: inherit;
+  color: #60a5fa; /* Blue 400 - bright clickable links */
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Base layouts */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+/* --- HERO SECTION (BREATHTAKING) --- */
+.hero-wrapper {
+  position: relative;
+  padding: 8rem 1.5rem 6rem;
+  text-align: center;
+  overflow: hidden;
+  /* Removed border-bottom to let the floating banner rest cleanly */
+}
+
+/* Ambient Radial Glow - Made more energetic and vivid */
+.hero-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vision-paragraph {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: #e2e8f0; /* Very bright slate for maximum visibility */
+  max-width: 70ch;
+  margin: 0 auto 3rem auto;
+  font-weight: 400;
+}
+
+/* Search Bar (Spotlight Style) */
+.search-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1.25rem 1.5rem 1.25rem 3.5rem;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: 99px;
+  color: #fff;
+  backdrop-filter: blur(12px);
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: var(--font-sans);
+}
+
+.search-input:focus {
+  border-color: rgba(0, 112, 243, 0.5);
+  box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.search-input::placeholder {
+  color: #52525b; /* Zinc 600 */
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a1a1aa;
+  font-weight: bold;
+  font-size: 1.2rem;
+  pointer-events: none;
+}
+
+/* --- TRUST SIGNALS (E-E-A-T) --- */
+.trust-banner-wrapper {
+  padding: 0 1.5rem;
+  margin-top: -2.5rem; /* Pulled up slightly less so it clears the line nicely */
+  position: relative;
+  z-index: 10;
+}
+
+.trust-banner {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 112, 243, 0.05); /* Softened the shadow slightly */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.trust-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Strictly force a 2x2 layout */
+  gap: 1.5rem 2.5rem; /* Vertical and Horizontal spacing */
+  justify-items: center; /* Center items within their grid cells */
+  align-items: center;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #e2e8f0; /* Crisp, bright slate */
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap; /* Prevent awkward internal wrapping like '%100 Sponsorluksuz\nPuanlama' */
+}
+
+.trust-item i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(59, 130, 246, 0.15); /* Vibrant blue circle */
+  color: #60a5fa; /* Checkmark color */
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); /* Little glow on the checkmarks */
+}
+
+/* --- CARDS & GRIDS (GLASSMORPHISM) --- */
+.page-sections {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+  padding-top: 4rem;
+  padding-bottom: 6rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Glass Card Global Styles */
+.glass-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.glass-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-strong);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 112, 243, 0.05);
+}
+
+/* Semantic Hub Overrides */
+.hub-card h3 {
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+.hub-card p {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+/* Featured Tool Specifics */
+.tool-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.tool-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.tool-desc {
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  color: #d4d4d8;
+}
+
+.tool-features {
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.tool-features li {
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #a1a1aa;
+}
+
+.tool-features li::before {
+  content: "✓";
+  color: var(--accent-primary);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Buttons and Links */
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #000;
+  padding: 0.75rem 1.5rem;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #e4e4e7;
+  transform: scale(1.02);
+}
+
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 99px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: 1px solid var(--border-strong);
+  transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Workflow Specific List */
+.workflow-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.workflow-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  transition: all 0.2s ease;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.workflow-item:hover {
+  border-color: var(--accent-primary);
+  background: rgba(0, 112, 243, 0.02);
+}
+
+.workflow-info h4 {
+  color: #fff;
+  font-size: 1.15rem;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.workflow-info p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.workflow-arrow {
+  color: var(--border-strong);
+  font-size: 1.5rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.workflow-item:hover .workflow-arrow {
+  transform: translateX(4px);
+  color: var(--accent-primary);
+}
+
+/* Base layouts */
+/* Removed generic header tag style bleeding */
+
+footer {
+  border-top: 1px solid var(--border);
+  border-bottom: none;
+  margin-top: 4rem;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #888;
+}
+
+/* Global Markdown (MDX) Typography Fixes */
+
+/* 1. Global Typography & Spacing for MDX Content */
+.mdx-content {
+  font-family: var(--font-sans);
+  font-size: 1.125rem; /* ~18px for excellent readability */
+  line-height: 1.75;
+  color: var(--text-base);
+}
+
+.mdx-content h1,
+.mdx-content h2,
+.mdx-content h3,
+.mdx-content h4 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: #ffffff; /* Crisp white for headings on dark mode */
+  margin-top: 2.5em; /* Consistent breathing room above */
+  margin-bottom: 1em; /* Consistent margin below */
+  line-height: 1.3;
+}
+
+.mdx-content h2 {
+  font-size: 1.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle); /* Beautiful underline for H2s */
+}
+
+.mdx-content h3 {
+  font-size: 1.4rem;
+  margin-top: 2em;
+}
+
+.mdx-content p {
+  margin-top: 0;
+  margin-bottom: 1.5em; /* Perfect paragraph spacing */
+}
+
+.mdx-content ul,
+.mdx-content ol {
+  margin-top: 0;
+  margin-bottom: 1.5em;
+  padding-left: 1.75rem;
+}
+
+.mdx-content ul {
+  list-style: disc outside;
+}
+
+.mdx-content ol {
+  list-style: decimal outside;
+}
+
+.mdx-content li {
+  margin-bottom: 0.85em;
+  padding-left: 0.2rem;
+  color: var(--text-muted);
+}
+
+.mdx-content ul li::marker,
+.mdx-content ol li::marker {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.mdx-content li > p {
+  margin-bottom: 0.5em; /* Tighter P tags inside lists */
+}
+
+.mdx-content strong,
+.mdx-content b {
+  font-weight: 600;
+  color: #fff; /* Highlight bold text slightly */
+}
+
+.mdx-content blockquote {
+  border-left: 4px solid var(--accent-primary);
+  background: rgba(0, 112, 243, 0.05); /* Subtle brand tint */
+  margin: 2em 0;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.mdx-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* 2. Code Block Fixes (Prevents overflow and font mixing) */
+.mdx-content pre {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  margin: 1.5rem 0;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  font-family: var(--font-sans) !important;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.mdx-content code {
+  font-family: var(--font-sans) !important;
+  color: var(--accent-primary);
+  background: rgba(59, 130, 246, 0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.95em;
+}
+
+.mdx-content pre code {
+  color: inherit;
+  background: transparent;
+  padding: 0;
+  font-weight: inherit;
+  font-size: inherit;
+  font-family: inherit !important;
 }

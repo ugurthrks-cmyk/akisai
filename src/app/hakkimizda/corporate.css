@@ -1,0 +1,161 @@
+/* Shared CSS for all Corporate Trust Pages (About, Editorial, Contact, Privacy) */
+.corporate-page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+.corporate-header {
+  margin-bottom: 2rem;
+}
+
+.corporate-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.9rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  color: #93c5fd;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.corporate-header h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--text-base);
+  margin-bottom: 1rem;
+}
+
+.corporate-lead {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 800px;
+}
+
+.corporate-content section {
+  margin-bottom: 2rem;
+}
+
+.corporate-content h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e4e4e7;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--accent);
+}
+
+.corporate-content p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #a1a1aa;
+  margin-bottom: 1.5rem;
+}
+
+.corporate-content strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.corporate-content a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.corporate-content a:hover {
+  color: var(--accent-subtle);
+  text-decoration: underline;
+}
+
+/* Specific component styles */
+.corporate-list {
+  list-style: none;
+  padding: 0;
+}
+
+.corporate-list li {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #a1a1aa;
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.corporate-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* Contact Page Specific */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contact-method {
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.contact-method strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #71717a;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.contact-method a {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.contact-form-panel {
+  background: rgba(138, 43, 226, 0.05);
+  border: 1px dashed rgba(138, 43, 226, 0.3);
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.form-notice {
+  font-size: 0.9rem !important;
+  color: #71717a !important;
+  font-style: italic;
+}
+
+/* Privacy Legal Text Specific */
+.legal-content p {
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .corporate-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

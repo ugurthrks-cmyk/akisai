@@ -1,0 +1,421 @@
+/* Wirecutter Style /tools/[slug] Page Specific Styling */
+
+.tool-container {
+  max-width: 1100px; /* Expanded drastically from 800px to give a premium, expansive feel */
+  padding-top: 2rem;
+  margin: 0 auto;
+}
+
+.breadcrumbs {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.breadcrumbs a {
+  color: #60a5fa;
+  text-decoration: none;
+}
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+/* Tool Hero Block */
+.tool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+}
+
+.tool-header-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.1em;
+}
+
+.tool-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tool-logo-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.tool-logo-wrap img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+}
+
+.tool-vision-description {
+  font-size: 1.25rem;
+  color: #e2e8f0;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Tags */
+.tool-meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.tag.success { background: rgba(16, 185, 129, 0.1); color: #34d399; border-color: rgba(52, 211, 153, 0.3); }
+.tag.free { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-color: rgba(96, 165, 250, 0.3); }
+.tag.neutral { background: rgba(255,255,255,0.06); color: #d1d5db; }
+
+.tool-featured-figure {
+  margin: 0 0 2.5rem;
+}
+
+.tool-featured-image {
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  border: 1px solid var(--border-subtle);
+}
+
+.tool-screenshot-section {
+  margin: 0 0 3rem;
+}
+
+.tool-screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.tool-screenshot-card {
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.03);
+}
+
+.tool-screenshot-image {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+
+.tool-screenshot-card figcaption {
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* CTA Button */
+.cta-button {
+  display: inline-block;
+  background: var(--accent-primary);
+  color: #fff !important;
+  font-weight: 600;
+  padding: 0.8rem 1.75rem;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px 0 rgba(0, 112, 243, 0.39);
+}
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 112, 243, 0.5);
+}
+
+.tool-cta-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4rem 0 2rem;
+  padding-top: 3rem;
+}
+
+.cta-button.large {
+  font-size: 1.25rem;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+}
+
+/* Pros and Cons */
+.pros-cons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.pros-card, .cons-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.02);
+}
+
+.pros-card { border-top: 4px solid var(--accent-success); }
+.cons-card { border-top: 4px solid #ef4444; }
+
+.pros-card h2, .cons-card h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  border: 0;
+  padding: 0;
+}
+
+.pros-card ul,
+.cons-card ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+
+.pros-card ul li, .cons-card ul li {
+  margin-bottom: 0.75rem;
+  color: #cbd5e1;
+  font-size: 1.05rem;
+}
+
+/* MDX Content Base Styling */
+.mdx-content {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #e2e8f0; /* Brighter slate for huge walls of text */
+  margin-top: 3rem;
+}
+
+.mdx-content h2 { 
+  margin-top: 4rem; 
+  margin-bottom: 1.5rem; 
+  font-size: 2.2rem; 
+  color: #fff;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.5rem;
+}
+
+.mdx-content h3 { 
+  margin-top: 2.5rem; 
+  margin-bottom: 1rem; 
+  font-size: 1.6rem; 
+  color: #e2e8f0;
+}
+
+.mdx-content p { 
+  margin-bottom: 1.75rem; 
+}
+
+.mdx-content ul, .mdx-content ol {
+  margin-bottom: 1.75rem;
+  padding-left: 2rem;
+}
+
+.mdx-content ul {
+  list-style: disc outside;
+}
+
+.mdx-content ol {
+  list-style: decimal outside;
+}
+
+.mdx-content li {
+  margin-bottom: 0.85rem;
+  padding-left: 0.2rem;
+}
+
+.mdx-content ul li::marker,
+.mdx-content ol li::marker {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.mdx-content strong { color: #fff; font-weight: 600; }
+
+.mdx-content blockquote {
+  border-left: 4px solid var(--accent-primary);
+  background: rgba(59, 130, 246, 0.05);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+  font-weight: 500; /* Replaced italics with slight boldness to maintain emphasis */
+  color: #cbd5e1;
+}
+
+.tool-trust-footer {
+  margin-top: 5rem;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tool-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .tool-title-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  .tool-meta-tags { justify-content: center; }
+  .pros-cons-grid { grid-template-columns: 1fr; }
+}
+
+/* FAQ Section */
+.faq-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+
+.faq-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--text-base);
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  border-color: var(--accent-subtle);
+}
+
+.faq-item summary {
+  padding: 1.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-base);
+  cursor: pointer;
+  list-style: none; /* Hide default arrow */
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: '+';
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item[open] summary {
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--accent-glow);
+}
+
+.faq-answer {
+  padding: 1.5rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.faq-answer p {
+  margin: 0;
+}
+
+/* ------------------------------------- */
+/* MDX HTML Comparison Table Styling     */
+/* ------------------------------------- */
+.mdx-table-wrapper {
+  margin: 3rem 0;
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+}
+
+.mdx-comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 1.05rem;
+}
+
+.mdx-comparison-table th,
+.mdx-comparison-table td {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.mdx-comparison-table th {
+  background: rgba(0,0,0,0.2);
+  font-weight: 700;
+  color: var(--text-base);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.mdx-comparison-table td strong {
+  color: var(--text-base);
+  font-weight: 600;
+}
+
+/* Highlight Column (For the 'Pro' or Recommended Plan) */
+.mdx-comparison-table th.highlight,
+.mdx-comparison-table td.highlight {
+  background: rgba(59, 130, 246, 0.05); /* Very subtle primary tint */
+  border-left: 1px solid rgba(59, 130, 246, 0.1);
+  border-right: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.mdx-comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Hover effect on rows */
+.mdx-comparison-table tbody tr:hover td {
+  background: rgba(255,255,255,0.03);
+}
+
+.mdx-comparison-table tbody tr:hover td.highlight {
+  background: rgba(59, 130, 246, 0.08);
+}
