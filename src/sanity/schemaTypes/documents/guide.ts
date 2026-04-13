@@ -67,6 +67,14 @@ export const guide = defineType({
       group: "editorial",
     }),
     defineField({
+      name: "steps",
+      title: "Adim adim plan",
+      type: "array",
+      group: "editorial",
+      of: [{ type: "guideStep" }],
+      description: "Rehberin adimlarini tek tek girmek isterseniz kullanin.",
+    }),
+    defineField({
       name: "bodyMarkdown",
       title: "Eski MDX govdesi",
       type: "text",
