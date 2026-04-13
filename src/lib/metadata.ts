@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { absoluteUrl } from "@/lib/content";
+import { absoluteUrl, normalizeAbsoluteUrl } from "@/lib/content";
 import { siteConfig } from "@/lib/site";
 import { getSiteSettings } from "@/lib/site-settings";
 
@@ -19,12 +19,33 @@ type BuildMetadataOptions = {
   modifiedTime?: string;
   authors?: string[];
   section?: string;
+  metadataAuthors?: Array<{ name: string; url?: string }>;
+  creator?: string;
+  publisher?: string;
   baseUrl?: string;
   siteName?: string;
   locale?: string;
   defaultImagePath?: string;
   defaultTwitterImagePath?: string;
 };
+
+function clampText(value: string, limit: number) {
+  const normalized = value.replace(/\s+/g, " ").trim();
+
+  if (normalized.length <= limit) {
+    return normalized;
+  }
+
+  const maxLengthWithoutEllipsis = Math.max(limit - 3, 0);
+  const sliced = normalized.slice(0, maxLengthWithoutEllipsis + 1);
+  const lastWordBoundary = sliced.lastIndexOf(" ");
+  const truncated =
+    lastWordBoundary >= Math.floor(maxLengthWithoutEllipsis * 0.6)
+      ? sliced.slice(0, lastWordBoundary)
+      : normalized.slice(0, maxLengthWithoutEllipsis);
+
+  return `${truncated.trim()}...`;
+}
 
 export function buildMetadata({
   title,
@@ -40,20 +61,27 @@ export function buildMetadata({
   modifiedTime,
   authors,
   section,
+  metadataAuthors,
+  creator,
+  publisher,
   baseUrl = siteConfig.url,
   siteName = siteConfig.name,
   locale = siteConfig.locale,
   defaultImagePath,
   defaultTwitterImagePath,
 }: BuildMetadataOptions): Metadata {
-  const canonical = canonicalUrl || absoluteUrl(path, baseUrl);
+  const normalizedDescription = clampText(description, 155);
+  const canonical = normalizeAbsoluteUrl(canonicalUrl || absoluteUrl(path, baseUrl));
   const resolvedImagePath = imagePath ?? defaultImagePath ?? "/opengraph-image";
   const resolvedTwitterImagePath =
     twitterImagePath ?? defaultTwitterImagePath ?? resolvedImagePath;
 
   return {
     title,
-    description,
+    description: normalizedDescription,
+    ...(metadataAuthors ? { authors: metadataAuthors } : {}),
+    ...(creator ? { creator } : {}),
+    ...(publisher ? { publisher } : {}),
     alternates: {
       canonical,
     },
@@ -70,7 +98,7 @@ export function buildMetadata({
     },
     openGraph: {
       title,
-      description,
+      description: normalizedDescription,
       url: canonical,
       siteName,
       locale,
@@ -89,8 +117,13 @@ export function buildMetadata({
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: normalizedDescription,
       images: [absoluteUrl(resolvedTwitterImagePath, baseUrl)],
+    },
+    other: {
+      "geo.region": "TR",
+      "geo.placename": "Türkiye",
+      ...(modifiedTime ? { "last-modified": modifiedTime } : {}),
     },
   };
 }

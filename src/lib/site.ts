@@ -1,10 +1,10 @@
 export const siteConfig = {
-  name: "Akış",
-  shortName: "Akış",
-  defaultTitle: "Akış | Türkiye'nin Yapay Zekâ Uygulama Rehberi",
+  name: "AkışAI",
+  shortName: "AkışAI",
+  defaultTitle: "AkışAI | Yapay zeka araçları ve nasıl kullanılır rehberleri",
   description:
-    "Türkiye'nin yapay zekâ araçları, uygulamalı rehberleri ve çözüm merkezleri için bağımsız inceleme kütüphanesi.",
-  url: "https://akisai.com.tr",
+    "AkışAI, Türkiye için yapay zeka araç incelemeleri, kullanım rehberleri ve karar vermeyi kolaylaştıran kategori merkezleri sunar.",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://akisai.com.tr",
   locale: "tr_TR",
   category: "technology",
   logoPath: "/logo.svg",

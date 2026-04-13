@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { richContentField } from "@/sanity/schemaTypes/fields/richContent";
+import { slugifyTurkish } from "@/sanity/schemaTypes/utils/slugify";
 
 export const guide = defineType({
   name: "guide",
@@ -36,6 +37,7 @@ export const guide = defineType({
       options: {
         source: "title",
         maxLength: 120,
+        slugify: (input) => slugifyTurkish(input),
       },
       validation: (rule) => rule.required(),
     }),
@@ -141,6 +143,14 @@ export const guide = defineType({
           type: "string",
         }),
       ],
+    }),
+    defineField({
+      name: "sources",
+      title: "Kaynaklar",
+      type: "array",
+      group: "trust",
+      of: [{ type: "sourceItem" }],
+      description: "Bu rehberde kullanilan resmi kaynak URL'leri.",
     }),
     defineField({
       name: "faqs",

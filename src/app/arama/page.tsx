@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { getAllCategories, getAllGuides, getAllPages, getAllTools } from "@/lib/content-source";
 import type { Metadata } from "next";
+import { getAllCategories, getAllGuides, getAllPages, getAllTools } from "@/lib/content-source";
 import { buildSiteMetadata } from "@/lib/metadata";
 import { getManagedPagePath } from "@/lib/managed-pages";
 import "./arama.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata({
-    title: "Arama sonuçları",
-    description: "Platformdaki yapay zekâ araçları, rehberler ve sayfalar içinde arama yapın.",
+    title: "Arama Sonuçları",
+    description: "Platformdaki yapay zeka araçları, incelemeler, rehberler ve sayfalar içinde arama yapın.",
     path: "/arama",
     noIndex: true,
   });
@@ -27,23 +27,23 @@ export default async function SearchResultsPage({
       <div className="container" style={{ padding: "4rem 2rem", minHeight: "60vh" }}>
         <header style={{ marginBottom: "2rem" }}>
           <h1 style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>Arama yapın</h1>
-          <p style={{ color: "#94a3b8", maxWidth: 720, lineHeight: 1.7 }}>
-            Araç adı, kategori, rehber başlığı, sayfa başlığı veya açıklama ile arama yapabilirsiniz.
-            Bu sayfa dizine alınmaz; yalnızca kullanıcı arama deneyimi için kullanılır.
+          <p style={{ color: "var(--text-muted)", maxWidth: 720, lineHeight: 1.7 }}>
+            Araç adı, kategori, rehber başlığı, sayfa başlığı veya açıklama ile arama yapabilirsiniz. Bu sayfa
+            dizine alınmaz; yalnızca kullanıcı arama deneyimi için kullanılır.
           </p>
         </header>
       </div>
     );
   }
 
-  const [aiTools, guides, pages, categories] = await Promise.all([
+  const [tools, guides, pages, categories] = await Promise.all([
     getAllTools(),
     getAllGuides(),
     getAllPages(),
     getAllCategories(),
   ]);
 
-  const formattedTools = aiTools.map((tool) => ({ ...tool, type: "ai" as const }));
+  const formattedTools = tools.map((tool) => ({ ...tool, type: "inceleme" as const }));
   const formattedGuides = guides.map((guide) => ({ ...guide, type: "rehber" as const }));
   const formattedPages = pages.map((page) => ({ ...page, type: "sayfa" as const }));
   const formattedCategories = categories.map((category) => ({ ...category, type: "kategori" as const }));
@@ -66,64 +66,75 @@ export default async function SearchResultsPage({
     <div className="container" style={{ padding: "4rem 2rem", minHeight: "60vh" }}>
       <header style={{ marginBottom: "3rem" }}>
         <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
-          "<span style={{ color: "var(--accent-primary)" }}>{query}</span>" için arama sonuçları
+          &quot;<span style={{ color: "var(--accent-primary)" }}>{query}</span>&quot; için arama sonuçları
         </h1>
-        <p style={{ color: "#a1a1aa", fontSize: "1.2rem" }}>
+        <p style={{ color: "var(--text-muted)", fontSize: "1.1rem" }}>
           Toplam <strong>{searchResults.length}</strong> eşleşen içerik bulundu.
         </p>
       </header>
 
       {searchResults.length > 0 ? (
         <div className="search-results-grid" style={{ display: "grid", gap: "1.5rem" }}>
-          {searchResults.map((result, i) => (
+          {searchResults.map((result, index) => (
             <Link
               href={
                 result.type === "sayfa"
                   ? getManagedPagePath(result.slug)
                   : result.type === "kategori"
                     ? `/kategori/${result.slug}`
-                    : `/${result.type}/${result.slug}`
+                    : result.type === "inceleme"
+                      ? `/incelemeler/${result.slug}`
+                      : `/${result.type}/${result.slug}`
               }
-              key={`${result.slug}-${i}`}
+              key={`${result.slug}-${index}`}
               className="search-result-card"
               style={{
                 textDecoration: "none",
                 display: "block",
-                background: "rgba(255, 255, 255, 0.03)",
-                border: "1px solid rgba(255, 255, 255, 0.08)",
+                background: "rgba(255, 255, 255, 0.78)",
+                border: "1px solid rgba(19, 35, 47, 0.08)",
                 padding: "1.5rem 2rem",
-                borderRadius: "12px",
-                transition: "border-color 0.2s ease",
+                borderRadius: "20px",
+                boxShadow: "var(--shadow-soft)",
+                transition: "border-color 0.2s ease, transform 0.2s ease",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.8rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  marginBottom: "0.8rem",
+                  flexWrap: "wrap",
+                }}
+              >
                 <span
                   style={{
                     fontSize: "0.75rem",
                     textTransform: "uppercase",
                     letterSpacing: "0.05em",
                     background:
-                      result.type === "ai"
-                        ? "rgba(56, 189, 248, 0.18)"
+                      result.type === "inceleme"
+                        ? "rgba(15, 118, 110, 0.12)"
                         : result.type === "rehber"
-                          ? "rgba(16, 185, 129, 0.2)"
+                          ? "rgba(21, 128, 61, 0.12)"
                           : result.type === "kategori"
-                            ? "rgba(168, 85, 247, 0.2)"
-                            : "rgba(245, 158, 11, 0.18)",
+                            ? "rgba(198, 106, 23, 0.12)"
+                            : "rgba(19, 35, 47, 0.08)",
                     color:
-                      result.type === "ai"
-                        ? "#7dd3fc"
+                      result.type === "inceleme"
+                        ? "var(--accent-glow)"
                         : result.type === "rehber"
-                          ? "#6ee7b7"
+                          ? "#166534"
                           : result.type === "kategori"
-                            ? "#d8b4fe"
-                            : "#fcd34d",
+                            ? "#9a5a1c"
+                            : "var(--text-light)",
                     padding: "0.3rem 0.8rem",
                     borderRadius: "20px",
                     fontWeight: "bold",
                   }}
                 >
-                  {result.type === "ai"
+                  {result.type === "inceleme"
                     ? "ARAÇ İNCELEMESİ"
                     : result.type === "rehber"
                       ? "REHBER"
@@ -131,7 +142,7 @@ export default async function SearchResultsPage({
                         ? "KATEGORİ"
                         : "SAYFA"}
                 </span>
-                <h2 style={{ fontSize: "1.4rem", color: "#fff", margin: 0 }}>
+                <h2 style={{ fontSize: "1.35rem", color: "var(--text-base)", margin: 0 }}>
                   {"name" in result && result.name
                     ? result.name
                     : "title" in result && result.title
@@ -139,7 +150,7 @@ export default async function SearchResultsPage({
                       : result.slug}
                 </h2>
               </div>
-              <p style={{ color: "#a1a1aa", lineHeight: "1.6", margin: 0 }}>{result.description}</p>
+              <p style={{ color: "var(--text-muted)", lineHeight: "1.7", margin: 0 }}>{result.description}</p>
             </Link>
           ))}
         </div>
@@ -147,15 +158,16 @@ export default async function SearchResultsPage({
         <div
           style={{
             padding: "2rem",
-            borderRadius: "16px",
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(255,255,255,0.03)",
+            borderRadius: "20px",
+            border: "1px solid rgba(19, 35, 47, 0.08)",
+            background: "rgba(255, 255, 255, 0.78)",
+            boxShadow: "var(--shadow-soft)",
           }}
         >
           <h2 style={{ marginTop: 0 }}>Sonuç bulunamadı</h2>
-          <p style={{ marginBottom: 0, color: "#a1a1aa", lineHeight: 1.7 }}>
-            Bu sorgu için henüz eşleşen araç, rehber veya sayfa yok. Daha genel bir kelimeyle arayın
-            ya da kategori merkezlerine göz atın.
+          <p style={{ marginBottom: 0, color: "var(--text-muted)", lineHeight: 1.7 }}>
+            Bu sorgu için henüz eşleşen araç, rehber veya sayfa yok. Daha genel bir kelimeyle arayın ya da kategori
+            merkezlerine göz atın.
           </p>
         </div>
       )}

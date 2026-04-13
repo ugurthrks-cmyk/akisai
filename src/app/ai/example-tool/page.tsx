@@ -18,37 +18,18 @@ export default function ExampleToolPage() {
   const softwareSchema = {
     name: "E-Ticaret Ürün Görseli Araçları",
     applicationCategory: "MultimediaApplication",
-    applicationSubCategory: "Yapay Zekâ Destekli Fotoğraf Aracı Rehberi",
+    applicationSubCategory: "Yapay Zeka Destekli Fotoğraf Aracı Rehberi",
     operatingSystem: "Web",
     offers: {
       "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "TRY",
+      price: "0",
+      priceCurrency: "TRY",
     },
-  };
-
-  const howToSchema = {
-    name: "E-Ticaret İçin Ürün Görseli Nasıl Hazırlanır?",
-    step: [
-      {
-        "@type": "HowToStep",
-        "text": "Adım 1: Ürünün temel fotoğrafını doğal ışıkta çekin.",
-      },
-      {
-        "@type": "HowToStep",
-        "text": "Adım 2: Seçtiğiniz araca fotoğrafı yükleyip arka plan ve ışık düzenini belirleyin.",
-      },
-      {
-        "@type": "HowToStep",
-        "text": "Adım 3: Son görseli yüksek çözünürlükte dışa aktarın ve ürün sayfasında test edin.",
-      },
-    ],
   };
 
   return (
     <>
       <SchemaMarkup type="SoftwareApplication" data={softwareSchema} />
-      <SchemaMarkup type="HowTo" data={howToSchema} />
 
       <article className="tool-article">
         <header>
@@ -57,18 +38,18 @@ export default function ExampleToolPage() {
             <span className="tag highlight">Denetim</span>
             <span className="tag">E-ticaret</span>
             <span className="tag">Görsel üretim</span>
-            <span className="tag" style={{ color: "var(--accent-success)" }}>Puan: 9.2/10</span>
+            <span className="tag" style={{ color: "var(--accent-success)" }}>
+              Puan: 9.2/10
+            </span>
           </div>
           <p className="hero-subtitle">
-            Bu taslak, araç sayfalarında kullanılan üst alan, özet kutusu ve örnek içerik bloklarının iç denetimini yapmak için tutulur.
+            Bu taslak, araç sayfalarında kullanılan üst alan, özet kutusu ve örnek içerik bloklarının iç denetimini
+            yapmak için tutulur.
           </p>
         </header>
 
         <section className="atomic-answer-wrapper">
-          <AtomicAnswer
-            title="İnceleme Notu"
-            content={answerContent}
-          />
+          <AtomicAnswer title="İnceleme Notu" content={answerContent} />
         </section>
 
         <section className="tool-content card">
@@ -81,10 +62,12 @@ export default function ExampleToolPage() {
           <h3>Denetlenen unsurlar</h3>
           <ul>
             <li>
-              <strong>Başlık yapısı:</strong> Sayfa başlığı, özet paragrafı ve etiket alanlarının birlikte nasıl göründüğü kontrol edilir.
+              <strong>Başlık yapısı:</strong> Sayfa başlığı, özet paragrafı ve etiket alanlarının birlikte nasıl
+              göründüğü kontrol edilir.
             </li>
             <li>
-              <strong>Şema doğruluğu:</strong> Yazılım ve rehber şemalarının gereksiz alan üretmeden çalışıp çalışmadığı incelenir.
+              <strong>Şema doğruluğu:</strong> Yazılım işaretlemesinin gereksiz alan üretmeden çalışıp çalışmadığı
+              incelenir.
             </li>
           </ul>
         </section>

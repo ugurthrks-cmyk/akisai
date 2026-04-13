@@ -1,4 +1,3 @@
-import { authors, type AuthorKey } from "@/data/authors";
 import { siteConfig } from "@/lib/site";
 
 function parseDateInput(input?: string | null) {
@@ -14,26 +13,32 @@ function parseDateInput(input?: string | null) {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
-export function getAuthorById(authorId?: string | null) {
-  if (!authorId) {
-    return null;
-  }
-
-  return authors[authorId as AuthorKey] ?? null;
+export function normalizeBaseUrl(value: string) {
+  const url = new URL(value);
+  url.pathname = "/";
+  url.search = "";
+  url.hash = "";
+  return url.origin;
 }
 
-export function getAuthorEntryBySlug(slug: string) {
-  const entry = Object.entries(authors).find(([, author]) => author.slug === slug);
-  return entry
-    ? {
-        id: entry[0] as AuthorKey,
-        author: entry[1],
-      }
-    : null;
+export function normalizeAbsoluteUrl(value: string) {
+  const url = new URL(value);
+
+  if (url.pathname !== "/") {
+    url.pathname = url.pathname.replace(/\/+$/, "");
+  }
+
+  url.hash = "";
+
+  if (url.pathname === "/" && !url.search) {
+    return url.origin;
+  }
+
+  return url.toString();
 }
 
 export function absoluteUrl(pathname: string, baseUrl: string = siteConfig.url) {
-  return new URL(pathname, baseUrl).toString();
+  return normalizeAbsoluteUrl(new URL(pathname, normalizeBaseUrl(baseUrl)).toString());
 }
 
 export function toIsoDate(input?: string | null) {
@@ -54,4 +59,44 @@ export function formatDisplayDate(input?: string | null) {
     year: "numeric",
     timeZone: "UTC",
   }).format(parsed);
+}
+
+export function normalizeSoftwareApplicationCategory(category?: string | null) {
+  if (!category) {
+    return "BusinessApplication";
+  }
+
+  const normalized = category.toLocaleLowerCase("tr-TR");
+
+  if (normalized.includes("video") || normalized.includes("kurgu")) {
+    return "VideoApplication";
+  }
+
+  if (normalized.includes("ses") || normalized.includes("voice") || normalized.includes("audio")) {
+    return "MultimediaApplication";
+  }
+
+  if (
+    normalized.includes("otomasyon") ||
+    normalized.includes("entegrasyon") ||
+    normalized.includes("workflow") ||
+    normalized.includes("iş akışı")
+  ) {
+    return "BusinessApplication";
+  }
+
+  if (
+    normalized.includes("tasarım") ||
+    normalized.includes("görsel") ||
+    normalized.includes("logo") ||
+    normalized.includes("resim")
+  ) {
+    return "DesignApplication";
+  }
+
+  if (normalized.includes("verimlilik") || normalized.includes("üretkenlik")) {
+    return "ProductivityApplication";
+  }
+
+  return "BusinessApplication";
 }

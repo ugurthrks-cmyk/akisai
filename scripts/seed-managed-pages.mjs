@@ -28,10 +28,10 @@ loadEnvFile(path.resolve(".env.local"));
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
-const token = process.env.SANITY_API_WRITE_TOKEN;
+const token = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_READ_TOKEN;
 
 if (!projectId || !dataset || !token) {
-  throw new Error("Sanity seed icin project id, dataset ve write token gerekli.");
+  throw new Error("Sanity seed icin project id, dataset ve mutasyon yetkili token gerekli.");
 }
 
 const client = createClient({

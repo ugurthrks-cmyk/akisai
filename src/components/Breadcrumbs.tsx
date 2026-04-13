@@ -17,6 +17,7 @@ export default function Breadcrumbs({
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    inLanguage: "tr-TR",
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,

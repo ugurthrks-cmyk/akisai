@@ -1,16 +1,18 @@
 import { cache } from "react";
 import { groq } from "next-sanity";
 import type { PortableTextBlock } from "@portabletext/types";
-import { authors } from "@/data/authors";
-import { getAllFilesFrontMatter, getFileBySlug } from "@/lib/mdx";
+import { retiredCategorySlugs, sortCategoriesByTaxonomy } from "@/lib/category-taxonomy";
+import { computeToolRating, type ToolRatingScores } from "@/lib/ratings";
 import { siteConfig } from "@/lib/site";
 import { isSanityConfigured } from "@/sanity/env";
-import { sanityLiveClient } from "@/sanity/lib/live-client";
+import { fetchPublishedSanity } from "@/sanity/lib/fetch";
+import { getSanitySlugTag, sanityTags, uniqueSanityTags } from "@/sanity/lib/cache-tags";
 
 export type SourceItem = {
   label: string;
   url: string;
   publisher?: string;
+  note?: string;
 };
 
 export type FaqItem = {
@@ -84,9 +86,14 @@ export interface ToolSummary {
   logoAlt?: string;
   featuredImageUrl?: string;
   featuredImageAlt?: string;
+  reviewRating?: number;
+  ratingScores?: ToolRatingScores;
+  reviewScore?: number;
+  sources?: SourceItem[];
   date?: string;
   datePublished?: string;
   dateModified?: string;
+  updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
 }
@@ -113,11 +120,14 @@ export interface GuideSummary {
   difficulty?: string;
   time?: string;
   estimatedTimeMinutes?: number;
+  relatedToolSlugs?: string[];
   featuredImageUrl?: string;
   featuredImageAlt?: string;
   date?: string;
   datePublished?: string;
   dateModified?: string;
+  updatedAt?: string;
+  sources?: SourceItem[];
   canonicalUrl?: string;
   noIndex?: boolean;
 }
@@ -131,11 +141,14 @@ export interface GuideEntry extends GuideSummary {
 export interface CategorySummary {
   slug: string;
   name: string;
+  seoTitle?: string;
+  h1?: string;
   description: string;
   metaDescription?: string;
   heroIntro?: string;
   iconUrl?: string;
   iconAlt?: string;
+  updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
 }
@@ -152,11 +165,10 @@ export interface PageEntry {
   metaDescription?: string;
   pageType?: string;
   body: RichBody;
+  updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
 }
-
-type LocalRecord = Record<string, unknown> & { slug: string };
 
 type SanityAuthorValue = {
   slug?: string;
@@ -206,9 +218,17 @@ type SanityToolValue = {
   screenshots?: unknown;
   pros?: unknown;
   cons?: unknown;
+  kullanimKolayligi?: number;
+  turkiyeUyumu?: number;
+  fiyatDeger?: number;
+  ozellikler?: number;
+  destek?: number;
+  reviewRating?: number;
+  sources?: unknown;
   faqs?: unknown;
   datePublished?: string;
   dateModified?: string;
+  updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
 };
@@ -230,21 +250,27 @@ type SanityGuideValue = {
   bodyMarkdown?: string;
   body?: PortableTextBlock[];
   tools?: unknown;
+  relatedToolSlugs?: unknown;
   faqs?: unknown;
   datePublished?: string;
   dateModified?: string;
+  updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
+  sources?: unknown;
 };
 
 type SanityCategoryValue = {
   slug?: string;
   name?: string;
+  seoTitle?: string;
+  h1?: string;
   description?: string;
   metaDescription?: string;
   heroIntro?: string;
   iconUrl?: string;
   iconAlt?: string;
+  updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
   bodyMarkdown?: string;
@@ -259,6 +285,7 @@ type SanityPageValue = {
   metaDescription?: string;
   pageType?: string;
   body?: PortableTextBlock[];
+  updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
 };
@@ -299,14 +326,27 @@ const toolListQuery = groq`*[_type == "tool" && defined(slug.current)] | order(c
   websiteUrl,
   priceAmount,
   priceCurrency,
+  reviewRating,
+  kullanimKolayligi,
+  turkiyeUyumu,
+  fiyatDeger,
+  ozellikler,
+  destek,
   datePublished,
   dateModified,
+  "updatedAt": _updatedAt,
   "category": category->name,
   "categorySlug": category->slug.current,
   "logoUrl": logo.asset->url,
   "logoAlt": logo.alt,
   "featuredImageUrl": featuredImage.asset->url,
   "featuredImageAlt": featuredImage.alt,
+  sources[]{
+    label,
+    publisher,
+    url,
+    note
+  },
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex,
   bodyMarkdown,
@@ -328,8 +368,14 @@ const toolBySlugQuery = groq`*[_type == "tool" && slug.current == $slug][0] {
   priceAmount,
   priceCurrency,
   tags,
+  kullanimKolayligi,
+  turkiyeUyumu,
+  fiyatDeger,
+  ozellikler,
+  destek,
   pros,
   cons,
+  reviewRating,
   faqs,
   body,
   screenshots[]{
@@ -339,12 +385,19 @@ const toolBySlugQuery = groq`*[_type == "tool" && slug.current == $slug][0] {
   },
   datePublished,
   dateModified,
+  "updatedAt": _updatedAt,
   "category": category->name,
   "categorySlug": category->slug.current,
   "logoUrl": logo.asset->url,
   "logoAlt": logo.alt,
   "featuredImageUrl": featuredImage.asset->url,
   "featuredImageAlt": featuredImage.alt,
+  sources[]{
+    label,
+    publisher,
+    url,
+    note
+  },
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex,
   bodyMarkdown,
@@ -362,10 +415,18 @@ const guideListQuery = groq`*[_type == "guide" && defined(slug.current)] | order
   estimatedTimeMinutes,
   datePublished,
   dateModified,
+  "updatedAt": _updatedAt,
   "category": category->name,
   "categorySlug": category->slug.current,
   "featuredImageUrl": featuredImage.asset->url,
   "featuredImageAlt": featuredImage.alt,
+  sources[]{
+    label,
+    publisher,
+    url,
+    note
+  },
+  "relatedToolSlugs": relatedTools[]->slug.current,
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex,
   bodyMarkdown,
@@ -385,12 +446,20 @@ const guideBySlugQuery = groq`*[_type == "guide" && slug.current == $slug][0] {
   body,
   datePublished,
   dateModified,
+  "updatedAt": _updatedAt,
   "category": category->name,
   "categorySlug": category->slug.current,
   "featuredImageUrl": featuredImage.asset->url,
   "featuredImageAlt": featuredImage.alt,
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex,
+  sources[]{
+    label,
+    publisher,
+    url,
+    note
+  },
+  "relatedToolSlugs": relatedTools[]->slug.current,
   "tools": relatedTools[]->name,
   bodyMarkdown,
   "author": author->{${authorProjection}}
@@ -399,12 +468,15 @@ const guideBySlugQuery = groq`*[_type == "guide" && slug.current == $slug][0] {
 const categoryListQuery = groq`*[_type == "category" && defined(slug.current)] | order(name asc) {
   "slug": slug.current,
   name,
+  seoTitle,
+  h1,
   description,
   metaDescription,
   heroIntro,
   bodyMarkdown,
   "iconUrl": icon.asset->url,
   "iconAlt": icon.alt,
+  "updatedAt": _updatedAt,
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex
 }`;
@@ -412,6 +484,8 @@ const categoryListQuery = groq`*[_type == "category" && defined(slug.current)] |
 const categoryBySlugQuery = groq`*[_type == "category" && slug.current == $slug][0] {
   "slug": slug.current,
   name,
+  seoTitle,
+  h1,
   description,
   metaDescription,
   heroIntro,
@@ -419,6 +493,7 @@ const categoryBySlugQuery = groq`*[_type == "category" && slug.current == $slug]
   body,
   "iconUrl": icon.asset->url,
   "iconAlt": icon.alt,
+  "updatedAt": _updatedAt,
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex,
   "featuredToolSlugs": featuredTools[]->slug.current
@@ -430,6 +505,7 @@ const pageListQuery = groq`*[_type == "page" && defined(slug.current)] | order(t
   description,
   metaDescription,
   pageType,
+  "updatedAt": _updatedAt,
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex
 }`;
@@ -441,6 +517,7 @@ const pageBySlugQuery = groq`*[_type == "page" && slug.current == $slug][0] {
   metaDescription,
   pageType,
   body,
+  "updatedAt": _updatedAt,
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex
 }`;
@@ -453,8 +530,23 @@ const authorBySlugQuery = groq`*[_type == "author" && slug.current == $slug][0] 
   ${authorProjection}
 }`;
 
+const CATEGORY_REVALIDATE_SECONDS = 300;
+
 function asString(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value : undefined;
+}
+
+function asNumber(value: unknown): number | undefined {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  return undefined;
 }
 
 function normalizeAuthorText(value?: string) {
@@ -476,24 +568,26 @@ function normalizeAuthorText(value?: string) {
     .replace(/\bAI\b/g, "yapay zeka");
 }
 
+// Legacy helpers kept temporarily for migration safety.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function normalizeAuthorArray(values: string[]) {
   return values.map((value) => normalizeAuthorText(value) || value);
 }
 
 function normalizeDisplayAuthorText(value?: string) {
   return value
-    ?.replace(/\bYapay Zeka\b/g, "Yapay Zekâ")
-    .replace(/\byapay zeka\b/g, "yapay zekâ")
-    .replace(/\bAI tool evaluation\b/gi, "yapay zekâ araç değerlendirmesi")
+    ?.replace(/\bYapay Zeka\b/g, "Yapay Zeka")
+    .replace(/\byapay zeka\b/g, "yapay zeka")
+    .replace(/\bAI tool evaluation\b/gi, "yapay zeka araç değerlendirmesi")
     .replace(/\bLLM market analysis\b/gi, "büyük dil modeli pazar çözümlemesi")
     .replace(/\bTurkey localization\b/gi, "Türkiye yerelleştirmesi")
     .replace(/\bpricing research\b/gi, "fiyatlandırma araştırması")
     .replace(/\bcontent operations\b/gi, "içerik operasyonları")
     .replace(/\bworkflow automation\b/gi, "iş akışı otomasyonu")
     .replace(/\bno-code architecture\b/gi, "kodsuz sistem mimarisi")
-    .replace(/\bAI operations\b/gi, "yapay zekâ operasyonları")
+    .replace(/\bAI operations\b/gi, "yapay zeka operasyonları")
     .replace(/\bprocess design\b/gi, "süreç tasarımı")
-    .replace(/\bAI\b/g, "yapay zekâ");
+    .replace(/\bAI\b/g, "yapay zeka");
 }
 
 function normalizeDisplayAuthorArray(values: string[]) {
@@ -551,6 +645,7 @@ function asSourceArray(value: unknown): SourceItem[] {
         label,
         url,
         publisher: asString(record.publisher),
+        note: asString(record.note),
       });
     }
   }
@@ -558,6 +653,8 @@ function asSourceArray(value: unknown): SourceItem[] {
   return items;
 }
 
+// Legacy helpers kept temporarily for migration safety.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function asGuideSteps(value: unknown): GuideStep[] {
   if (!Array.isArray(value)) {
     return [];
@@ -613,6 +710,34 @@ function toMinuteLabel(minutes?: number) {
   return typeof minutes === "number" && minutes > 0 ? `${minutes} dakika` : undefined;
 }
 
+function resolvePriceCurrency(currency?: string, pricing?: string) {
+  if (currency) {
+    return currency;
+  }
+
+  const normalizedPricing = pricing?.toUpperCase();
+
+  if (!normalizedPricing) {
+    return undefined;
+  }
+
+  if (normalizedPricing.includes("TRY") || normalizedPricing.includes("TL") || normalizedPricing.includes("₺")) {
+    return "TRY";
+  }
+
+  if (normalizedPricing.includes("USD") || normalizedPricing.includes("$")) {
+    return "USD";
+  }
+
+  if (normalizedPricing.includes("EUR") || normalizedPricing.includes("€")) {
+    return "EUR";
+  }
+
+  return undefined;
+}
+
+// Legacy helpers kept temporarily for migration safety.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function parseMinutes(label?: string) {
   if (!label) {
     return undefined;
@@ -637,6 +762,8 @@ function toDateValue(...values: Array<string | undefined>) {
   return 0;
 }
 
+// Legacy helpers kept temporarily for migration safety.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function sortByFreshness<T extends { date?: string; datePublished?: string; dateModified?: string }>(
   items: T[],
 ) {
@@ -647,6 +774,8 @@ function sortByFreshness<T extends { date?: string; datePublished?: string; date
   );
 }
 
+// Legacy helpers kept temporarily for migration safety.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function mergeBySlug<T extends { slug: string }>(preferred: T[], fallback: T[]) {
   const merged = new Map<string, T>();
 
@@ -661,33 +790,8 @@ function mergeBySlug<T extends { slug: string }>(preferred: T[], fallback: T[]) 
   return Array.from(merged.values());
 }
 
-function mapLocalAuthor(id: string, author: (typeof authors)[keyof typeof authors]): DirectoryAuthor {
-  return {
-    id,
-    name: author.name,
-    fullName: author.fullName,
-    slug: author.slug,
-    role: normalizeDisplayAuthorText(author.role) || author.role,
-    university: normalizeDisplayAuthorText(author.university) || author.university,
-    experience: normalizeDisplayAuthorText(author.experience) || author.experience,
-    bio: normalizeDisplayAuthorText(author.bio) || author.bio,
-    metaDescription: normalizeDisplayAuthorText(author.metaDescription) || normalizeDisplayAuthorText(author.bio) || author.bio,
-    avatarUrl: author.avatarUrl,
-    avatarAlt: undefined,
-    profileUrl: author.profileUrl,
-    profileCreatedAt: author.profileCreatedAt,
-    profileUpdatedAt: author.profileUpdatedAt,
-    methodologyFocus: normalizeDisplayAuthorText(author.methodologyFocus) || author.methodologyFocus,
-    expertise: normalizeDisplayAuthorArray(author.expertise),
-    credentials: normalizeDisplayAuthorArray(author.credentials),
-    sameAs: author.sameAs,
-    canonicalUrl: undefined,
-    noIndex: false,
-  };
-}
-
-function buildLocalAuthors() {
-  return Object.entries(authors).map(([id, author]) => mapLocalAuthor(id, author));
+function filterLegacyCategories<T extends { slug: string }>(items: T[]) {
+  return items.filter((item) => !retiredCategorySlugs.has(item.slug));
 }
 
 function mapSanityAuthor(author: SanityAuthorValue | undefined | null): DirectoryAuthor | null {
@@ -721,94 +825,28 @@ function mapSanityAuthor(author: SanityAuthorValue | undefined | null): Director
   };
 }
 
-function getLocalCategorySlugMap() {
-  const categories = getAllFilesFrontMatter("kategori") as LocalRecord[];
 
-  return new Map(
-    categories
-      .map((item) => {
-        const name = asString(item.name);
-        return name ? ([name, item.slug] as const) : null;
-      })
-      .filter((item): item is readonly [string, string] => item !== null),
-  );
-}
-
-function mapLocalToolSummary(item: LocalRecord, categorySlugMap: Map<string, string>): ToolSummary {
-  const category = asString(item.category);
-  const authorId = asString(item.author);
-  const localAuthor =
-    authorId && authorId in authors
-      ? mapLocalAuthor(authorId, authors[authorId as keyof typeof authors])
-      : null;
-
-  return {
-    slug: item.slug,
-    name: asString(item.name) || asString(item.title) || item.slug,
-    title: asString(item.title),
-    h1: asString(item.h1),
-    description: asString(item.description) || "",
-    metaDescription: asString(item.metaDescription) || asString(item.description) || "",
-    heroIntro: asString(item.heroIntro),
-    category,
-    categorySlug: category ? categorySlugMap.get(category) : undefined,
-    author: localAuthor,
-    pricing: asString(item.pricing),
-    tags: asStringArray(item.tags),
-    hasFreeTier: Boolean(item.hasFreeTier),
-    isTRSupported: Boolean(item.isTRSupported),
-    websiteUrl: asString(item.websiteUrl),
-    priceAmount:
-      typeof item.priceAmount === "number" || typeof item.priceAmount === "string"
-        ? String(item.priceAmount)
-        : undefined,
-    priceCurrency: asString(item.priceCurrency),
-    date: asString(item.date),
-    datePublished: asString(item.datePublished),
-    dateModified: asString(item.dateModified),
-  };
-}
-
-function mapLocalGuideSummary(item: LocalRecord, categorySlugMap: Map<string, string>): GuideSummary {
-  const category = asString(item.category);
-  const authorId = asString(item.author);
-  const localAuthor =
-    authorId && authorId in authors
-      ? mapLocalAuthor(authorId, authors[authorId as keyof typeof authors])
-      : null;
-  const time = asString(item.time);
-
-  return {
-    slug: item.slug,
-    title: asString(item.title) || item.slug,
-    h1: asString(item.h1),
-    name: asString(item.name),
-    description: asString(item.description) || "",
-    metaDescription: asString(item.metaDescription) || asString(item.description) || "",
-    heroIntro: asString(item.heroIntro),
-    category,
-    categorySlug: category ? categorySlugMap.get(category) : undefined,
-    author: localAuthor,
-    difficulty: asString(item.difficulty),
-    time,
-    estimatedTimeMinutes: parseMinutes(time),
-    date: asString(item.date),
-    datePublished: asString(item.datePublished),
-    dateModified: asString(item.dateModified),
-  };
-}
-
-function mapLocalCategorySummary(item: LocalRecord): CategorySummary {
-  return {
-    slug: item.slug,
-    name: asString(item.name) || item.slug,
-    description: asString(item.description) || "",
-    metaDescription: asString(item.metaDescription) || asString(item.description) || "",
-    heroIntro: asString(item.heroIntro),
-  };
+function requireSanityContent() {
+  if (!isSanityConfigured) {
+    throw new Error(
+      "Sanity CMS bağlantısı bulunamadı. İçerik runtime'ı artık yalnızca Sanity ile çalışıyor; NEXT_PUBLIC_SANITY_PROJECT_ID ve NEXT_PUBLIC_SANITY_DATASET tanımlı olmalıdır.",
+    );
+  }
 }
 
 function mapSanityToolSummary(item: SanityToolValue): ToolSummary {
+  const ratingScores: ToolRatingScores = {
+    kullanimKolayligi: asNumber(item.kullanimKolayligi),
+    turkiyeUyumu: asNumber(item.turkiyeUyumu),
+    fiyatDeger: asNumber(item.fiyatDeger),
+    ozellikler: asNumber(item.ozellikler),
+    destek: asNumber(item.destek),
+  };
+
+  const computedScore = computeToolRating(ratingScores);
+  const manualScore = typeof item.reviewRating === "number" ? item.reviewRating : undefined;
+  const reviewScore = computedScore ?? manualScore;
+
   return {
     slug: item.slug || "",
     name: item.name || item.title || item.slug || "",
@@ -829,13 +867,18 @@ function mapSanityToolSummary(item: SanityToolValue): ToolSummary {
       typeof item.priceAmount === "number" || typeof item.priceAmount === "string"
         ? String(item.priceAmount)
         : undefined,
-    priceCurrency: item.priceCurrency,
+    priceCurrency: resolvePriceCurrency(item.priceCurrency, item.pricing),
     logoUrl: item.logoUrl,
     featuredImageUrl: item.featuredImageUrl,
     logoAlt: asString(item.logoAlt),
     featuredImageAlt: asString(item.featuredImageAlt),
+    reviewRating: typeof item.reviewRating === "number" ? item.reviewRating : undefined,
+    ratingScores,
+    reviewScore,
+    sources: asSourceArray(item.sources),
     datePublished: item.datePublished,
     dateModified: item.dateModified,
+    updatedAt: item.updatedAt,
     canonicalUrl: asString(item.canonicalUrl),
     noIndex: Boolean(item.noIndex),
   };
@@ -855,10 +898,13 @@ function mapSanityGuideSummary(item: SanityGuideValue): GuideSummary {
     difficulty: item.difficulty,
     time: toMinuteLabel(item.estimatedTimeMinutes),
     estimatedTimeMinutes: item.estimatedTimeMinutes,
+    relatedToolSlugs: asStringArray(item.relatedToolSlugs),
     featuredImageUrl: item.featuredImageUrl,
     featuredImageAlt: asString(item.featuredImageAlt),
     datePublished: item.datePublished,
     dateModified: item.dateModified,
+    updatedAt: item.updatedAt,
+    sources: asSourceArray(item.sources),
     canonicalUrl: asString(item.canonicalUrl),
     noIndex: Boolean(item.noIndex),
   };
@@ -868,11 +914,14 @@ function mapSanityCategorySummary(item: SanityCategoryValue): CategorySummary {
   return {
     slug: item.slug || "",
     name: item.name || item.slug || "",
+    seoTitle: asString(item.seoTitle),
+    h1: asString(item.h1),
     description: item.description || "",
     metaDescription: item.metaDescription || item.description || "",
     heroIntro: item.heroIntro,
     iconUrl: item.iconUrl,
     iconAlt: asString(item.iconAlt),
+    updatedAt: item.updatedAt,
     canonicalUrl: asString(item.canonicalUrl),
     noIndex: Boolean(item.noIndex),
   };
@@ -889,24 +938,23 @@ function mapSanityPage(item: SanityPageValue): PageEntry {
       kind: "portableText",
       value: Array.isArray(item.body) ? item.body : [],
     } satisfies RichBody,
+    updatedAt: item.updatedAt,
     canonicalUrl: asString(item.canonicalUrl),
     noIndex: Boolean(item.noIndex),
   };
 }
 
-async function fetchSanity<T>(query: string, params?: Record<string, string>) {
-  return sanityLiveClient.fetch<T>(query, params ?? {}, {
-    cache: "no-store",
-  });
-}
-
 const getSanityTools = cache(async () => {
-  const items = await fetchSanity<SanityToolValue[]>(toolListQuery);
+  const items = await fetchPublishedSanity<SanityToolValue[]>(toolListQuery, {}, {
+    tags: [sanityTags.tools],
+  });
   return items.map(mapSanityToolSummary);
 });
 
 const getSanityTool = cache(async (slug: string) => {
-  const item = await fetchSanity<SanityToolValue | null>(toolBySlugQuery, { slug });
+  const item = await fetchPublishedSanity<SanityToolValue | null>(toolBySlugQuery, { slug }, {
+    tags: uniqueSanityTags([sanityTags.tools], [getSanitySlugTag("sanity:tool", slug)]),
+  });
 
   if (!item?.slug) {
     return null;
@@ -933,12 +981,16 @@ const getSanityTool = cache(async (slug: string) => {
 });
 
 const getSanityGuides = cache(async () => {
-  const items = await fetchSanity<SanityGuideValue[]>(guideListQuery);
+  const items = await fetchPublishedSanity<SanityGuideValue[]>(guideListQuery, {}, {
+    tags: [sanityTags.guides],
+  });
   return items.map(mapSanityGuideSummary);
 });
 
 const getSanityGuide = cache(async (slug: string) => {
-  const item = await fetchSanity<SanityGuideValue | null>(guideBySlugQuery, { slug });
+  const item = await fetchPublishedSanity<SanityGuideValue | null>(guideBySlugQuery, { slug }, {
+    tags: uniqueSanityTags([sanityTags.guides], [getSanitySlugTag("sanity:guide", slug)]),
+  });
 
   if (!item?.slug) {
     return null;
@@ -963,12 +1015,22 @@ const getSanityGuide = cache(async (slug: string) => {
 });
 
 const getSanityCategories = cache(async () => {
-  const items = await fetchSanity<SanityCategoryValue[]>(categoryListQuery);
-  return items.map(mapSanityCategorySummary);
+  const items = await fetchPublishedSanity<SanityCategoryValue[]>(categoryListQuery, {}, {
+    tags: [sanityTags.categories],
+    revalidate: CATEGORY_REVALIDATE_SECONDS,
+  });
+  return sortCategoriesByTaxonomy(filterLegacyCategories(items.map(mapSanityCategorySummary)));
 });
 
 const getSanityCategory = cache(async (slug: string) => {
-  const item = await fetchSanity<SanityCategoryValue | null>(categoryBySlugQuery, { slug });
+  if (retiredCategorySlugs.has(slug)) {
+    return null;
+  }
+
+  const item = await fetchPublishedSanity<SanityCategoryValue | null>(categoryBySlugQuery, { slug }, {
+    tags: uniqueSanityTags([sanityTags.categories], [getSanitySlugTag("sanity:category", slug)]),
+    revalidate: CATEGORY_REVALIDATE_SECONDS,
+  });
 
   if (!item?.slug) {
     return null;
@@ -992,12 +1054,16 @@ const getSanityCategory = cache(async (slug: string) => {
 });
 
 const getSanityPages = cache(async () => {
-  const items = await fetchSanity<SanityPageValue[]>(pageListQuery);
+  const items = await fetchPublishedSanity<SanityPageValue[]>(pageListQuery, {}, {
+    tags: [sanityTags.pages],
+  });
   return items.map(mapSanityPage);
 });
 
 const getSanityPage = cache(async (slug: string) => {
-  const item = await fetchSanity<SanityPageValue | null>(pageBySlugQuery, { slug });
+  const item = await fetchPublishedSanity<SanityPageValue | null>(pageBySlugQuery, { slug }, {
+    tags: uniqueSanityTags([sanityTags.pages], [getSanitySlugTag("sanity:page", slug)]),
+  });
 
   if (!item?.slug) {
     return null;
@@ -1007,195 +1073,71 @@ const getSanityPage = cache(async (slug: string) => {
 });
 
 const getSanityAuthors = cache(async () => {
-  const items = await fetchSanity<SanityAuthorValue[]>(authorListQuery);
+  const items = await fetchPublishedSanity<SanityAuthorValue[]>(authorListQuery, {}, {
+    tags: [sanityTags.authors],
+  });
   return items.map(mapSanityAuthor).filter((item): item is DirectoryAuthor => item !== null);
 });
 
 const getSanityAuthor = cache(async (slug: string) => {
-  const item = await fetchSanity<SanityAuthorValue | null>(authorBySlugQuery, { slug });
+  const item = await fetchPublishedSanity<SanityAuthorValue | null>(authorBySlugQuery, { slug }, {
+    tags: uniqueSanityTags([sanityTags.authors], [getSanitySlugTag("sanity:author", slug)]),
+  });
   return mapSanityAuthor(item ?? undefined);
 });
 
-const getLocalTools = cache(async () => {
-  const categorySlugMap = getLocalCategorySlugMap();
-  const items = getAllFilesFrontMatter("ai") as LocalRecord[];
-  return sortByFreshness(items.map((item) => mapLocalToolSummary(item, categorySlugMap)));
-});
-
-const getLocalTool = cache(async (slug: string) => {
-  const categorySlugMap = getLocalCategorySlugMap();
-  const file = getFileBySlug("ai", slug);
-
-  if (!file) {
-    return null;
-  }
-
-  const frontmatter = file.frontmatter as Record<string, unknown>;
-  const summary = mapLocalToolSummary(
-    {
-      ...(frontmatter as LocalRecord),
-      slug,
-    },
-    categorySlugMap,
-  );
-
-  return {
-    ...summary,
-    body: {
-      kind: "mdx",
-      source: file.content,
-    } satisfies RichBody,
-    pros: asStringArray(frontmatter.pros),
-    cons: asStringArray(frontmatter.cons),
-    faqs: asFaqArray(frontmatter.faqs),
-    screenshots: [],
-  } satisfies ToolEntry;
-});
-
-const getLocalGuides = cache(async () => {
-  const categorySlugMap = getLocalCategorySlugMap();
-  const items = getAllFilesFrontMatter("rehber") as LocalRecord[];
-  return sortByFreshness(items.map((item) => mapLocalGuideSummary(item, categorySlugMap)));
-});
-
-const getLocalGuide = cache(async (slug: string) => {
-  const categorySlugMap = getLocalCategorySlugMap();
-  const file = getFileBySlug("rehber", slug);
-
-  if (!file) {
-    return null;
-  }
-
-  const frontmatter = file.frontmatter as Record<string, unknown>;
-  const summary = mapLocalGuideSummary(
-    {
-      ...(frontmatter as LocalRecord),
-      slug,
-    },
-    categorySlugMap,
-  );
-
-  return {
-    ...summary,
-    body: {
-      kind: "mdx",
-      source: file.content,
-    } satisfies RichBody,
-    tools: asStringArray(frontmatter.tools),
-    faqs: asFaqArray(frontmatter.faqs),
-  } satisfies GuideEntry;
-});
-
-const getLocalCategories = cache(async () => {
-  const items = getAllFilesFrontMatter("kategori") as LocalRecord[];
-  return items.map(mapLocalCategorySummary).sort((left, right) => left.name.localeCompare(right.name, "tr"));
-});
-
-const getLocalCategory = cache(async (slug: string) => {
-  const file = getFileBySlug("kategori", slug);
-
-  if (!file) {
-    return null;
-  }
-
-  return {
-    ...mapLocalCategorySummary({
-      ...(file.frontmatter as LocalRecord),
-      slug,
-    }),
-    body: {
-      kind: "mdx",
-      source: file.content,
-    } satisfies RichBody,
-  } satisfies CategoryEntry;
-});
-
-const getLocalAuthorsCached = cache(async () => buildLocalAuthors());
-
-const getLocalAuthor = cache(async (slug: string) => {
-  return buildLocalAuthors().find((author) => author.slug === slug) ?? null;
-});
-
 export const getAllTools = cache(async () => {
-  if (!isSanityConfigured) {
-    return getLocalTools();
-  }
-
-  const [sanityTools, localTools] = await Promise.all([getSanityTools(), getLocalTools()]);
-  return sortByFreshness(mergeBySlug(sanityTools, localTools));
+  requireSanityContent();
+  return getSanityTools();
 });
 
 export const getToolBySlug = cache(async (slug: string) => {
-  if (!isSanityConfigured) {
-    return getLocalTool(slug);
-  }
-
-  const sanityTool = await getSanityTool(slug);
-  return sanityTool ?? getLocalTool(slug);
+  requireSanityContent();
+  return getSanityTool(slug);
 });
 
 export const getAllGuides = cache(async () => {
-  if (!isSanityConfigured) {
-    return getLocalGuides();
-  }
-
-  const [sanityGuides, localGuides] = await Promise.all([getSanityGuides(), getLocalGuides()]);
-  return sortByFreshness(mergeBySlug(sanityGuides, localGuides));
+  requireSanityContent();
+  return getSanityGuides();
 });
 
 export const getGuideBySlug = cache(async (slug: string) => {
-  if (!isSanityConfigured) {
-    return getLocalGuide(slug);
+  requireSanityContent();
+  return getSanityGuide(slug);
+});
+
+export const getGuideByToolSlug = cache(async (toolSlug: string) => {
+  const guides = await getAllGuides();
+  const directMatch = guides.find((guide) =>
+    guide.relatedToolSlugs?.includes(toolSlug),
+  );
+
+  if (directMatch) {
+    return directMatch;
   }
 
-  const sanityGuide = await getSanityGuide(slug);
-  return sanityGuide ?? getLocalGuide(slug);
+  const fallbackSlug = `${toolSlug}-nasil-kullanilir`;
+  return guides.find((guide) => guide.slug === fallbackSlug) ?? null;
 });
 
 export const getAllCategories = cache(async () => {
-  if (!isSanityConfigured) {
-    return getLocalCategories();
-  }
-
-  const [sanityCategories, localCategories] = await Promise.all([
-    getSanityCategories(),
-    getLocalCategories(),
-  ]);
-
-  return mergeBySlug(sanityCategories, localCategories).sort((left, right) =>
-    left.name.localeCompare(right.name, "tr"),
-  );
+  requireSanityContent();
+  return getSanityCategories();
 });
 
 export const getCategoryBySlug = cache(async (slug: string) => {
-  if (!isSanityConfigured) {
-    return getLocalCategory(slug);
-  }
-
-  const sanityCategory = await getSanityCategory(slug);
-  return sanityCategory ?? getLocalCategory(slug);
+  requireSanityContent();
+  return getSanityCategory(slug);
 });
 
 export const getAllAuthors = cache(async () => {
-  if (!isSanityConfigured) {
-    return getLocalAuthorsCached();
-  }
-
-  const [sanityAuthors, localAuthors] = await Promise.all([
-    getSanityAuthors(),
-    getLocalAuthorsCached(),
-  ]);
-
-  return mergeBySlug(sanityAuthors, localAuthors);
+  requireSanityContent();
+  return getSanityAuthors();
 });
 
 export const getAuthorBySlug = cache(async (slug: string) => {
-  if (!isSanityConfigured) {
-    return getLocalAuthor(slug);
-  }
-
-  const sanityAuthor = await getSanityAuthor(slug);
-  return sanityAuthor ?? getLocalAuthor(slug);
+  requireSanityContent();
+  return getSanityAuthor(slug);
 });
 
 export const getToolsByCategorySlug = cache(async (categorySlug: string) => {
@@ -1230,8 +1172,12 @@ export const getToolsByCategorySlug = cache(async (categorySlug: string) => {
   });
 });
 
-export const getAllPages = cache(async () => (isSanityConfigured ? getSanityPages() : []));
+export const getAllPages = cache(async () => {
+  requireSanityContent();
+  return getSanityPages();
+});
 
-export const getPageBySlug = cache(async (slug: string) =>
-  isSanityConfigured ? getSanityPage(slug) : null,
-);
+export const getPageBySlug = cache(async (slug: string) => {
+  requireSanityContent();
+  return getSanityPage(slug);
+});

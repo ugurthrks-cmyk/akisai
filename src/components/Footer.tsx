@@ -8,111 +8,135 @@ type FooterProps = {
 };
 
 export default function Footer({
-  siteName = "Akış",
-  description = "Türkiye’nin bağımsız ve tarafsız yapay zekâ araştırma kütüphanesi.",
+  siteName = "AkışAI",
+  description = "Türkiye için yapay zeka araçları, incelemeleri ve nasıl kullanılır rehberleri.",
   socialProfiles = [],
 }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const formattedProfiles = socialProfiles.map((profile) => {
+    try {
+      const url = new URL(profile);
+      return {
+        href: profile,
+        label: url.hostname.replace(/^www\./, ""),
+      };
+    } catch {
+      return {
+        href: profile,
+        label: profile,
+      };
+    }
+  });
 
   return (
     <footer className="site-footer">
       <div className="footer-container">
         <div className="footer-brand">
           <Link href="/" className="footer-logo">
-            <span className="brand-text">{siteName}</span>
-            <span className="brand-dot">.</span>
+            <span className="footer-brand-lockup">
+              <span className="brand-text">{siteName}</span>
+              <span className="brand-dot">.</span>
+            </span>
           </Link>
           <p className="footer-vision">{description}</p>
-          {socialProfiles.length > 0 ? (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem", marginTop: "1rem" }}>
-              {socialProfiles.map((profile) => (
+
+          {formattedProfiles.length > 0 ? (
+            <div className="footer-socials">
+              {formattedProfiles.map((profile) => (
                 <a
-                  key={profile}
-                  href={profile}
+                  key={profile.href}
+                  href={profile.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    padding: "0.35rem 0.7rem",
-                    borderRadius: "999px",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    color: "var(--text-muted)",
-                    textDecoration: "none",
-                    fontSize: "0.82rem",
-                  }}
+                  className="footer-social-chip"
                 >
-                  {profile}
+                  {profile.label}
                 </a>
               ))}
             </div>
           ) : null}
         </div>
 
-        <div className="footer-links-grid">
+        <nav className="footer-links-grid" aria-label="Alt gezinme">
           <div className="footer-column">
-            <h3>Popüler kategoriler</h3>
+            <h3>Kategoriler</h3>
             <ul>
               <li>
-                <Link href="/kategori/video-ai">Video yapay zekâ araçları</Link>
+                <Link href="/kategori/video-duzenleme">Video Düzenleme</Link>
               </li>
               <li>
-                <Link href="/kategori/otomasyon">Otomasyon sistemleri</Link>
+                <Link href="/kategori/video-olusturma">Video Oluşturma</Link>
               </li>
               <li>
-                <Link href="/kategori">Tüm kategoriler</Link>
+                <Link href="/kategori/is-akisi-otomasyonu">İş Akışı Otomasyonu</Link>
               </li>
               <li>
-                <Link href="/ai">Tüm yapay zekâ araçları</Link>
+                <Link href="/kategori/gorsel-olusturma">Görsel Oluşturma</Link>
+              </li>
+              <li>
+                <Link href="/kategori/ses-olusturma">Ses Oluşturma</Link>
+              </li>
+              <li>
+                <Link href="/kategori/logo-tasarimi">Logo Tasarımı</Link>
               </li>
             </ul>
           </div>
 
           <div className="footer-column">
-            <h3>Akademi ve rehberler</h3>
+            <h3>Nasıl Kullanılır</h3>
             <ul>
               <li>
-                <Link href="/rehber/capcut-nasil-kullanilir">CapCut PC rehberi</Link>
+                <Link href="/rehber/capcut-nasil-kullanilir">CapCut Nasıl Kullanılır</Link>
               </li>
               <li>
-                <Link href="/rehber/zapier-nasil-kullanilir">Zapier sosyal otomasyonu</Link>
+                <Link href="/rehber/zapier-nasil-kullanilir">Zapier Nasıl Kullanılır</Link>
               </li>
               <li>
-                <Link href="/rehber">Tüm eğitim rehberleri</Link>
+                <Link href="/rehber/canva-nasil-kullanilir">Canva Nasıl Kullanılır</Link>
+              </li>
+              <li>
+                <Link href="/rehber">Tüm Rehberler</Link>
               </li>
             </ul>
           </div>
 
           <div className="footer-column">
-            <h3>Kurumsal</h3>
+            <h3>Güven ve Kurumsal</h3>
             <ul>
               <li>
-                <Link href="/hakkimizda">Hakkımızda ve ekibimiz</Link>
+                <Link href="/hakkimizda">Hakkımızda ve Ekibimiz</Link>
               </li>
               <li>
-                <Link href="/yazar">Yazar profilleri</Link>
+                <Link href="/yazar">Yazar Profilleri</Link>
               </li>
               <li>
-                <Link href="/yayin-ilkeleri">Yayın ve test ilkeleri</Link>
+                <Link href="/yayin-ilkeleri">Yayın ve Test İlkeleri</Link>
               </li>
               <li>
-                <Link href="/iletisim">Bize ulaşın</Link>
+                <Link href="/iletisim">Bize Ulaşın</Link>
               </li>
               <li>
-                <Link href="/gizlilik">Gizlilik politikası</Link>
+                <Link href="/gizlilik">Gizlilik Politikası</Link>
               </li>
               <li>
-                <Link href="/kullanim-kosullari">Kullanım koşulları</Link>
+                <Link href="/kullanim-kosullari">Kullanım Koşulları</Link>
               </li>
               <li>
-                <Link href="/cerez-politikasi">Çerez politikası</Link>
+                <Link href="/cerez-politikasi">Çerez Politikası</Link>
               </li>
             </ul>
           </div>
-        </div>
+        </nav>
       </div>
 
       <div className="footer-bottom">
         <div className="footer-bottom-container">
-          <p>&copy; {currentYear} {siteName}. Tüm hakları ve içerik telifleri saklıdır.</p>
+          <p>
+            &copy; {currentYear} {siteName}. Tüm hakları ve içerik telifleri saklıdır.
+          </p>
+          <p className="footer-bottom-note">
+            Editoryal içerikler, araç değişimleri ve kullanım sinyalleri için düzenli olarak güncellenir.
+          </p>
         </div>
       </div>
     </footer>

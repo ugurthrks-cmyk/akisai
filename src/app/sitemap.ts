@@ -3,6 +3,31 @@ import { getAllAuthors, getAllCategories, getAllGuides, getAllPages, getAllTools
 import { getManagedPagePath } from "@/lib/managed-pages";
 import { getSiteSettings } from "@/lib/site-settings";
 
+function toDate(value?: string | Date | null) {
+  if (!value) {
+    return null;
+  }
+
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function getLatestDate(values: Array<string | Date | null | undefined>) {
+  return values.reduce<Date | null>((latest, value) => {
+    const candidate = toDate(value);
+
+    if (!candidate) {
+      return latest;
+    }
+
+    if (!latest || candidate.getTime() > latest.getTime()) {
+      return candidate;
+    }
+
+    return latest;
+  }, null);
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [settings, authors, tools, categories, guides, pages] = await Promise.all([
     getSiteSettings(),
@@ -14,52 +39,87 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const baseUrl = settings.url;
-  const now = new Date();
+  const toolHubLastModified = getLatestDate(
+    tools.map((tool) => tool.dateModified || tool.updatedAt || tool.datePublished || tool.date),
+  );
+  const guideHubLastModified = getLatestDate(
+    guides.map((guide) => guide.dateModified || guide.updatedAt || guide.datePublished || guide.date),
+  );
+  const categoryHubLastModified = getLatestDate(categories.map((category) => category.updatedAt));
+  const authorHubLastModified = getLatestDate(authors.map((author) => author.profileUpdatedAt || author.profileCreatedAt));
+  const pageHubLastModified = getLatestDate(pages.map((page) => page.updatedAt));
+  const siteLastModified =
+    getLatestDate([toolHubLastModified, guideHubLastModified, categoryHubLastModified, authorHubLastModified, pageHubLastModified]) ??
+    new Date();
 
   const staticRoutes = [
-    "",
-    "/ai",
-    "/rehber",
-    "/kategori",
-    "/yazar",
-    "/sayfa",
-    "/hakkimizda",
-    "/yayin-ilkeleri",
-    "/iletisim",
-    "/gizlilik",
-    "/kullanim-kosullari",
-    "/cerez-politikasi",
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: now,
-    changeFrequency: route === "" ? ("daily" as const) : ("weekly" as const),
-    priority: route === "" ? 1.0 : 0.8,
-  }));
+    {
+      url: `${baseUrl}`,
+      lastModified: siteLastModified,
+      changeFrequency: "daily" as const,
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/incelemeler`,
+      lastModified: toolHubLastModified ?? siteLastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/rehber`,
+      lastModified: guideHubLastModified ?? siteLastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/kategori`,
+      lastModified: categoryHubLastModified ?? siteLastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/yazar`,
+      lastModified: authorHubLastModified ?? siteLastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    },
+  ];
 
   const authorRoutes = authors.map((author) => ({
     url: `${baseUrl}/yazar/${author.slug}`,
-    lastModified: author.profileUpdatedAt ? new Date(author.profileUpdatedAt) : now,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
+    lastModified: toDate(author.profileUpdatedAt || author.profileCreatedAt) ?? siteLastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
   }));
 
   const toolRoutes = tools.map((tool) => ({
-    url: `${baseUrl}/ai/${tool.slug}`,
-    lastModified: new Date(tool.dateModified || tool.datePublished || now),
+    url: `${baseUrl}/incelemeler/${tool.slug}`,
+    lastModified: toDate(tool.dateModified || tool.updatedAt || tool.datePublished || tool.date) ?? siteLastModified,
     changeFrequency: "weekly" as const,
     priority: 0.9,
   }));
 
-  const categoryRoutes = categories.map((category) => ({
-    url: `${baseUrl}/kategori/${category.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.85,
-  }));
+  const toolCountsByCategorySlug = new Map<string, number>();
+  for (const tool of tools) {
+    if (!tool.categorySlug) {
+      continue;
+    }
+
+    toolCountsByCategorySlug.set(tool.categorySlug, (toolCountsByCategorySlug.get(tool.categorySlug) ?? 0) + 1);
+  }
+
+  const categoryRoutes = categories
+    .filter((category) => !category.noIndex && (toolCountsByCategorySlug.get(category.slug) ?? 0) > 0)
+    .map((category) => ({
+      url: `${baseUrl}/kategori/${category.slug}`,
+      lastModified: toDate(category.updatedAt) ?? siteLastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    }));
 
   const guideRoutes = guides.map((guide) => ({
     url: `${baseUrl}/rehber/${guide.slug}`,
-    lastModified: new Date(guide.dateModified || guide.datePublished || now),
+    lastModified: toDate(guide.dateModified || guide.updatedAt || guide.datePublished || guide.date) ?? siteLastModified,
     changeFrequency: "weekly" as const,
     priority: 0.9,
   }));
@@ -68,7 +128,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((page) => !page.noIndex)
     .map((page) => ({
       url: `${baseUrl}${getManagedPagePath(page.slug)}`,
-      lastModified: now,
+      lastModified: toDate(page.updatedAt) ?? siteLastModified,
       changeFrequency: "monthly" as const,
       priority: 0.65,
     }));

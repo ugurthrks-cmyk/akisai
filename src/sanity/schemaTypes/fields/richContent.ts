@@ -1,12 +1,12 @@
 import { defineArrayMember, defineField } from "sanity";
 
-export function richContentField(name = "body", title = "Icerik") {
+export function richContentField(name = "body", title = "İçerik") {
   return defineField({
     name,
     title,
     type: "array",
     description:
-      "Yazinin gorunen govdesi. H2/H3, kalin, link, liste ve gorsel bloklarini burada yonetin.",
+      "Yazının görünen gövdesi. H2/H3, kalın, link, liste ve görsel bloklarını burada yönetin.",
     of: [
       defineArrayMember({
         type: "block",
@@ -18,7 +18,7 @@ export function richContentField(name = "body", title = "Icerik") {
         ],
         lists: [
           { title: "Madde imi", value: "bullet" },
-          { title: "Numarali liste", value: "number" },
+          { title: "Numaralı liste", value: "number" },
         ],
         marks: {
           decorators: [
@@ -40,7 +40,7 @@ export function richContentField(name = "body", title = "Icerik") {
                 }),
                 defineField({
                   name: "openInNewTab",
-                  title: "Yeni sekmede ac",
+                  title: "Yeni sekmede aç",
                   type: "boolean",
                   initialValue: true,
                 }),
@@ -59,11 +59,11 @@ export function richContentField(name = "body", title = "Icerik") {
             name: "alt",
             title: "Alt metni",
             type: "string",
-            validation: (rule) => rule.required().error("Gorsel alt metni zorunludur."),
+            validation: (rule) => rule.required().error("Görsel alt metni zorunludur."),
           }),
           defineField({
             name: "caption",
-            title: "Aciklama",
+            title: "Açıklama",
             type: "string",
           }),
         ],

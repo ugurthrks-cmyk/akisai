@@ -45,7 +45,7 @@ loadEnvFile(".env");
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
-const writeToken = process.env.SANITY_API_WRITE_TOKEN;
+const writeToken = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_READ_TOKEN;
 
 const client =
   !isDryRun && projectId && dataset && writeToken
@@ -57,10 +57,11 @@ const client =
         useCdn: false,
       })
     : null;
+const rawClient = client ? client.withConfig({ perspective: "raw" }) : null;
 
 if (!isDryRun && (!projectId || !dataset || !writeToken)) {
   throw new Error(
-    "Eksik Sanity ayari var. NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET ve SANITY_API_WRITE_TOKEN gerekli.",
+    "Eksik Sanity ayari var. NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET ve mutasyon yetkili SANITY_API_WRITE_TOKEN veya SANITY_API_READ_TOKEN gerekli.",
   );
 }
 
@@ -164,6 +165,69 @@ function parsePriceAmount(frontmatter) {
   return undefined;
 }
 
+function parseReviewRating(frontmatter) {
+  if (typeof frontmatter.reviewRating === "number") {
+    return frontmatter.reviewRating;
+  }
+
+  if (typeof frontmatter.reviewRating === "string") {
+    const parsed = Number(frontmatter.reviewRating);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  return undefined;
+}
+
+function parseRatingValue(value) {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  return undefined;
+}
+
+function parseSources(frontmatter) {
+  if (!Array.isArray(frontmatter.sources)) {
+    return [];
+  }
+
+  const items = [];
+
+  for (const entry of frontmatter.sources) {
+    if (typeof entry === "string") {
+      items.push({ _type: "sourceItem", label: entry, url: entry });
+      continue;
+    }
+
+    if (!entry || typeof entry !== "object") {
+      continue;
+    }
+
+    const record = entry;
+    const label = record.label || record.name || record.title;
+    const url = record.url || record.link;
+
+    if (!label || !url) {
+      continue;
+    }
+
+    items.push({
+      _type: "sourceItem",
+      label: String(label),
+      url: String(url),
+      publisher: record.publisher ? String(record.publisher) : undefined,
+      note: record.note ? String(record.note) : undefined,
+    });
+  }
+
+  return items;
+}
+
 function readMdxCollection(relativeDir) {
   const directory = path.join(rootDir, relativeDir);
   const files = fs
@@ -205,6 +269,11 @@ async function uploadImage(relativePath, alt) {
 const categoryEntries = readMdxCollection("src/content/kategori");
 const toolEntries = readMdxCollection("src/content/ai");
 const guideEntries = readMdxCollection("src/content/rehber");
+const retiredCategoryReplacements = new Map([
+  ["category.video-ai", "category.video-duzenleme"],
+  ["category.otomasyon", "category.is-akisi-otomasyonu"],
+  ["category.video-duzenleme-ve-kurgu", "category.video-duzenleme"],
+]);
 
 const categoryIdByName = new Map(
   categoryEntries.map((entry) => [String(entry.frontmatter.name), `category.${entry.slug}`]),
@@ -215,6 +284,8 @@ const categoryDocs = categoryEntries.map((entry) => ({
   _type: "category",
   name: String(entry.frontmatter.name),
   slug: toSanitySlug(entry.slug),
+  seoTitle: entry.frontmatter.seoTitle ? String(entry.frontmatter.seoTitle) : undefined,
+  h1: entry.frontmatter.h1 ? String(entry.frontmatter.h1) : undefined,
   description: String(entry.frontmatter.description),
   metaDescription: String(entry.frontmatter.metaDescription || entry.frontmatter.description),
   heroIntro: entry.frontmatter.heroIntro ? String(entry.frontmatter.heroIntro) : undefined,
@@ -242,11 +313,18 @@ const toolDocs = toolEntries.map((entry) => {
     pricing: frontmatter.pricing ? String(frontmatter.pricing) : undefined,
     hasFreeTier: Boolean(frontmatter.hasFreeTier),
     priceAmount: parsePriceAmount(frontmatter),
-    priceCurrency: frontmatter.priceCurrency ? String(frontmatter.priceCurrency) : undefined,
+    priceCurrency: frontmatter.priceCurrency ? String(frontmatter.priceCurrency) : "TRY",
     isTRSupported: Boolean(frontmatter.isTRSupported),
     websiteUrl: frontmatter.websiteUrl ? String(frontmatter.websiteUrl) : undefined,
     pros: Array.isArray(frontmatter.pros) ? frontmatter.pros.map(String) : [],
     cons: Array.isArray(frontmatter.cons) ? frontmatter.cons.map(String) : [],
+    kullanimKolayligi: parseRatingValue(frontmatter.kullanimKolayligi),
+    turkiyeUyumu: parseRatingValue(frontmatter.turkiyeUyumu),
+    fiyatDeger: parseRatingValue(frontmatter.fiyatDeger),
+    ozellikler: parseRatingValue(frontmatter.ozellikler),
+    destek: parseRatingValue(frontmatter.destek),
+    reviewRating: parseReviewRating(frontmatter),
+    sources: parseSources(frontmatter),
     faqs: Array.isArray(frontmatter.faqs)
       ? frontmatter.faqs.map((faq) => ({
           _type: "faqItem",
@@ -303,6 +381,7 @@ const guideDocs = guideEntries.map((entry) => {
     relatedTools,
     difficulty: frontmatter.difficulty ? String(frontmatter.difficulty) : undefined,
     estimatedTimeMinutes: parseMinutes(frontmatter.time),
+    sources: parseSources(frontmatter),
     faqs: Array.isArray(frontmatter.faqs)
       ? frontmatter.faqs.map((faq) => ({
           _type: "faqItem",
@@ -365,7 +444,30 @@ for (const document of documents) {
   transaction = transaction.createOrReplace(document);
 }
 
+for (const [retiredId, replacementId] of retiredCategoryReplacements.entries()) {
+  const referencingDocuments = await rawClient.fetch(
+    `*[_type in ["tool", "guide"] && references($retiredId)]{_id}`,
+    { retiredId },
+  );
+
+  for (const document of referencingDocuments) {
+    transaction = transaction.patch(document._id, {
+      set: {
+        category: toReference(replacementId),
+      },
+    });
+  }
+}
+
 await transaction.commit();
+
+let cleanupTransaction = client.transaction();
+
+for (const retiredId of retiredCategoryReplacements.keys()) {
+  cleanupTransaction = cleanupTransaction.delete(retiredId);
+}
+
+await cleanupTransaction.commit();
 
 console.log(
   JSON.stringify(

@@ -1,26 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PortableTextContent from "@/components/PortableTextContent";
+import { toIsoDate } from "@/lib/content";
 import { getPageBySlug } from "@/lib/content-source";
 import { buildSiteMetadata } from "@/lib/metadata";
 
-const managedRootPageSlugList = [
-  "hakkimizda",
-  "iletisim",
-  "gizlilik",
-  "kullanim-kosullari",
-  "cerez-politikasi",
-  "yayin-ilkeleri",
-] as const;
-
-export const managedRootPageSlugs = new Set<string>(managedRootPageSlugList);
-
-export function isManagedRootPageSlug(slug: string) {
-  return managedRootPageSlugs.has(slug);
-}
-
 export function getManagedPagePath(slug: string) {
-  return isManagedRootPageSlug(slug) ? `/${slug}` : `/sayfa/${slug}`;
+  return `/${slug}`;
 }
 
 export function getPageTypeLabel(pageType?: string) {
@@ -49,6 +35,7 @@ export async function getManagedPageMetadata(slug: string): Promise<Metadata> {
     path: getManagedPagePath(slug),
     canonicalUrl: page.canonicalUrl,
     noIndex: page.noIndex,
+    modifiedTime: toIsoDate(page.updatedAt),
   });
 }
 

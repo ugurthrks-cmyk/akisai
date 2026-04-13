@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SearchBar from "@/components/SearchBar";
-import { getAllCategories, getAllGuides, getAllTools } from "@/lib/content-source";
+import { coreCategoryTaxonomy } from "@/lib/category-taxonomy";
+import { getAllGuides, getAllTools } from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
 import { getSiteSettings } from "@/lib/site-settings";
+
+export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -21,15 +24,17 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
+function getFreshnessValue(dateModified?: string, datePublished?: string, date?: string) {
+  const value = dateModified || datePublished || date;
+  return value ? new Date(value).getTime() : 0;
+}
+
 export default async function HomePage() {
-  const [settings, categories, tools, guides] = await Promise.all([
+  const [settings, tools, guides] = await Promise.all([
     getSiteSettings(),
-    getAllCategories(),
     getAllTools(),
     getAllGuides(),
   ]);
-
-  const heroVisionText = `${settings.name}, Türkiye’nin en kapsamlı yapay zekâ araçları ve iş akışı optimizasyonu kütüphanesidir. Video üretimi, otomasyon, e-ticaret ve operasyonel verimlilik alanlarında dünyanın en güçlü çözümlerini bağımsız biçimde inceliyor ve doğrudan uygulanabilir rehberlerle birlikte sunuyoruz.`;
 
   const featureReadyGuides = guides.filter(
     (guide) =>
@@ -40,9 +45,34 @@ export default async function HomePage() {
       (guide.estimatedTimeMinutes || guide.difficulty),
   );
 
-  const featuredCategories = categories.slice(0, 3);
-  const featuredTools = tools.slice(0, 3);
+  const latestTools = [...tools]
+    .sort(
+      (left, right) =>
+        getFreshnessValue(right.dateModified, right.datePublished, right.date) -
+        getFreshnessValue(left.dateModified, left.datePublished, left.date),
+    )
+    .slice(0, 3);
   const featuredGuides = (featureReadyGuides.length > 0 ? featureReadyGuides : guides).slice(0, 2);
+
+  const trustSignals = [
+    {
+      title: "Test Edilmiş İncelemeler",
+      description: "Araç sayfaları kullanım senaryosu, karar sinyalleri ve gerçek sınırlamaları birlikte açıklar.",
+    },
+    {
+      title: "Adım Adım Rehberler",
+      description: "Rehberler, kullanıcıların en sık aradığı nasıl kullanılır niyetine doğrudan yanıt verir.",
+    },
+    {
+      title: "Şeffaf Editoryal Yapı",
+      description: "Yazarlar, yayın ilkeleri ve kategori mantığı açık şekilde görünür.",
+    },
+  ];
+
+  const heroTopics = coreCategoryTaxonomy.map((topic) => ({
+    href: `/kategori/${topic.slug}`,
+    label: topic.name,
+  }));
 
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -51,6 +81,8 @@ export default async function HomePage() {
     url: settings.url,
     logo: `${settings.url}${settings.logoPath}`,
     description: settings.organizationDescription,
+    inLanguage: "tr-TR",
+    sameAs: settings.socialProfiles,
   };
 
   const webSiteSchema = {
@@ -58,111 +90,145 @@ export default async function HomePage() {
     "@type": "WebSite",
     name: settings.name,
     url: settings.url,
+    inLanguage: "tr-TR",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${settings.url}/arama?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
 
       <section className="hero-wrapper">
-        <div className="hero-content">
-          <h1>Türkiye’nin Yapay Zekâ Uygulama Rehberi</h1>
-          <p className="vision-paragraph">{heroVisionText}</p>
-          <SearchBar />
+        <div className="container hero-stack">
+          <div className="hero-content hero-content-compact">
+            <span className="hero-kicker">Türkiye İçin Yapay Zeka Araçları ve Rehberleri</span>
+            <h1>Yapay Zeka Araçları, İncelemeleri ve Nasıl Kullanılır Rehberleri</h1>
+            <p className="vision-paragraph">
+              AkışAI; Türkiye için yapay zeka araç incelemelerini, kullanım alanı merkezlerini ve adım adım kullanım
+              rehberlerini tek bir editoryal karar katmanında birleştirir.
+            </p>
+            <SearchBar />
+            <div className="hero-topic-strip" aria-label="Öne çıkan kullanım alanları">
+              {heroTopics.map((topic) => (
+                <Link key={topic.href} href={topic.href} className="hero-topic-chip">
+                  {topic.label}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       <div className="trust-banner-wrapper">
-        <aside className="trust-banner">
-          <div className="trust-content">
-            <div className="trust-item">
-              <i>✓</i> 8 aşamalı bağımsız test
-            </div>
-            <div className="trust-item">
-              <i>✓</i> Uzman editoryal kadro
-            </div>
-            <div className="trust-item">
-              <i>✓</i> Sponsorluktan bağımsız değerlendirme
-            </div>
-            <div className="trust-item">
-              <i>✓</i> Düzenli güncelleme ve doğrulama
-            </div>
+        <aside className="trust-banner container">
+          <div className="trust-content trust-content-compact">
+            {trustSignals.map((signal) => (
+              <div className="trust-item" key={signal.title}>
+                <strong>{signal.title}</strong>
+                <span>{signal.description}</span>
+              </div>
+            ))}
           </div>
         </aside>
       </div>
 
       <div className="page-sections">
-        <section>
-          <h2>Kategoriler ve çözüm merkezleri</h2>
-          <div className="grid-3">
-            {featuredCategories.map((category) => (
-              <Link
-                href={`/kategori/${category.slug}`}
-                key={category.slug}
-                className="glass-card hub-card"
-                style={{ textDecoration: "none", color: "inherit", display: "block" }}
-              >
-                <h3>{category.name}</h3>
-                <p>{category.description}</p>
-              </Link>
-            ))}
+        <section className="section-shell section-shell-tools container">
+          <div className="section-header">
+            <div>
+              <span className="section-kicker">Araç İncelemeleri</span>
+              <h2>Yapay Zeka İncelemeleri</h2>
+              <p className="section-description">
+                Her araç sayfası yalnızca ne yaptığını değil, kim için mantıklı olduğunu, nerede sınırlı kaldığını ve
+                ücret tarafında ne beklemeniz gerektiğini anlatır.
+              </p>
+            </div>
           </div>
-        </section>
 
-        <section>
-          <h2>Öne çıkan araçlar</h2>
-          <div className="grid-3">
-            {featuredTools.map((tool) => (
-              <div className="glass-card tool-card" key={tool.slug}>
-                <div className="tool-header">
-                  <h3>{tool.name}</h3>
-                </div>
-                <p className="tool-desc">{tool.description}</p>
-                <ul className="tool-features">
-                  {tool.category ? <li>{tool.category} kategorisinde konumlanır</li> : null}
-                  {tool.hasFreeTier ? <li>Ücretsiz sürüm veya başlangıç planı bulunur</li> : null}
-                  {tool.isTRSupported ? <li>Türkçe kullanım desteği bulunur</li> : null}
-                </ul>
-                <Link href={`/ai/${tool.slug}`} className="primary-btn">
-                  İncelemeyi oku
+          <div className="grid-3 home-grid">
+            {latestTools.length > 0 ? (
+              latestTools.map((tool) => (
+                <Link href={`/incelemeler/${tool.slug}`} className="glass-card tool-card tool-card-link" key={tool.slug}>
+                  <div className="tool-header">
+                    <div>
+                      <div className="card-eyebrow">Araç İncelemesi</div>
+                      <h3>{tool.name}</h3>
+                    </div>
+                  </div>
+                  <p className="tool-desc">{tool.description}</p>
+                  <div className="tool-pills">
+                    {tool.category ? <span className="tool-pill">{tool.category}</span> : null}
+                    {tool.hasFreeTier ? <span className="tool-pill">Ücretsiz Başlangıç</span> : null}
+                    {tool.isTRSupported ? <span className="tool-pill">Türkçe Destekli</span> : null}
+                  </div>
+                  <span className="tool-card-cta">İncelemeyi Aç</span>
+                </Link>
+              ))
+            ) : (
+              <div className="glass-card empty-state-card">
+                <h3>İnceleme Arşivi Güncelleniyor</h3>
+                <p>
+                  Yeni araç incelemeleri yayına girdikçe bu alan dolacak. Şimdilik kullanım rehberlerinden
+                  başlayabilirsiniz.
+                </p>
+                <Link href="/incelemeler" className="secondary-btn">
+                  Tüm İncelemelere Git
                 </Link>
               </div>
-            ))}
+            )}
           </div>
         </section>
 
-        <section>
-          <h2>Popüler iş akışları</h2>
-          <p style={{ maxWidth: "600px", marginTop: "-1rem", marginBottom: "2rem" }}>
-            Araçları birbirine bağlayarak saatler süren manuel işleri saniyelere indirin. Nasıl
-            yapılacağını adım adım öğrenin.
-          </p>
-          <div className="workflow-list">
-            {featuredGuides.map((guide) => (
-              <Link href={`/rehber/${guide.slug}`} key={guide.slug} className="workflow-item">
-                <div className="workflow-info">
-                  <h4>{guide.h1 || guide.title}</h4>
-                  <p className="text-muted">
-                    {guide.category ? `Kategori: ${guide.category}` : "Uygulamalı rehber"}
-                    {guide.time ? ` · Süre: ${guide.time}` : ""}
-                  </p>
-                </div>
-                <span className="workflow-arrow">→</span>
-              </Link>
-            ))}
+        <section className="section-shell section-shell-guides container">
+          <div className="section-header">
+            <div>
+              <span className="section-kicker">Nasıl Kullanılır Rehberleri</span>
+              <h2>Adım Adım Kullanım ve Kurulum İçerikleri</h2>
+              <p className="section-description">
+                Rehberler, tek bir ürün sayfası gibi davranmaz. Aracı nasıl kurmanız gerektiğini ve ilk sonuçları nasıl
+                alacağınızı gerçek kullanım akışına en yakın biçimde gösterir.
+              </p>
+            </div>
           </div>
 
-          <div style={{ marginTop: "2rem", textAlign: "center" }}>
-            <Link href="/rehber" className="secondary-btn">
-              Tüm iş akışlarını keşfet
-            </Link>
+          <div className="guide-grid">
+            {featuredGuides.length > 0 ? (
+              featuredGuides.map((guide) => (
+                <Link href={`/rehber/${guide.slug}`} key={guide.slug} className="glass-card guide-card">
+                  <div className="tool-header">
+                    <div>
+                      <div className="card-eyebrow">Nasıl Kullanılır</div>
+                      <h3>{guide.h1 || guide.title}</h3>
+                    </div>
+                  </div>
+                  <p className="tool-desc">{guide.description}</p>
+                  <div className="tool-pills">
+                    {guide.time ? <span className="tool-pill">{guide.time}</span> : null}
+                    {guide.difficulty ? <span className="tool-pill">{guide.difficulty}</span> : null}
+                  </div>
+                  <span className="guide-card-cta">Rehberi Aç</span>
+                </Link>
+              ))
+            ) : (
+              <div className="glass-card empty-state-card">
+                <h3>Rehberler Hazırlanıyor</h3>
+                <p>
+                  Yeni kullanım rehberleri yayına girdikçe bu alan dolacak. Şimdilik araç incelemelerinden
+                  ilerleyebilirsiniz.
+                </p>
+                <Link href="/rehber" className="secondary-btn">
+                  Tüm Rehberlere Git
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       </div>

@@ -13,7 +13,7 @@ export const sourceItem = defineType({
     }),
     defineField({
       name: "publisher",
-      title: "Yayinlayan",
+      title: "Yayınlayan",
       type: "string",
     }),
     defineField({

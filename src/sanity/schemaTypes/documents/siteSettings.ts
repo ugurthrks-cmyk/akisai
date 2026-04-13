@@ -34,6 +34,19 @@ export const siteSettings = defineType({
       description: "Canli alan adiniz. Ornek: https://akisai.com.tr",
     }),
     defineField({
+      name: "locale",
+      title: "Locale",
+      type: "string",
+      group: "brand",
+      initialValue: "tr_TR",
+      validation: (rule) =>
+        rule
+          .required()
+          .regex(/^[a-z]{2}_[A-Z]{2}$/, { name: "locale" })
+          .warning("Locale degeri tr_TR gibi ulke kodlu olmalidir."),
+      description: "Open Graph locale degeri icin kullanilir. Ornek: tr_TR",
+    }),
+    defineField({
       name: "defaultTitle",
       title: "Varsayilan title",
       type: "string",

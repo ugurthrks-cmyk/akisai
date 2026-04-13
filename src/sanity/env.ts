@@ -4,6 +4,8 @@ export const sanityProjectId =
 export const sanityDataset =
   process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 export const sanityApiVersion = "2026-03-11";
+export const sanityReadToken = process.env.SANITY_API_READ_TOKEN || "";
+export const sanityApiToken = process.env.SANITY_API_TOKEN || "";
 export const isSanityConfigured = Boolean(
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID &&
     process.env.NEXT_PUBLIC_SANITY_DATASET

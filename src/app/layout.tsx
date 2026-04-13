@@ -1,13 +1,27 @@
 import type { Metadata, Viewport } from "next";
+import { Fraunces, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Analytics from "@/components/Analytics";
 import { getSiteSettings } from "@/lib/site-settings";
+
+const sourceSans = Source_Sans_3({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#081120",
+  themeColor: "#f5efe4",
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -58,8 +72,16 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: {
       icon: "/favicon.ico",
       shortcut: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
     },
     manifest: "/manifest.webmanifest",
+    other: {
+      "geo.region": "TR",
+      "geo.placename": "Türkiye",
+    },
   };
 }
 
@@ -69,17 +91,24 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const settings = await getSiteSettings();
+  const htmlLang = settings.locale.replace("_", "-");
 
   return (
-    <html lang="tr">
-      <body>
+    <html lang={htmlLang}>
+      <body className={`${sourceSans.variable} ${fraunces.variable}`}>
+        <a href="#main-content" className="skip-link">
+          İçeriğe geç
+        </a>
         <Header siteName={settings.name} />
-        <main className="container">{children}</main>
+        <main id="main-content" className="site-main" tabIndex={-1}>
+          {children}
+        </main>
         <Footer
           siteName={settings.name}
           description={settings.organizationDescription}
           socialProfiles={settings.socialProfiles}
         />
+        <Analytics />
       </body>
     </html>
   );

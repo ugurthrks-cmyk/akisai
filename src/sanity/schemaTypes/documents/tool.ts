@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { richContentField } from "@/sanity/schemaTypes/fields/richContent";
+import { slugifyTurkish } from "@/sanity/schemaTypes/utils/slugify";
 
 export const tool = defineType({
   name: "tool",
@@ -45,6 +46,7 @@ export const tool = defineType({
       options: {
         source: "name",
         maxLength: 120,
+        slugify: (input) => slugifyTurkish(input),
       },
       validation: (rule) => rule.required(),
     }),
@@ -200,10 +202,18 @@ export const tool = defineType({
     }),
     defineField({
       name: "priceCurrency",
-      title: "Para birimi",
+      title: "Fiyat Para Birimi",
       type: "string",
       group: "commercial",
-      initialValue: "USD",
+      initialValue: "TRY",
+      options: {
+        list: [
+          { title: "TRY", value: "TRY" },
+          { title: "USD", value: "USD" },
+          { title: "EUR", value: "EUR" },
+        ],
+        layout: "radio",
+      },
     }),
     defineField({
       name: "isTRSupported",
@@ -225,6 +235,62 @@ export const tool = defineType({
       type: "array",
       group: "trust",
       of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "kullanimKolayligi",
+      title: "Kullanim kolayligi (1-10)",
+      type: "number",
+      group: "trust",
+      validation: (rule) => rule.min(1).max(10),
+      description: "Aracin arayuz ve baslangic kolayligini puanlayin.",
+    }),
+    defineField({
+      name: "turkiyeUyumu",
+      title: "Turkiye uyumu (1-10)",
+      type: "number",
+      group: "trust",
+      validation: (rule) => rule.min(1).max(10),
+      description: "Turkce destek, yerel fiyatlama ve erisim uyumunu puanlayin.",
+    }),
+    defineField({
+      name: "fiyatDeger",
+      title: "Fiyat / deger (1-10)",
+      type: "number",
+      group: "trust",
+      validation: (rule) => rule.min(1).max(10),
+      description: "Ucret karsiliginda alinabilen degeri puanlayin.",
+    }),
+    defineField({
+      name: "ozellikler",
+      title: "Ozellikler (1-10)",
+      type: "number",
+      group: "trust",
+      validation: (rule) => rule.min(1).max(10),
+      description: "Aracin ozellik seti ve derinligini puanlayin.",
+    }),
+    defineField({
+      name: "destek",
+      title: "Destek ve guvenilirlik (1-10)",
+      type: "number",
+      group: "trust",
+      validation: (rule) => rule.min(1).max(10),
+      description: "Destek kanallari, dokumantasyon ve guvenilirligi puanlayin.",
+    }),
+    defineField({
+      name: "reviewRating",
+      title: "Editor puani (1-10)",
+      type: "number",
+      group: "trust",
+      validation: (rule) => rule.min(1).max(10),
+      description: "Rich result icin kullanilan editor puani. 1 ile 10 arasinda girin.",
+    }),
+    defineField({
+      name: "sources",
+      title: "Kaynaklar",
+      type: "array",
+      group: "trust",
+      of: [{ type: "sourceItem" }],
+      description: "Bu incelemede kullanilan resmi kaynak URL'leri.",
     }),
     defineField({
       name: "faqs",

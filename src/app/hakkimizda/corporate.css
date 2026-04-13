@@ -1,8 +1,7 @@
-/* Shared CSS for all Corporate Trust Pages (About, Editorial, Contact, Privacy) */
 .corporate-page-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 4rem 2rem 6rem;
+  padding: 3rem 0 5rem;
 }
 
 .corporate-header {
@@ -13,149 +12,124 @@
   display: inline-flex;
   align-items: center;
   margin-bottom: 0.9rem;
-  padding: 0.35rem 0.8rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 999px;
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.22);
-  color: #93c5fd;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  background: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  color: var(--accent-glow);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .corporate-header h1 {
-  font-size: 3.5rem;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  color: var(--text-base);
   margin-bottom: 1rem;
 }
 
 .corporate-lead {
-  font-size: 1.3rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 800px;
+  max-width: 44ch;
+  font-size: 1.16rem;
+  line-height: 1.8;
 }
 
 .corporate-content section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
 }
 
 .corporate-content h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #e4e4e7;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   padding-left: 1rem;
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--accent-primary);
+  font-size: 1.55rem;
 }
 
 .corporate-content p {
-  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  color: var(--text-light);
   line-height: 1.8;
-  color: #a1a1aa;
-  margin-bottom: 1.5rem;
 }
 
 .corporate-content strong {
-  color: #ffffff;
-  font-weight: 600;
+  color: var(--text-base);
 }
 
 .corporate-content a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
+  color: var(--accent-glow);
+  font-weight: 700;
 }
 
-.corporate-content a:hover {
-  color: var(--accent-subtle);
-  text-decoration: underline;
-}
-
-/* Specific component styles */
 .corporate-list {
   list-style: none;
   padding: 0;
 }
 
 .corporate-list li {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #a1a1aa;
-  margin-bottom: 1rem;
-  padding-left: 2rem;
   position: relative;
+  margin-bottom: 0.9rem;
+  padding-left: 1.6rem;
+  color: var(--text-light);
+  line-height: 1.7;
 }
 
 .corporate-list li::before {
-  content: "→";
+  content: ">";
   position: absolute;
   left: 0;
-  color: var(--accent);
-  font-weight: bold;
+  color: var(--accent-primary);
+  font-weight: 800;
 }
 
-/* Contact Page Specific */
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
   align-items: start;
 }
 
 .contact-method {
-  background: var(--bg-surface);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
-  border-radius: 12px;
   margin-bottom: 1rem;
+  padding: 1.4rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(19, 35, 47, 0.08);
+  box-shadow: var(--shadow-soft);
 }
 
 .contact-method strong {
   display: block;
-  font-size: 0.9rem;
-  color: #71717a;
   margin-bottom: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .contact-method a {
   display: inline-block;
-  font-size: 1.2rem;
-  color: #ffffff;
+  font-size: 1.05rem;
 }
 
 .contact-form-panel {
-  background: rgba(138, 43, 226, 0.05);
-  border: 1px dashed rgba(138, 43, 226, 0.3);
-  padding: 3rem 2rem;
-  border-radius: 16px;
+  padding: 2.4rem 2rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px dashed rgba(15, 118, 110, 0.22);
   text-align: center;
 }
 
 .form-notice {
-  font-size: 0.9rem !important;
-  color: #71717a !important;
+  font-size: 0.92rem !important;
+  color: var(--text-muted) !important;
   font-style: italic;
 }
 
-/* Privacy Legal Text Specific */
 .legal-content p {
   font-size: 1rem;
 }
 
 @media (max-width: 768px) {
-  .corporate-header h1 {
-    font-size: 2.5rem;
-  }
-  
   .contact-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
   }
 }

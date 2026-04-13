@@ -1,8 +1,10 @@
 import { cache } from "react";
 import { groq } from "next-sanity";
+import { normalizeBaseUrl } from "@/lib/content";
 import { siteConfig } from "@/lib/site";
 import { isSanityConfigured } from "@/sanity/env";
-import { sanityLiveClient } from "@/sanity/lib/live-client";
+import { fetchPublishedSanity } from "@/sanity/lib/fetch";
+import { sanityTags } from "@/sanity/lib/cache-tags";
 
 export type ResolvedSiteSettings = {
   name: string;
@@ -23,6 +25,7 @@ type SanitySiteSettings = {
   siteName?: string;
   shortName?: string;
   siteUrl?: string;
+  locale?: string;
   defaultTitle?: string;
   defaultDescription?: string;
   organizationDescription?: string;
@@ -35,6 +38,7 @@ const siteSettingsQuery = groq`*[_type == "siteSettings" && _id == "siteSettings
   siteName,
   shortName,
   siteUrl,
+  locale,
   defaultTitle,
   defaultDescription,
   organizationDescription,
@@ -55,7 +59,7 @@ function buildFallbackSettings(): ResolvedSiteSettings {
     shortName: siteConfig.shortName,
     defaultTitle: siteConfig.defaultTitle,
     description: siteConfig.description,
-    url: siteConfig.url,
+    url: normalizeBaseUrl(siteConfig.url),
     locale: siteConfig.locale,
     category: siteConfig.category,
     logoPath: siteConfig.logoPath,
@@ -71,11 +75,9 @@ export const getSiteSettings = cache(async (): Promise<ResolvedSiteSettings> => 
     return fallback;
   }
 
-  const settings = await sanityLiveClient.fetch<SanitySiteSettings | null>(
-    siteSettingsQuery,
-    {},
-    { cache: "no-store" },
-  );
+  const settings = await fetchPublishedSanity<SanitySiteSettings | null>(siteSettingsQuery, {}, {
+    tags: [sanityTags.siteSettings],
+  });
 
   if (!settings) {
     return fallback;
@@ -87,7 +89,8 @@ export const getSiteSettings = cache(async (): Promise<ResolvedSiteSettings> => 
     shortName: settings.shortName || settings.siteName || fallback.shortName,
     defaultTitle: settings.defaultTitle || fallback.defaultTitle,
     description: settings.defaultDescription || fallback.description,
-    url: settings.siteUrl || fallback.url,
+    url: settings.siteUrl ? normalizeBaseUrl(settings.siteUrl) : fallback.url,
+    locale: settings.locale || fallback.locale,
     organizationDescription:
       settings.organizationDescription || settings.defaultDescription || fallback.description,
     socialProfiles: asStringArray(settings.socialProfiles),

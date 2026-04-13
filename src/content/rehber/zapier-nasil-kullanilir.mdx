@@ -1,80 +1,217 @@
 ---
-title: "Zapier Nasıl Kullanılır? Sosyal Medya Otomasyonu Rehberi (2026)"
-h1: "Zapier ile Sosyal Medya Otomasyonu Nasıl Kurulur?"
-name: "Zapier Sosyal Medya Otomasyonu"
-description: "WordPress veya Ghost'ta yayımlanan içerikleri, Zapier üzerinden LinkedIn ve X için yeniden biçimlendirip otomatik dağıtmanın temel kurulumunu anlatıyoruz."
-heroIntro: "Bu rehber, yayımladığınız içerikleri farklı platformlara elle taşımak yerine, daha düzenli ve sürdürülebilir bir dağıtım akışı kurmanıza yardımcı olur."
-category: "Otomasyon"
-difficulty: "Orta"
-time: "20 dakika"
-tools: ["Zapier", "WordPress veya Ghost", "LinkedIn", "X", "OpenAI"]
+title: "Zapier Nasıl Kullanılır? İlk Zap'inizi Kurma Rehberi"
+h1: "Zapier Nasıl Kullanılır? İlk Zap'inizi Adım Adım Kurun"
+name: "Zapier Başlangıç Rehberi"
+description: "Zapier'de trigger seçme, action ekleme, alan eşleştirme, filter, paths, test ve yayına alma adımlarını; Google Sheets ve Gmail örneğiyle anlatıyoruz."
+metaDescription: "Zapier nasıl kullanılır? Trigger seçme, action ekleme, alan eşleştirme, filter, paths, test ve yayına alma adımlarını sade biçimde anlatıyoruz."
+heroIntro: "Bu rehber, Zapier'i ilk kez açan ve sıfırdan çalışan bir otomasyon kurmak isteyen kullanıcılar için hazırlandı. Amaç, ilk Zap'i kurma, test etme ve güvenle yayına alma sürecini gereksiz karmaşa olmadan netleştirmektir."
+category: "İş Akışı Otomasyonu"
+difficulty: "Başlangıç"
+time: "24 dakika"
+tools: ["Zapier"]
 author: "batuhan"
 date: "2026-03-10"
 datePublished: "2026-03-10"
-dateModified: "2026-03-11"
+dateModified: "2026-03-12"
+sources:
+  - label: "Zapier pricing"
+    publisher: "Zapier"
+    url: "https://zapier.com/pricing"
+    note: "Ücretsiz plan sınırları ve Professional deneme akışı için 12 Nisan 2026'da kontrol edildi."
+  - label: "Zapier Google Sheets integrations"
+    publisher: "Zapier"
+    url: "https://zapier.com/apps/google-sheets/integrations"
+    note: "Google Sheets tetikleyici örnekleri ve entegrasyon akışları için referans alındı."
+  - label: "Zapier Gmail integrations"
+    publisher: "Zapier"
+    url: "https://zapier.com/apps/gmail/integrations"
+    note: "Gmail action senaryoları ve test davranışı için referans alındı."
 faqs:
-  - question: "Zapier'de test adımı neden başarısız olur?"
-    answer: "Çoğu durumda kaynak tarafta yeterli örnek veri olmadığı için olur. Tetikleyicinin okuyabileceği güncel bir kayıt oluşturmak sorunu genellikle çözer."
-  - question: "Zapier ücretsiz planda bu kurgu kurulabilir mi?"
-    answer: "Basit denemeler yapılabilir; ancak birden fazla adım, metin dönüştürme ve gelişmiş dağıtım için ücretli plan gerekir."
-  - question: "Bağlantı verdiğim sosyal medya hesabı neden düşer?"
-    answer: "Şifre değişikliği, ek güvenlik adımı veya erişim izninin süresinin dolması bağlantıyı kesebilir. Hesabı yeniden yetkilendirmek gerekir."
-  - question: "Otomatik paylaşım erişimi düşürür mü?"
-    answer: "Tekdüze, platforma uyarlanmamış paylaşımlar performansı zayıflatabilir. İçeriği her kanal için yeniden biçimlendirmek bu riski azaltır."
-  - question: "Eski bir yazıyı güncellediğimde akış yeniden çalışır mı?"
-    answer: "Bu, seçtiğiniz tetikleyiciye bağlıdır. Yalnızca yeni yayımlanan içerikleri dinleyen kurgu, güncellenen yazıları otomatik olarak işlemez."
+  - question: "Zapier ücretsiz planda ilk otomasyon kurulabilir mi?"
+    answer: "Evet. Ücretsiz planda basit bir otomasyonu kurup test etmek mümkündür. Ancak task limiti, tetikleme sıklığı ve gelişmiş uygulama erişimi bakımından ücretsiz plan daha sınırlıdır."
+  - question: "Task nedir?"
+    answer: "Task, Zap'in başarıyla gerçekleştirdiği eylem sonuçları için kullanılan temel işlem birimidir. Bir otomasyonun ne kadar çalıştığını anlamak için task mantığını bilmek gerekir."
+  - question: "Premium uygulama ne demektir?"
+    answer: "Zapier'de bazı uygulamalar premium olarak sınıflandırılır. Bu uygulamalarla çalışan akışlar genellikle ücretli plan gerektirir. Bu yüzden Zap kurarken kullandığınız uygulamanın plan kısıtını ayrıca kontrol etmek gerekir."
+  - question: "Action testi gerçek e-posta gönderir mi?"
+    answer: "Çoğu action testi gerçek sonuç üretir. Gmail ile test yapıyorsanız örnek e-posta gerçekten gönderilebilir. Bu yüzden testten önce alıcı adresini ve içerik alanlarını dikkatle kontrol etmek gerekir."
+  - question: "Zap hata verirse otomatik kapanır mı?"
+    answer: "Tek bir hata her zaman Zap'i kapatmaz. Ancak yinelenen hatalar, bağlantı sorunları veya planla uyumsuz özellikler bazı durumlarda Zap'in durmasına neden olabilir. Bu yüzden Zap History düzenli kontrol edilmelidir."
+  - question: "Google Sheets'teki yeni satır neden hemen tetiklenmez?"
+    answer: "Google Sheets tetikleyicileri her zaman anlık çalışmayabilir. Ayrıca yeni satırın sayfanın en altına eklenmesi gerekir; araya eklenen satırlar her zaman yeni kayıt gibi algılanmaz."
 ---
 
-## Kuruluma başlamadan önce
+## Zapier'de Trigger ve Action Nedir?
 
-Sosyal medya dağıtımında asıl sorun paylaşım düğmesine basmak değil, her platform için metni yeniden üretmek ve bunu düzenli biçimde sürdürmektir. Zapier burada, yayımladığınız içeriği alıp farklı araçlara aktaran bir taşıyıcı görevi görür.
+Zapier'in temel mantığı iki kavrama dayanır: `trigger` ve `action`. Trigger, otomasyonu başlatan olaydır. Action ise bu olaydan sonra yapılacak iştir. Bir uygulamada yeni veri oluşur; Zapier bu veriyi alır ve başka bir uygulamada belirlediğiniz işlemi çalıştırır.
 
-Bu rehberde amaç; karmaşık bir otomasyon ağı kurmak değil, yayımlanan bir içeriği alıp uygun bir metin düzeninden geçirerek LinkedIn ve X tarafına dağıtan temel akışı oluşturmaktır.
+Örneğin Google Sheets tablosuna yeni satır geldiğinde Gmail ile bildirim göndermek istiyorsanız, yeni satır trigger; e-posta gönderimi action olur. Zapier'de kurduğunuz en basit akış bile bu mantıkla çalışır.
 
-## 1. Tetikleyiciyi kurun
+Yeni başlayanların en sık yaptığı hata, önce çok sayıda uygulama bağlamaya çalışmaktır. Oysa önce tek bir olay ve tek bir sonuç belirlemek gerekir. İlk Zap'in başarılı olması için sade kurgu çoğu zaman daha güvenlidir.
 
-İlk adım, içerik yönetim sisteminiz ile Zapier arasında bir tetikleyici kurmaktır. Bunun için WordPress, Ghost veya kullandığınız benzer altyapıyı seçin ve yeni içerik yayımlandığında çalışan olayı belirleyin.
+## İlk Zap'i Kurmadan Önce Neleri Seçmelisiniz?
 
-Kurulumdan sonra mutlaka test verisi çekin. Zapier'in son yayımlanan içeriği okuyabildiğini görmeden sonraki adıma geçmeyin. Bu kontrol, daha sonra oluşacak hataları büyük ölçüde azaltır.
+Zapier'de otomasyon kurmadan önce üç şeyi netleştirin:
 
-## 2. Metni yeniden biçimlendirin
+1. Hangi olay otomasyonu başlatacak?
+2. Sonuç hangi uygulamada oluşacak?
+3. Bu akış her kayıt için mi, yoksa yalnızca belirli koşullarda mı çalışacak?
 
-İkinci adımda amaç, aynı içeriği bütün platformlara aynen taşımak değil; hedef kanala uygun bir dil kurmaktır. Bunun için metni özetleyen, başlığı yeniden yazan veya gönderi tonunu değiştiren bir ara adım ekleyebilirsiniz.
+Bu üç soru net değilse Zap kurmak kolay görünür, ama yönetmek zorlaşır. Çünkü Zapier'de verim çok sayıda adım eklemekten değil; doğru başlangıç ve doğru sonuç eşleşmesini kurmaktan gelir.
 
-Burada temel ilke şudur: bağlantıyı doğrudan bırakmak yerine, okuyucuyu bağlama sokan kısa bir giriş üretmek. LinkedIn için daha açıklayıcı, X için daha sıkıştırılmış bir metin tercih etmek çoğu zaman daha iyi sonuç verir.
+Bu rehberde örnek akış olarak şunu kullanacağız: bir Google Sheets tablosuna yeni satır geldiğinde, Gmail üzerinden bildirim e-postası gönderilecek. Başlangıç seviyesi için bu kurgu uygundur; çünkü hem veri kaynağı hem de sonuç açık biçimde görülebilir.
 
-## 3. Platformlara dağıtın
+## Örnek Zap: Google Sheets'ten Gmail'e Bildirim
 
-Metin hazır olduktan sonra her kanal için ayrı bir eylem tanımlayın. LinkedIn tarafında daha açıklayıcı bir paylaşım, X tarafında ise daha kısa ve doğrudan bir metin kullanın.
+Buradaki amaç karmaşık bir iş akışı kurmak değil, Zapier'in temel çalışma mantığını güvenli bir örnekle öğrenmektir. Google Sheets tarafında yeni bir satır oluşacak; Zapier bu satırı okuyacak; ardından Gmail ile belirlediğiniz adrese bir bildirim gönderecek.
 
-Bu aşamada şunları ayrı ayrı kontrol edin:
+Bu örnek iyi bir başlangıçtır çünkü:
 
-- Hangi metin hangi alana gidiyor?
-- İçerik bağlantısı doğru alanla eşleşiyor mu?
-- Öne çıkan görsel ya da bağlantı önizlemesi beklediğiniz gibi geliyor mu?
+- veri kaynağı görünürdür
+- alan eşleştirme kolay anlaşılır
+- test etmek basittir
+- hata olduğunda hangi adımın bozulduğunu görmek daha kolaydır
 
-Tek bir uzun metni her yere göndermek yerine, her kanal için ayrı alan tanımlamak daha profesyonel bir sonuç verir.
+İlk Zap'inizi bu mantıkla kurduğunuzda, daha sonra form, CRM, e-ticaret, içerik yönetimi ya da destek araçlarıyla çalışmak da daha kolay hâle gelir.
 
-## 4. Gecikme ve zamanlama kullanın
+Bu örnekte tabloyu şu kadar sade tutmak yeterlidir:
 
-Her içerik yayımlandığı saniye paylaşılmak zorunda değildir. Bazen önce siteye düşmesi, sonra ekip kontrolünden geçmesi ya da belirli saatlerde yayımlanması daha mantıklıdır.
+- `name`
+- `email`
+- `topic`
+- `note`
 
-Bu yüzden zamanlama adımı eklemek faydalı olabilir. İçerik yayımlandıktan sonra belirli bir süre bekleyip paylaşımı daha uygun saate almak, özellikle profesyonel hesaplarda daha düzenli bir yayın akışı oluşturur.
+İlk denemede daha fazla sütun eklemek şart değildir. Amaç, verinin Sheets'ten çıkıp Gmail'e doğru alanlarla ulaştığını görmektir.
 
-## 5. Test ve izleme
+## Tetikleyici Nasıl Kurulur?
 
-Kurulum tamamlandıktan sonra yalnızca ilk paylaşımı görmek yetmez. Akışın sürdürülebilir olup olmadığını da kontrol etmek gerekir.
+İlk adımda yeni bir Zap açın ve trigger uygulaması olarak Google Sheets'i seçin. Ardından olay türü olarak çoğu başlangıç senaryosunda `New Spreadsheet Row` seçin. Eğer dosya Team Drive içinde tutuluyorsa buna uygun Team Drive varyasyonunu seçmek gerekir. Bu noktada önemli olan yalnızca doğru uygulamayı seçmek değil; gerçekten yeni veri üreten tabloyu bağlamaktır.
 
-İlk birkaç gönderide şu sorulara bakın:
+### Google Sheets Hesabı Nasıl Bağlanır?
 
-1. Tetikleyici her içerikte doğru çalışıyor mu?
-2. Metin alanları kaymadan geliyor mu?
-3. Hata olduğunda hangi adımda durduğu kolayca anlaşılabiliyor mu?
+Hesabınızı bağladıktan sonra doğru tabloyu ve doğru çalışma sayfasını seçin. Burada en sık yapılan hata, doğru hesabı bağlayıp yanlış sayfayı seçmektir. Özellikle birden fazla spreadsheet kullanan ekiplerde bu karışıklık çok olur.
 
-Bu izleme disiplini kurulmadan otomasyonun güvenilir olduğu söylenemez.
+Trigger adımında şu kontrolleri yapın:
 
-## Sonuç
+1. Doğru Google hesabı mı bağlı?
+2. Doğru spreadsheet mi seçildi?
+3. Doğru worksheet mi seçildi?
+4. Beklediğiniz sütunlar örnek veride görünüyor mu?
 
-Zapier ile sosyal medya otomasyonu kurmak, içerik üretimini insan elinden tamamen çıkarmak anlamına gelmez. Asıl hedef, tekrar eden dağıtım işini sistemli hâle getirmek ve editoryal dikkati metin kalitesine ayırmaktır.
+Google Sheets tarafında bir başka önemli ayrıntı da şudur: yeni satırın sayfanın en altına eklenmesi gerekir. Araya sonradan eklenen veya sırası değiştirilen satırlar her zaman beklediğiniz gibi tetiklenmeyebilir.
 
-Eğer bu yapıyı daha geniş otomasyon kararlarıyla birlikte değerlendirmek isterseniz [Zapier incelemesi](/ai/zapier) sayfasına geçebilir, benzer araçları görmek için [otomasyon](/kategori/otomasyon) merkezini inceleyebilirsiniz.
+### Testte Örnek Veri Gelmiyorsa Ne Yapılır?
+
+Zapier trigger testinde örnek veri bulamıyorsa çoğu durumda sorun bağlantı değil, veri yokluğudur. Yani seçtiğiniz kaynakta Zapier'in çekebileceği yeni bir satır bulunmuyordur.
+
+Böyle durumda şunu yapın:
+
+1. Google Sheets tablosuna yeni bir örnek satır ekleyin.
+2. Kaydı gerçekten kaydettiğinizden emin olun.
+3. Trigger testini yeniden çalıştırın.
+4. Gelen alanların beklediğiniz kayıtla eşleştiğini kontrol edin.
+
+Trigger temiz kurulmadığında geri kalan bütün otomasyon bozulur. Bu yüzden en fazla dikkat ayırmanız gereken yer çoğu zaman tetikleyici seçimidir.
+
+Ayrıca Google Sheets tetikleyicileri her zaman anlık değildir. Test kaydı birkaç dakika gecikmeyle görünebilir. Bu yüzden ilk denemede sonuç gelmiyorsa hemen kurulumun bozuk olduğunu varsaymak doğru değildir.
+
+## Eylem Nasıl Eklenir?
+
+Trigger adımı çalıştıktan sonra action olarak Gmail'i seçin. Ardından eylem türü olarak çoğu başlangıç senaryosunda `Send Email` seçilir. Buradaki hedef, yeni tablo satırındaki verileri kullanarak bir bildirim e-postası üretmektir. Başarılı bir action adımı, doğru uygulamayı seçmekten çok doğru veriyi doğru alana bağlamakla ilgilidir.
+
+### Gmail Eylemi Nasıl Kurulur?
+
+Gmail tarafında gönderen hesabı bağlayın ve ardından konu, alıcı ve gövde alanlarını doldurun. Başlangıç seviyesinde en güvenli yaklaşım, sade bir e-posta oluşturmaktır. İlk Zap'te tasarımı değil, veri akışını doğrulamak daha değerlidir.
+
+Örneğin:
+
+- konu satırına kayıt başlığını koyabilirsiniz
+- gövde alanına açıklama, tarih ya da not bilgisini ekleyebilirsiniz
+- alıcı alanında test için kendi e-posta adresinizi kullanabilirsiniz
+
+Örneğin örnek tablonuzda `name`, `email`, `topic` ve `note` sütunları varsa şu kurgu yeterlidir:
+
+- `To`: kendi test e-posta adresiniz
+- `Subject`: `Yeni kayıt: {{topic}}`
+- `Body`: `Ad: {{name}} | E-posta: {{email}} | Not: {{note}}`
+
+Buradaki kritik nokta şudur: action testi çoğu zaman gerçek sonuç üretir. Yani test için gönderdiğiniz e-posta gerçekten gidebilir. Bu yüzden deneme aşamasında alıcıyı ve metni dikkatle kontrol etmek gerekir.
+
+## Alan Eşleştirme Nasıl Yapılır?
+
+Zapier'in yeni başlayanlar için en kritik kısmı burasıdır. Çünkü otomasyon çoğu zaman bağlantı kurulamadığı için değil, yanlış alan yanlış yere bağlandığı için bozulur. Alan eşleştirme yaparken her kutunun bir önceki adımdan veri alıp almadığını açık biçimde kontrol etmelisiniz.
+
+İyi bir alan eşleştirme için şu sıra yeterlidir:
+
+1. Önce örnek verinin gerçekten geldiğini görün.
+2. Konu alanına kısa ve ayırt edici veri koyun.
+3. Gövde alanında hangi sütunun nereye düştüğünü tek tek kontrol edin.
+4. Boş gelmemesi gereken alanları test sonucunda yeniden okuyun.
+
+### Alanlar Neden Boş Görünür?
+
+Alanlar boş görünüyorsa çoğu durumda sebep, trigger testinin düzgün veri getirmemiş olmasıdır. Bazen de yanlış worksheet seçildiği için Zapier beklenen sütunları hiç görmez.
+
+Bir başka yaygın neden de, tabloda başlık satırının sonradan değiştirilmesidir. Sütun adını kurulumdan sonra değiştirirseniz Zapier eski alan yapısını göstermeye devam edebilir. Böyle durumda trigger adımını yeniden test etmek gerekir.
+
+Burada temel ilke şudur: otomasyonun başarısı yalnızca çalışması değil, okunabilir ve doğru bir sonuç üretmesidir. Özellikle ekip içinde kullanılan akışlarda kötü alan eşleştirme, otomasyonu faydalı değil yorucu hâle getirir.
+
+## Filter ve Paths Ne Zaman Kullanılır?
+
+Her yeni satır için aynı işlemi yapmak istemeyebilirsiniz. Örneğin yalnızca durum alanı `Onaylandı` olduğunda bildirim gitmesi gerekebilir. Böyle durumlarda Filter devreye girer.
+
+Filter, belirlediğiniz koşul sağlanmıyorsa akışı durdurur. Paths ise aynı Zap içinde birden fazla senaryoya göre ayrı yollar çalıştırır. Başlangıç seviyesinde çoğu kullanıcı için önce Filter mantığını öğrenmek yeterlidir; Paths daha dallı kurgularda anlam kazanır.
+
+Şu durumlarda Filter kullanmak mantıklıdır:
+
+- yalnızca belirli etiketli kayıtları işlemek
+- boş alanı olan kayıtları durdurmak
+- deneme kayıtlarını ayıklamak
+- yalnızca onaya dönüşen veriler için işlem yapmak
+
+Zapier'de iyi otomasyon, her veriyi zorla işlemek değil; gereksiz veriyi erken aşamada elemekten geçer.
+
+## Test, Yayına Alma ve İzleme Nasıl Yapılır?
+
+Zapier'de otomasyonun en kritik aşaması yayına almadan önce test etmektir. Trigger doğru veri getiriyor, action doğru sonucu üretiyor ve koşul mantığı beklendiği gibi çalışıyorsa Zap'i açabilirsiniz.
+
+Burada şu sıra yeterlidir:
+
+1. Trigger testini çalıştırın.
+2. Action testini çalıştırın.
+3. Sonucun hedef uygulamada gerçekten oluştuğunu görün.
+4. Zap'i açın.
+5. İlk birkaç gerçek kaydı izleyin.
+
+İlk gerçek test için tabloya elle bir satır ekleyin ve gerçekten yeni kayıt gibi işlendiğini görün. Bu kontrol yapılmadan Zap'i tamamen güvenilir kabul etmek doğru değildir.
+
+### Eski Kayıtlar Neden Çalışmaz?
+
+Zapier çoğu tetikleyicide, Zap yayına alındıktan sonra gelen yeni verileri izler. Daha önce oluşmuş kayıtlar genellikle geriye dönük olarak otomatik işlenmez. Bu yüzden “eski satırlar neden tetiklenmedi” sorusu başlangıçta çok sık görülür.
+
+Eğer geçmiş kayıtlarla ayrıca çalışmak istiyorsanız, bunu ayrı bir toplu iş mantığıyla ele almak gerekir. İlk Zap kurgusunda en güvenli yaklaşım, yeni gelen veriyi izlemektir.
+
+### Zap History Nereden Kontrol Edilir?
+
+Zap History bölümü, çalıştırılan akışları, başarısız adımları ve hangi noktada hata oluştuğunu görmek için kullanılır. Bir otomasyonu yayına aldıktan sonra ilk bakılması gereken yerlerden biri burasıdır.
+
+Önemli nokta şudur: Zap'i açmak işi bitirmek değil, izleme sürecini başlatmaktır. İlk günlerde Zap History bölümünü düzenli kontrol etmek gerekir. Çünkü hatanın hangi adımda çıktığını en net orada görürsünüz.
+
+## İlk Zap'te En Sık Yapılan Hatalar
+
+Yeni başlayanlar için en yaygın sorunlar şunlardır:
+
+- tetikleyiciyi doğru tablo yerine yanlış kaynağa bağlamak
+- test etmeden alan eşleştirmeye geçmek
+- konu ve gövde alanlarını karıştırmak
+- her satırı işlemek gerekirken filtreyi ters kurmak
+- eski kayıtların da otomatik çalışacağını sanmak
+- Zap'i açtıktan sonra hiç kontrol etmeden bırakmak
+
+Zapier'de güvenilir otomasyon, çok adım eklemekten değil; her adımın ne yaptığını açık biçimde görmekten doğar.
+
+## Editör Notu
+
+Zapier'i iyi kullanmak, onlarca entegrasyonu ezberlemekten çok; önce küçük ve temiz bir otomasyon kurmakla ilgilidir. Trigger, action, alan eşleştirme, filter ve test mantığını kavradığınızda daha büyük akışlar kurmak çok daha kolay hâle gelir.
+
+Eğer Zapier'in sizin için doğru araç olup olmadığını ayrıca değerlendirmek isterseniz [Zapier incelemesi](/incelemeler/zapier) sayfasına geçebilirsiniz. Benzer çözümleri birlikte görmek için de [iş akışı otomasyonu](/kategori/is-akisi-otomasyonu) merkezini inceleyebilirsiniz.

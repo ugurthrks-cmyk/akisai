@@ -7,9 +7,9 @@ import "./rehber.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata({
-    title: "Yapay Zekâ Eğitim Rehberleri ve Otomasyon Kurulumları (2026)",
+    title: "Yapay zeka nasıl kullanılır rehberleri | AkışAI",
     description:
-      "İş süreçlerinizi saniyelere indirecek adım adım yapay zekâ rehberleri. Kodlama bilmeden dijital otomasyon kurguları kurmanın yollarını keşfedin.",
+      "Yapay zeka araçları nasıl kullanılır? CapCut, Zapier ve benzeri araçlar için adım adım kullanım rehberlerini inceleyin.",
     path: "/rehber",
   });
 }
@@ -17,41 +17,25 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RehberHubPage() {
   const [allGuides, settings] = await Promise.all([getAllGuides(), getSiteSettings()]);
 
-  const itemListElements = allGuides.map((guide, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    item: {
-      "@type": "HowTo",
-      url: `${settings.url}/rehber/${guide.slug}`,
-      name: guide.title,
-      description: guide.description,
-    },
-  }));
-
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${settings.name} otomasyon ve araç rehberleri`,
-    description: "Adım adım yapay zekâ araçları kullanım kılavuzları ve otomasyon kurulum rehberleri.",
+    name: `${settings.name} yapay zeka nasıl kullanılır rehberleri`,
+    description: "Adım adım yapay zeka kullanım rehberleri ve uygulanabilir kurulum içerikleri.",
     url: `${settings.url}/rehber`,
-  };
-
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: itemListElements,
+    inLanguage: "tr-TR",
   };
 
   return (
     <div className="container rehber-container">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       <header className="rehber-header">
-        <h1 className="rehber-title">Otomasyon ve eğitim rehberleri</h1>
+        <h1 className="rehber-title">Yapay Zeka Nasıl Kullanılır Rehberleri</h1>
         <p className="rehber-description">
-          Karmaşık kurulumları, kopyala-yapıştır entegrasyonları ve pahalı eğitim setlerini unutun.
-          {` ${settings.name} `}rehberleri adım adım uygulanabilir otomasyon senaryolarına odaklanır.
+          Bu sayfalar, Türkiye&apos;de sık aranan “nasıl kullanılır?” niyetine göre hazırlanır. Her rehber tek bir
+          aracı tanıtmakla kalmaz; kurulum adımlarını, dikkat edilmesi gereken noktaları ve gerçek kullanım sürecini
+          birlikte açıklar.
         </p>
       </header>
 
@@ -79,7 +63,7 @@ export default async function RehberHubPage() {
 
             <div className="rehber-card-footer">
               <div className="read-more-btn">
-                Rehberi incele <span>→</span>
+                Rehberi Aç <span>→</span>
               </div>
             </div>
           </Link>

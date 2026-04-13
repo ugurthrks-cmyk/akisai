@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { absoluteUrl, formatDisplayDate } from "@/lib/content";
-import { getAllAuthors, getAllGuides, getAllTools, getAuthorBySlug } from "@/lib/content-source";
+import { absoluteUrl, formatDisplayDate, toIsoDate } from "@/lib/content";
+import {
+  getAllAuthors,
+  getAllGuides,
+  getAllTools,
+  getAuthorBySlug,
+} from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
 import { getSiteSettings } from "@/lib/site-settings";
 import "./author.css";
@@ -17,7 +23,9 @@ export async function generateStaticParams() {
   return authors.map((author) => ({ slug: author.slug }));
 }
 
-export async function generateMetadata({ params }: AuthorPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: AuthorPageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const [author, settings] = await Promise.all([
     getAuthorBySlug(resolvedParams.slug),
@@ -30,14 +38,22 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
 
   return buildMetadata({
     title: `${author.fullName} | ${author.role} | ${settings.name}`,
-    description: author.metaDescription || author.bio.substring(0, 155),
+    description: author.metaDescription || author.bio,
     path: `/yazar/${author.slug}`,
     canonicalUrl: author.canonicalUrl,
-    type: "profile",
     imagePath: author.avatarUrl,
     twitterImagePath: author.avatarUrl,
     imageAlt: author.avatarAlt || `${author.fullName} profil görseli`,
     noIndex: author.noIndex,
+    modifiedTime: toIsoDate(author.profileUpdatedAt || author.profileCreatedAt),
+    metadataAuthors: [
+      {
+        name: author.fullName,
+        url: absoluteUrl(`/yazar/${author.slug}`, settings.url),
+      },
+    ],
+    creator: author.fullName,
+    publisher: settings.name,
     baseUrl: settings.url,
     siteName: settings.name,
     locale: settings.locale,
@@ -60,42 +76,70 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
   }
 
   const authorTools = allTools.filter((item) => item.author?.slug === author.slug);
-  const authorGuides = allGuides.filter((item) => item.author?.slug === author.slug);
-  const profileUrl = author.canonicalUrl || absoluteUrl(`/yazar/${author.slug}`, settings.url);
-
-  const profileSchema = {
-    "@context": "https://schema.org",
-    "@type": "ProfilePage",
-    name: `${author.fullName} profili`,
+  const authorGuides = allGuides.filter(
+    (item) => item.author?.slug === author.slug,
+  );
+  const profileUrl =
+    author.canonicalUrl || absoluteUrl(`/yazar/${author.slug}`, settings.url);
+  const personId = `${profileUrl}#person`;
+  const profileModifiedTime = toIsoDate(
+    author.profileUpdatedAt || author.profileCreatedAt,
+  );
+  const personSameAs =
+    author.sameAs.length > 0 ? author.sameAs : [profileUrl];
+  const personSchema = {
+    "@type": "Person",
+    "@id": personId,
+    name: author.fullName,
+    description: author.bio,
+    jobTitle: author.role,
+    image: absoluteUrl(author.avatarUrl, settings.url),
     url: profileUrl,
-    dateCreated: author.profileCreatedAt,
-    dateModified: author.profileUpdatedAt,
-    mainEntity: {
-      "@type": "Person",
-      name: author.fullName,
-      description: author.bio,
-      jobTitle: author.role,
-      image: absoluteUrl(author.avatarUrl, settings.url),
-      url: profileUrl,
-      alumniOf: author.university
-        ? {
+    ...(author.university
+      ? {
+          alumniOf: {
             "@type": "CollegeOrUniversity",
             name: author.university.split(",")[0].trim(),
-          }
-        : undefined,
-      worksFor: {
-        "@type": "Organization",
-        name: settings.name,
-        url: settings.url,
-      },
-      knowsAbout: author.expertise,
-      sameAs: author.sameAs,
+          },
+        }
+      : {}),
+    worksFor: {
+      "@type": "Organization",
+      name: settings.name,
+      url: settings.url,
     },
+    knowsAbout: author.expertise,
+    hasCredential: author.credentials.map((credential) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: credential,
+    })),
+    sameAs: personSameAs,
+    inLanguage: "tr-TR",
+  };
+  const profileGraphSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfilePage",
+        name: `${author.fullName} profili`,
+        url: profileUrl,
+        inLanguage: "tr-TR",
+        dateCreated: toIsoDate(author.profileCreatedAt),
+        dateModified: profileModifiedTime,
+        mainEntity: {
+          "@id": personId,
+        },
+      },
+      personSchema,
+    ],
   };
 
   return (
     <div className="container author-profile-container">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profileSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profileGraphSchema) }}
+      />
 
       <Breadcrumbs
         baseUrl={settings.url}
@@ -109,7 +153,15 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
       <header className="author-hero">
         <div className="author-header-grid">
           <div className="author-avatar-large">
-            <img src={author.avatarUrl} alt={author.avatarAlt || `${author.fullName} profil görseli`} loading="eager" />
+            <Image
+              src={author.avatarUrl}
+              alt={author.avatarAlt || `${author.fullName} profil görseli`}
+              width={160}
+              height={160}
+              className="author-avatar-image"
+              sizes="160px"
+              priority
+            />
           </div>
           <div className="author-hero-text">
             <span className="author-role-badge">{author.role}</span>
@@ -118,15 +170,20 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             <div className="author-trust-meta">
               <span className="trust-badge">{author.university}</span>
               <span className="trust-badge">{author.experience}</span>
-              <span className="trust-badge">{authorTools.length + authorGuides.length} yayın</span>
-              <span className="trust-badge">Profil oluşturma tarihi: {formatDisplayDate(author.profileCreatedAt)}</span>
+              <span className="trust-badge">
+                {authorTools.length + authorGuides.length} yayın
+              </span>
+              <span className="trust-badge">
+                Profil oluşturma tarihi:{" "}
+                {formatDisplayDate(author.profileCreatedAt)}
+              </span>
             </div>
           </div>
         </div>
       </header>
 
       <section className="author-methodology-section">
-        <h2>Uzmanlık alanları ve çalışma yaklaşımı</h2>
+        <h2>Uzmanlık Alanları ve Çalışma Yaklaşımı</h2>
         <p>{author.methodologyFocus}</p>
         <ul className="author-expertise-list">
           {author.expertise.map((item) => (
@@ -151,7 +208,13 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           <h2>Dış bağlantılar</h2>
           <div className="author-links">
             {author.sameAs.map((link) => (
-              <a key={link} href={link} target="_blank" rel="noopener noreferrer" className="author-link-chip">
+              <a
+                key={link}
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="author-link-chip"
+              >
                 {link}
               </a>
             ))}
@@ -160,11 +223,15 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
       ) : null}
 
       <section className="author-works-section">
-        <h2>{author.name} tarafından yazılan incelemeler</h2>
+        <h2>{author.name} Tarafından Yazılan İncelemeler</h2>
         {authorTools.length > 0 ? (
           <div className="author-articles-grid">
             {authorTools.map((tool) => (
-              <Link href={`/ai/${tool.slug}`} key={tool.slug} className="author-article-card">
+              <Link
+                href={`/incelemeler/${tool.slug}`}
+                key={tool.slug}
+                className="author-article-card"
+              >
                 <span className="article-type">Araç incelemesi</span>
                 <h3>{tool.title || tool.name}</h3>
                 <p>{tool.description.substring(0, 100)}...</p>
@@ -172,16 +239,22 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             ))}
           </div>
         ) : (
-          <p className="empty-state">{author.name} henüz bir inceleme yayımlamadı.</p>
+          <p className="empty-state">
+            {author.name} henüz bir inceleme yayımlamadı.
+          </p>
         )}
       </section>
 
       <section className="author-works-section author-guides-section">
-        <h2>{author.name} tarafından hazırlanan rehberler</h2>
+        <h2>{author.name} Tarafından Hazırlanan Rehberler</h2>
         {authorGuides.length > 0 ? (
           <div className="author-articles-grid">
             {authorGuides.map((guide) => (
-              <Link href={`/rehber/${guide.slug}`} key={guide.slug} className="author-article-card">
+              <Link
+                href={`/rehber/${guide.slug}`}
+                key={guide.slug}
+                className="author-article-card"
+              >
                 <span className="article-type guide">Uygulamalı rehber</span>
                 <h3>{guide.title}</h3>
                 <p>{guide.description.substring(0, 100)}...</p>
@@ -189,7 +262,9 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             ))}
           </div>
         ) : (
-          <p className="empty-state">{author.name} henüz bir rehber yayımlamadı.</p>
+          <p className="empty-state">
+            {author.name} henüz bir rehber yayımlamadı.
+          </p>
         )}
       </section>
     </div>

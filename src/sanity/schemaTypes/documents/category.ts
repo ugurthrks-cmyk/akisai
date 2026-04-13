@@ -41,6 +41,24 @@ export const category = defineType({
       description: "Kartlarda, kategori merkezlerinde ve gorunen ozet alanlarinda kullanilir.",
     }),
     defineField({
+      name: "seoTitle",
+      title: "SEO title",
+      type: "string",
+      group: "seo",
+      validation: (rule) => rule.max(70),
+      description:
+        "Tarayici sekmesi ve arama sonuclari icin kullanilir. Bos kalirsa kategori adi kullanilir.",
+    }),
+    defineField({
+      name: "h1",
+      title: "Sayfa basligi (H1)",
+      type: "string",
+      group: "editorial",
+      validation: (rule) => rule.max(90),
+      description:
+        "Kategori sayfasinda gorunen ana baslik. Bos kalirsa kategori adi kullanilir.",
+    }),
+    defineField({
       name: "metaDescription",
       title: "Meta aciklama",
       type: "text",

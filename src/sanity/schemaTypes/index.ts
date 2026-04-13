@@ -6,6 +6,7 @@ import { siteSettings } from "@/sanity/schemaTypes/documents/siteSettings";
 import { tool } from "@/sanity/schemaTypes/documents/tool";
 import { faqItem } from "@/sanity/schemaTypes/objects/faqItem";
 import { seoMetadata } from "@/sanity/schemaTypes/objects/seoMetadata";
+import { sourceItem } from "@/sanity/schemaTypes/objects/sourceItem";
 
 export const schemaTypes = [
   author,
@@ -16,4 +17,5 @@ export const schemaTypes = [
   tool,
   faqItem,
   seoMetadata,
+  sourceItem,
 ];

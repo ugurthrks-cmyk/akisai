@@ -1,38 +1,34 @@
-"use client";
-
-import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
-
 export default function SearchBar() {
-  const [query, setQuery] = useState("");
-  const router = useRouter();
-
-  const handleSearch = (event: FormEvent) => {
-    event.preventDefault();
-
-    if (query.trim()) {
-      router.push(`/arama?q=${encodeURIComponent(query.trim())}`);
-    }
-  };
-
   return (
-    <form className="search-container" onSubmit={handleSearch} role="search" aria-label="Site ici arama">
-      <label htmlFor="site-search" className="sr-only">
+    <form
+      className="search-container"
+      action="/arama"
+      method="GET"
+      role="search"
+      aria-label="Site içi arama"
+    >
+      <label htmlFor="home-site-search" className="sr-only">
         Sitede arama yap
       </label>
-      <span className="search-icon" aria-hidden="true">
-        ⌕
-      </span>
       <input
-        id="site-search"
-        type="text"
+        id="home-site-search"
+        type="search"
+        name="q"
         className="search-input"
-        placeholder="Orn: e-ticaret icin fotograf duzenleme"
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
+        placeholder="Örn: en iyi yapay zeka video aracı"
+        inputMode="search"
       />
-      <button type="submit" style={{ display: "none" }}>
-        Ara
+      <button type="submit" className="search-submit" aria-label="Arama yap">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="M20 20L16.65 16.65" />
+        </svg>
+        <span className="search-submit-label">Ara</span>
       </button>
     </form>
   );

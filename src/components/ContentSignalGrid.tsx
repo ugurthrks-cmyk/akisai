@@ -12,7 +12,9 @@ interface ContentSignalGridProps {
 }
 
 export default function ContentSignalGrid({ items }: ContentSignalGridProps) {
-  const visibleItems = items.filter((item) => item.value.trim().length > 0);
+  const visibleItems = items.filter(
+    (item) => item.value.trim().length > 0 && item.label.trim().toLocaleLowerCase("tr-TR") !== "kategori",
+  );
 
   if (visibleItems.length === 0) {
     return null;
