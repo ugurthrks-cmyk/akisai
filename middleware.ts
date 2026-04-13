@@ -55,14 +55,18 @@ export function middleware(request: NextRequest) {
   }
 
   const pathname = normalizePathname(request.nextUrl.pathname);
+  const isAdminPath = pathname === "/admin" || pathname.startsWith("/admin/");
   const lastModified = manifest[pathname];
+  const response = NextResponse.next();
 
-  if (!lastModified) {
-    return NextResponse.next();
+  if (isAdminPath) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   }
 
-  const response = NextResponse.next();
-  response.headers.set("Last-Modified", lastModified);
+  if (lastModified) {
+    response.headers.set("Last-Modified", lastModified);
+  }
+
   return response;
 }
 
