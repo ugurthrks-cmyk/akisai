@@ -105,14 +105,7 @@ export const guide = defineType({
       title: "Ilgili toollar",
       type: "array",
       group: "taxonomy",
-      of: [
-        defineField({
-          name: "toolRef",
-          title: "Tool",
-          type: "reference",
-          to: [{ type: "tool" }],
-        }),
-      ],
+      of: [{ type: "reference", to: [{ type: "tool" }] }],
       description: "Bu rehberle dogrudan ilgili araclari baglayin.",
     }),
     defineField({
