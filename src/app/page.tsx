@@ -188,7 +188,7 @@ export default async function HomePage() {
 
           <div className="section-actions">
             <Link href="/incelemeler" className="secondary-btn">
-              Tüm İncelemelere Git
+              Tüm İncelemeleri Gör
             </Link>
           </div>
         </section>
@@ -239,7 +239,7 @@ export default async function HomePage() {
 
           <div className="section-actions">
             <Link href="/rehber" className="secondary-btn">
-              Tüm Rehberlere Git
+              Tüm Rehberleri Gör
             </Link>
           </div>
         </section>
