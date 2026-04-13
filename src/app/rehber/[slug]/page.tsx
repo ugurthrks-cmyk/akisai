@@ -181,6 +181,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const [guide, settings] = await Promise.all([getGuideBySlug(resolvedParams.slug), getSiteSettings()]);
+  const socialImagePath = `/rehber/${resolvedParams.slug}/opengraph-image`;
+  const socialTwitterImagePath = `/rehber/${resolvedParams.slug}/twitter-image`;
 
   if (!guide) {
     return { title: "Rehber bulunamadı" };
@@ -195,8 +197,8 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
     path: `/rehber/${resolvedParams.slug}`,
     canonicalUrl: guide.canonicalUrl,
     type: "article",
-    imagePath: guide.featuredImageUrl,
-    twitterImagePath: guide.featuredImageUrl,
+    imagePath: guide.featuredImageUrl || socialImagePath,
+    twitterImagePath: guide.featuredImageUrl || socialTwitterImagePath,
     imageAlt: guide.featuredImageAlt ?? guide.title,
     noIndex: guide.noIndex,
     publishedTime,
@@ -247,6 +249,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
   const pageTitle = guide.h1 || guide.title;
   const publishedAt = guide.datePublished ?? guide.date;
   const updatedAt = guide.dateModified ?? guide.updatedAt ?? guide.datePublished ?? guide.date;
+  const socialImageUrl = absoluteUrl(`/rehber/${resolvedParams.slug}/opengraph-image`, settings.url);
   const mdxSource = guide.body.kind === "mdx" ? guide.body.source ?? null : null;
   const relatedToolUrl = relatedTool
     ? relatedTool.canonicalUrl || absoluteUrl(`/incelemeler/${relatedTool.slug}`, settings.url)
@@ -315,8 +318,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
     },
     image:
       guide.featuredImageUrl ||
-      settings.defaultSocialImageUrl ||
-      absoluteUrl("/opengraph-image", settings.url),
+      socialImageUrl,
     ...(relatedToolUrl ? { relatedLink: relatedToolUrl } : {}),
     ...(guide.sources && guide.sources.length > 0
       ? {
@@ -358,8 +360,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           })),
           image:
             guide.featuredImageUrl ||
-            settings.defaultSocialImageUrl ||
-            absoluteUrl("/opengraph-image", settings.url),
+            socialImageUrl,
           ...(relatedToolUrl ? { relatedLink: relatedToolUrl } : {}),
           ...(guide.sources && guide.sources.length > 0
             ? {

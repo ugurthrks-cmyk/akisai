@@ -39,6 +39,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: ToolPageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const [tool, settings] = await Promise.all([getToolBySlug(resolvedParams.slug), getSiteSettings()]);
+  const socialImagePath = `/incelemeler/${resolvedParams.slug}/opengraph-image`;
+  const socialTwitterImagePath = `/incelemeler/${resolvedParams.slug}/twitter-image`;
 
   if (!tool) {
     return { title: "Araç bulunamadı" };
@@ -55,8 +57,8 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
     path: `/incelemeler/${resolvedParams.slug}`,
     canonicalUrl: tool.canonicalUrl,
     type: "article",
-    imagePath: tool.featuredImageUrl ?? tool.logoUrl,
-    twitterImagePath: tool.featuredImageUrl ?? tool.logoUrl,
+    imagePath: tool.featuredImageUrl || socialImagePath,
+    twitterImagePath: tool.featuredImageUrl || socialTwitterImagePath,
     imageAlt: tool.featuredImageAlt ?? tool.logoAlt ?? title,
     noIndex: tool.noIndex,
     publishedTime,
@@ -104,6 +106,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
   const pageTitle = tool.h1 || tool.title || `${tool.name} incelemesi`;
   const publishedAt = tool.datePublished ?? tool.date;
   const updatedAt = tool.dateModified ?? tool.updatedAt ?? tool.datePublished ?? tool.date;
+  const socialImageUrl = absoluteUrl(`/incelemeler/${resolvedParams.slug}/opengraph-image`, settings.url);
   const mdxSource = tool.body.kind === "mdx" ? tool.body.source ?? null : null;
   const relatedGuideUrl = relatedGuide
     ? relatedGuide.canonicalUrl || absoluteUrl(`/rehber/${relatedGuide.slug}`, settings.url)
@@ -186,8 +189,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
     image:
       tool.featuredImageUrl ||
       tool.logoUrl ||
-      settings.defaultSocialImageUrl ||
-      absoluteUrl("/opengraph-image", settings.url),
+      socialImageUrl,
     ...(relatedGuideUrl ? { relatedLink: relatedGuideUrl } : {}),
     ...(offerSchema ? { offers: offerSchema } : {}),
   };
@@ -225,8 +227,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
     image:
       tool.featuredImageUrl ||
       tool.logoUrl ||
-      settings.defaultSocialImageUrl ||
-      absoluteUrl("/opengraph-image", settings.url),
+      socialImageUrl,
     ...(relatedGuideUrl ? { relatedLink: relatedGuideUrl } : {}),
     ...(tool.sources && tool.sources.length > 0
       ? {
