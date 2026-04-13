@@ -568,7 +568,7 @@ p {
 }
 
 .home-grid {
-  align-items: start;
+  align-items: stretch;
 }
 
 .section-shell-tools .home-grid,
@@ -587,6 +587,7 @@ p {
   gap: 1rem;
   padding: 1.6rem;
   color: inherit;
+  height: 100%;
 }
 
 .tool-card-link,
@@ -628,6 +629,7 @@ p {
 .tool-desc {
   margin: 0;
   overflow-wrap: anywhere;
+  flex: 1;
 }
 
 .card-meta-row,
