@@ -278,6 +278,11 @@ const retiredCategoryReplacements = new Map([
 const categoryIdByName = new Map(
   categoryEntries.map((entry) => [String(entry.frontmatter.name), `category.${entry.slug}`]),
 );
+const categoryAliasIdByName = new Map([
+  ["Yapay Zeka Ses Üretimi / TTS / Ses Klonlama", "category.ses-olusturma"],
+  ["Sesli AI / Metin-Seslendirme", "category.ses-olusturma"],
+  ["Grafik Tasarım & İçerik Üretimi", "category.gorsel-olusturma"],
+]);
 
 const categoryDocs = categoryEntries.map((entry) => ({
   _id: `category.${entry.slug}`,
@@ -294,7 +299,8 @@ const categoryDocs = categoryEntries.map((entry) => ({
 
 const toolDocs = toolEntries.map((entry) => {
   const frontmatter = entry.frontmatter;
-  const categoryId = categoryIdByName.get(String(frontmatter.category));
+  const categoryName = String(frontmatter.category);
+  const categoryId = categoryIdByName.get(categoryName) || categoryAliasIdByName.get(categoryName);
 
   return {
     _id: `tool.${entry.slug}`,
@@ -375,8 +381,8 @@ const guideDocs = guideEntries.map((entry) => {
     heroIntro: frontmatter.heroIntro ? String(frontmatter.heroIntro) : undefined,
     bodyMarkdown: entry.bodyMarkdown,
     author: toReference(`author.${String(frontmatter.author)}`),
-    category: categoryIdByName.get(String(frontmatter.category))
-      ? toReference(categoryIdByName.get(String(frontmatter.category)))
+    category: categoryIdByName.get(String(frontmatter.category)) || categoryAliasIdByName.get(String(frontmatter.category))
+      ? toReference(categoryIdByName.get(String(frontmatter.category)) || categoryAliasIdByName.get(String(frontmatter.category)))
       : undefined,
     relatedTools,
     difficulty: frontmatter.difficulty ? String(frontmatter.difficulty) : undefined,

@@ -1,4 +1,3 @@
-import { cache } from "react";
 import { groq } from "next-sanity";
 import type { PortableTextBlock } from "@portabletext/types";
 import { retiredCategorySlugs, sortCategoriesByTaxonomy } from "@/lib/category-taxonomy";
@@ -944,14 +943,14 @@ function mapSanityPage(item: SanityPageValue): PageEntry {
   };
 }
 
-const getSanityTools = cache(async () => {
+async function getSanityTools() {
   const items = await fetchPublishedSanity<SanityToolValue[]>(toolListQuery, {}, {
     tags: [sanityTags.tools],
   });
   return items.map(mapSanityToolSummary);
-});
+}
 
-const getSanityTool = cache(async (slug: string) => {
+async function getSanityTool(slug: string) {
   const item = await fetchPublishedSanity<SanityToolValue | null>(toolBySlugQuery, { slug }, {
     tags: uniqueSanityTags([sanityTags.tools], [getSanitySlugTag("sanity:tool", slug)]),
   });
@@ -978,16 +977,16 @@ const getSanityTool = cache(async (slug: string) => {
     faqs: asFaqArray(item.faqs),
     screenshots: asMediaAssets(item.screenshots),
   } satisfies ToolEntry;
-});
+}
 
-const getSanityGuides = cache(async () => {
+async function getSanityGuides() {
   const items = await fetchPublishedSanity<SanityGuideValue[]>(guideListQuery, {}, {
     tags: [sanityTags.guides],
   });
   return items.map(mapSanityGuideSummary);
-});
+}
 
-const getSanityGuide = cache(async (slug: string) => {
+async function getSanityGuide(slug: string) {
   const item = await fetchPublishedSanity<SanityGuideValue | null>(guideBySlugQuery, { slug }, {
     tags: uniqueSanityTags([sanityTags.guides], [getSanitySlugTag("sanity:guide", slug)]),
   });
@@ -1012,17 +1011,17 @@ const getSanityGuide = cache(async (slug: string) => {
     tools: asStringArray(item.tools),
     faqs: asFaqArray(item.faqs),
   } satisfies GuideEntry;
-});
+}
 
-const getSanityCategories = cache(async () => {
+async function getSanityCategories() {
   const items = await fetchPublishedSanity<SanityCategoryValue[]>(categoryListQuery, {}, {
     tags: [sanityTags.categories],
     revalidate: CATEGORY_REVALIDATE_SECONDS,
   });
   return sortCategoriesByTaxonomy(filterLegacyCategories(items.map(mapSanityCategorySummary)));
-});
+}
 
-const getSanityCategory = cache(async (slug: string) => {
+async function getSanityCategory(slug: string) {
   if (retiredCategorySlugs.has(slug)) {
     return null;
   }
@@ -1051,16 +1050,16 @@ const getSanityCategory = cache(async (slug: string) => {
         } satisfies RichBody),
     featuredToolSlugs: asStringArray(item.featuredToolSlugs),
   } satisfies CategoryEntry;
-});
+}
 
-const getSanityPages = cache(async () => {
+async function getSanityPages() {
   const items = await fetchPublishedSanity<SanityPageValue[]>(pageListQuery, {}, {
     tags: [sanityTags.pages],
   });
   return items.map(mapSanityPage);
-});
+}
 
-const getSanityPage = cache(async (slug: string) => {
+async function getSanityPage(slug: string) {
   const item = await fetchPublishedSanity<SanityPageValue | null>(pageBySlugQuery, { slug }, {
     tags: uniqueSanityTags([sanityTags.pages], [getSanitySlugTag("sanity:page", slug)]),
   });
@@ -1070,43 +1069,43 @@ const getSanityPage = cache(async (slug: string) => {
   }
 
   return mapSanityPage(item);
-});
+}
 
-const getSanityAuthors = cache(async () => {
+async function getSanityAuthors() {
   const items = await fetchPublishedSanity<SanityAuthorValue[]>(authorListQuery, {}, {
     tags: [sanityTags.authors],
   });
   return items.map(mapSanityAuthor).filter((item): item is DirectoryAuthor => item !== null);
-});
+}
 
-const getSanityAuthor = cache(async (slug: string) => {
+async function getSanityAuthor(slug: string) {
   const item = await fetchPublishedSanity<SanityAuthorValue | null>(authorBySlugQuery, { slug }, {
     tags: uniqueSanityTags([sanityTags.authors], [getSanitySlugTag("sanity:author", slug)]),
   });
   return mapSanityAuthor(item ?? undefined);
-});
+}
 
-export const getAllTools = cache(async () => {
+export async function getAllTools() {
   requireSanityContent();
   return getSanityTools();
-});
+}
 
-export const getToolBySlug = cache(async (slug: string) => {
+export async function getToolBySlug(slug: string) {
   requireSanityContent();
   return getSanityTool(slug);
-});
+}
 
-export const getAllGuides = cache(async () => {
+export async function getAllGuides() {
   requireSanityContent();
   return getSanityGuides();
-});
+}
 
-export const getGuideBySlug = cache(async (slug: string) => {
+export async function getGuideBySlug(slug: string) {
   requireSanityContent();
   return getSanityGuide(slug);
-});
+}
 
-export const getGuideByToolSlug = cache(async (toolSlug: string) => {
+export async function getGuideByToolSlug(toolSlug: string) {
   const guides = await getAllGuides();
   const directMatch = guides.find((guide) =>
     guide.relatedToolSlugs?.includes(toolSlug),
@@ -1118,29 +1117,29 @@ export const getGuideByToolSlug = cache(async (toolSlug: string) => {
 
   const fallbackSlug = `${toolSlug}-nasil-kullanilir`;
   return guides.find((guide) => guide.slug === fallbackSlug) ?? null;
-});
+}
 
-export const getAllCategories = cache(async () => {
+export async function getAllCategories() {
   requireSanityContent();
   return getSanityCategories();
-});
+}
 
-export const getCategoryBySlug = cache(async (slug: string) => {
+export async function getCategoryBySlug(slug: string) {
   requireSanityContent();
   return getSanityCategory(slug);
-});
+}
 
-export const getAllAuthors = cache(async () => {
+export async function getAllAuthors() {
   requireSanityContent();
   return getSanityAuthors();
-});
+}
 
-export const getAuthorBySlug = cache(async (slug: string) => {
+export async function getAuthorBySlug(slug: string) {
   requireSanityContent();
   return getSanityAuthor(slug);
-});
+}
 
-export const getToolsByCategorySlug = cache(async (categorySlug: string) => {
+export async function getToolsByCategorySlug(categorySlug: string) {
   const [tools, category] = await Promise.all([getAllTools(), getCategoryBySlug(categorySlug)]);
   const filteredTools = tools.filter((tool) => tool.categorySlug === categorySlug);
   const featuredToolSlugs =
@@ -1170,14 +1169,14 @@ export const getToolsByCategorySlug = cache(async (categorySlug: string) => {
 
     return leftIndex - rightIndex;
   });
-});
+}
 
-export const getAllPages = cache(async () => {
+export async function getAllPages() {
   requireSanityContent();
   return getSanityPages();
-});
+}
 
-export const getPageBySlug = cache(async (slug: string) => {
+export async function getPageBySlug(slug: string) {
   requireSanityContent();
   return getSanityPage(slug);
-});
+}

@@ -1,10 +1,11 @@
 .corporate-page-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 0 5rem;
 }
 
 .corporate-header {
+  width: 100%;
   margin-bottom: 2rem;
 }
 
@@ -28,9 +29,14 @@
 }
 
 .corporate-lead {
-  max-width: 44ch;
+  width: 100%;
+  max-width: none;
   font-size: 1.16rem;
   line-height: 1.8;
+}
+
+.corporate-content {
+  width: 100%;
 }
 
 .corporate-content section {

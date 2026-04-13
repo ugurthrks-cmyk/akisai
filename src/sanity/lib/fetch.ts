@@ -16,6 +16,8 @@ type PublishedFetchOptions = {
   revalidate?: number | false;
 };
 
+const DEFAULT_SANITY_REVALIDATE_SECONDS = 300;
+
 const serverSanityClient = createClient({
   projectId: sanityProjectId,
   dataset: sanityDataset,
@@ -35,7 +37,7 @@ export async function fetchPublishedSanity<T>(
   return serverSanityClient.fetch<T>(query, params ?? {}, {
     next: {
       tags,
-      revalidate: options.revalidate ?? false,
+      revalidate: options.revalidate ?? DEFAULT_SANITY_REVALIDATE_SECONDS,
     },
     useCdn: sanityReadToken || sanityApiToken ? false : true,
     cacheMode: "noStale",

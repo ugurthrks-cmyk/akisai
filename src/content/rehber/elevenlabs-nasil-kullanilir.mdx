@@ -1,0 +1,304 @@
+---
+title: "ElevenLabs Nasıl Kullanılır? Türkçe Seslendirme Rehberi"
+h1: "ElevenLabs Nasıl Kullanılır? Türkçe Seslendirme Oluşturma Adım Adım"
+name: "ElevenLabs Türkçe Seslendirme Rehberi"
+description: "Metin dosyasını yükle, Türkçe ses seç, saniyeler içinde profesyonel seslendirme üret. İçerik üreticisi ve KOBİ sahipleri için."
+metaDescription: "ElevenLabs'ta hesap açmaktan Türkçe seslendirme oluşturup dışa aktarmaya kadar adım adım rehber. Ödeme yöntemleri ve Türkiye'ye özel ipuçları dahil."
+heroIntro: "Bu rehber, ElevenLabs'ı ilk kez açan ya da Türkçe ses üretim akışını baştan sona netleştirmek isteyen kullanıcılar için hazırlandı. Amaç; hesap oluşturma, doğru ses ve model seçimi, metni hazırlama, ayarları optimize etme ve dışa aktarma sürecini tek oturumda anlaşılır hale getirmek."
+category: "Ses Oluşturma"
+difficulty: "Başlangıç"
+time: "20–30 dakika"
+tools: ["ElevenLabs"]
+author: "batuhan"
+date: "2026-04-13"
+datePublished: "2026-04-13"
+dateModified: "2026-04-13"
+lastVerified: "2026-04-13"
+verificationNotes: "Temel kullanım akışı, plan bilgileri ve destek kaynakları ElevenLabs'in resmi web sitesi, fiyatlandırma sayfası ve yardım merkezi üzerinden 13 Nisan 2026 tarihinde yeniden doğrulandı."
+sources:
+  - label: "ElevenLabs ana sayfa"
+    publisher: "ElevenLabs"
+    url: "https://elevenlabs.io"
+  - label: "ElevenLabs fiyatlandırma"
+    publisher: "ElevenLabs"
+    url: "https://elevenlabs.io/pricing"
+  - label: "ElevenLabs Yardım Merkezi"
+    publisher: "ElevenLabs"
+    url: "https://help.elevenlabs.io"
+faqs:
+  - question: "ElevenLabs Türkçeyi gerçekten anlıyor mu?"
+    answer: "Evet. Eleven v3 modeli 74+ dil destekliyor ve Türkçe profili İstanbul aksanına göre optimize edilmiş. Ancak bazı bölgesel Anadolu lehçeleri ve teknik Osmanlıca terimler zaman zaman yanlış telaffuz edebiliyor — bu durumda Pronunciation Dictionary devreye giriyor."
+  - question: "Ücretsiz planda Türkçe ses üretebilir miyim?"
+    answer: "Üretebilirsin, ama ticari hak yok. Aylık 10.000 karakter — yaklaşık 5–7 dakikalık ses. Test için yeterli, ciddi içerik üretimi için değil."
+  - question: "Türkiye'den ElevenLabs'a ödeme nasıl yapılır?"
+    answer: "En güvenilir yöntem Visa veya Mastercard. Troy kart uluslararası işlemlerde sıkça reddediliyor. PayPal Türkiye'de kullanılamıyor. Google Pay veya Apple Pay çalışıyor."
+  - question: "Ürettiğim Türkçe sesi YouTube'a yükleyebilir miyim?"
+    answer: "Starter ($6/ay) ve üzeri planlarda commercial rights var — YouTube dahil. Ücretsiz planda ElevenLabs attribution zorunlu ve ticari kullanım yasak."
+  - question: "Türkçe karakterler (ş, ğ, ı) seslendirilirken sorun çıkıyor mu?"
+    answer: "Platform UTF-8 destekliyor ve bu karakterlerin büyük çoğunluğunu doğru işliyor. Sorun çıkarsa Pronunciation Dictionary ile manuel fonetik gir ya da metni UTF-8 kodlamalı bir editörden yapıştır."
+  - question: "Bir Türkçe metni kaç krediye mal oluyor?"
+    answer: "Eleven v3 modelde 1 karakter = 1 kredi. 1.000 karakterlik metin (yaklaşık 500–600 kelime) = 1.000 kredi. Creator planın 100.000 kredisi ayda yaklaşık 50–60 dakikalık Türkçe ses üretimine yetiyor."
+  - question: "Sesi indirdikten sonra düzenleyebilir miyim?"
+    answer: "MP3 olarak indirilen dosyayı Audacity (ücretsiz), Adobe Audition veya DaVinci Resolve ile düzenleyebilirsin. ElevenLabs içinde düzenleme yapılamıyor — sadece yeniden üret."
+  - question: "Birden fazla ses dosyasını birleştirmek için ne kullanmalıyım?"
+    answer: "Uzun metinleri parçalara böldüysen, Audacity ile parçaları sırayla birleştirip tek dosya halinde dışa aktarabilirsin. İşlem 5–10 dakika sürüyor ve ücretsiz."
+---
+
+ElevenLabs'ı ilk açtığında ne yapman gerektiğini bilmek kolay değil. Platform 2026 itibarıyla çok sayıda özellik sunuyor ve bazı menü konumları geçen yıla göre değişti. Bu rehber seni en baştan — hesap oluşturmadan — profesyonel kalitede Türkçe ses dosyası dışa aktarmaya kadar götürüyor.
+
+Hedef kitle: ElevenLabs'ı ilk kez açan Türk içerik üreticileri ve KOBİ sahipleri. Podcast bölümü, ürün videosu seslendirmesi veya sosyal medya içeriği için Türkçe ses üretmek istiyorsan, doğru yerdesin.
+
+## ElevenLabs'ta "Seslendirme" Tam Olarak Ne Demek?
+
+ElevenLabs, metin dosyasını yükleyip "Dönüştür" tuşuna basmaktan ibaret değil. Platform üç farklı ses üretim yöntemi sunuyor:
+
+- **Text to Speech**: Yazdığın metni seçtiğin sesle seslendiriyorsun. En yaygın kullanım.
+- **Projects** (eski adıyla "Long-form Studio"): Uzun içerikler için, bölüm bölüm üretim ve sesi tutarlı tutma araçları.
+- **Speech to Speech**: Kendi sesin var ama kalitesini yükseltmek istiyorsun — girdi olarak ses, çıktı olarak farklı bir ses.
+
+Bu rehberde **Text to Speech** yöntemini ele alıyoruz. Çünkü çoğu Türk içerik üreticisi bu yöntemle başlıyor ve buradan edindiğin alışkanlıklar diğer modüllere de aktarılıyor.
+
+Türkiye'den örnek: Trendyol'da aktif olan bir kozmetik satıcısı, 50 ürün için açıklama videosu çekmek yerine her ürünün metnini ElevenLabs'a yükleyip seslendirme üretiyor. Aynı gün 50 video tamamlanıyor.
+
+---
+
+## Başlamadan Önce
+
+**Hangi plan gerekli?**
+
+| Adım | Gereken Plan |
+|---|---|
+| Hesap oluşturma | Ücretsiz |
+| Türkçe ses seçme ve test | Ücretsiz |
+| Ses üretme (10.000 karakter/ay) | Ücretsiz |
+| Ticari kullanım hakkı | Starter ($6/ay) ve üzeri |
+| Professional Voice Cloning (PVC) | Creator ($11/ay) ve üzeri |
+
+**Önemli:** Ücretsiz planda ürettiğin içerikleri YouTube, reklam veya ticari materyal olarak kullanamazsın. ElevenLabs attribution zorunlu ve commercial rights yok. İlk testi yap, beğenirsen Starter'a geç.
+
+**Hesap gereklilikleri:**
+- Geçerli bir e-posta adresi
+- Ödeme için Visa veya Mastercard (Troy kart uluslararası platformlarda sıkça reddediliyor — bkz. Ödeme adımı)
+- Chrome veya Firefox tarayıcı — Safari'de bazı ses önizleme sorunları bildiriliyor
+
+---
+
+## Adım 1: Hesap Oluşturma ve Aktivasyon
+
+Tarayıcında **elevenlabs.io** adresine git. Ana sayfadaki "Get started free" butonuna tıkla.
+
+### 1.1 Kayıt seçenekleri
+
+Google veya GitHub hesabınla giriş yapabilirsin — bu en hızlı yol. E-posta ile kaydoluyorsan, aktivasyon maili birkaç dakika içinde geliyor. Spam klasörünü kontrol et.
+
+**Bu neden önemli:** Google ile giriş yaparsan ileride ödeme yöntemini Google Pay üzerinden ekleyebilirsin. Bu, Türkiye'den uluslararası ödeme yaparken kurumsal kart gerekliliğini ortadan kaldırıyor.
+
+### 1.2 Kullanım amacı seçimi
+
+Kayıt sonrası platform sana kullanım amacını soruyor: Creator, Developer, Business gibi seçenekler çıkıyor. "Creator" seçmek dashboard'unu daha basit tutuyor; API endpoint'leri ön plana çıkmıyor.
+
+---
+
+## Adım 2: Dashboard Tanıma ve Türkçe Ses Bulma
+
+Giriş yaptıktan sonra sol kenar çubuğu şu şekilde görünüyor:
+
+- **Home** — son projeler ve kullanım özeti
+- **Speech** — Text to Speech modülü burası
+- **Projects** — uzun form içerik
+- **Voices** — ses kütüphanesi
+- **Dubbing** — video lokalizasyon
+- **ElevenAgents** — müşteri hizmetleri botları
+
+### 2.1 Voices kütüphanesine git
+
+Sol menüden **Voices** tıkla. Açılan ekranda iki sekme var: **My Voices** ve **Voice Library**.
+
+**Voice Library** sekmesine geç. Arama kutusuna "Turkish" yaz. 2026 itibarıyla kütüphanede şu Türkçe sesler öne çıkıyor:
+
+| Ses | Karakter | Uygun Kullanım |
+|---|---|---|
+| Fatih Yıldırım | Enerjik, net | Teknoloji içerikleri, YouTube |
+| Eda Atlas | Genç, canlı | Reklam, kurumsal eğitim |
+| Cavit Pancar | Epik, güçlü | Belgesel, tanıtım filmi |
+| Defne | Samimi, davetkar | Müşteri hizmetleri, asistan |
+| Mehmet Derindağ | Sakin, profesyonel | Haber okuma, sesli kitap |
+
+### 2.2 Sesi kaydetmek
+
+Beğendiğin sesin yanındaki **Add** butonuna bas. Ses "My Voices" listene ekleniyor ve Text to Speech modülünde kullanılabilir hale geliyor.
+
+**Sık yapılan hata:** Sesleri önizlemeden doğrudan projeye ekleme. Önizleme butonu sesin yanında küçük bir play ikonu olarak görünüyor — tıklamadan karar verme, çünkü bazı sesler kısa metinlerde iyi ama uzun paragrafta tutarsız davranıyor.
+
+---
+
+## Adım 3: Text to Speech Modülüne Geçiş
+
+Sol menüden **Speech** tıkla. Karşına gelen ekran üç ana alandan oluşuyor:
+
+1. **Metin alanı** — seslendireceğin metni buraya yazıyorsun
+2. **Voice seçici** — sağ üstte, sesini buradan seçiyorsun
+3. **Model seçici** — hangi AI modeliyle üretim yapacağını belirliyorsun
+
+### 3.1 Doğru modeli seç
+
+**Bu adım kritik.** ElevenLabs'ta birden fazla model var ve Türkçe için hepsinin kalitesi aynı değil:
+
+| Model | Türkçe Kalitesi | Hız | Kredi Maliyeti |
+|---|---|---|---|
+| Eleven v3 | En iyi | Orta | 1 kredi/karakter |
+| Multilingual v2 | İyi | Orta | 1 kredi/karakter |
+| Flash v2.5 | Orta | Çok hızlı | 0.5 kredi/karakter |
+
+Türkçe içerik için **Eleven v3** veya **Multilingual v2** seç. Flash model gerçek zamanlı uygulamalar için tasarlanmış — seslendirme kalitesinde geri kalıyor.
+
+---
+
+## Adım 4: Türkçe Metin Hazırlama ve Yapıştırma
+
+Bu adım, en çok sorun yaşanan yerlerden biri.
+
+### 4.1 Türkçe karakter uyarısı
+
+ElevenLabs metin alanı UTF-8'i destekliyor. Ancak şu karakterlerde zaman zaman sorun çıkabiliyor:
+
+- **ğ** → bazı eski tarayıcı sürümlerinde "g" olarak işleniyor
+- **ı** (noktalı değil i) → İngilizce klavyede yoktur, kopyala-yapıştır kullan
+- **ş, ç, ö, ü** → genellikle sorunsuz ama Word'den yapıştırırken kontrol et
+
+**Önerilen yöntem:** Metni önce Notepad++ veya VS Code'da UTF-8 olarak kaydet, sonra yapıştır. Word veya Google Docs'tan direkt yapıştırırken gizli karakterler bazen soruna yol açıyor.
+
+### 4.2 Metin uzunluğu sınırı
+
+Text to Speech modülü tek seferde **2.500 karaktere** kadar işliyor. Daha uzun metinler için **Projects** modülünü kullanman gerekiyor (Starter ve üzeri planlar).
+
+**Sık yapılan hata:** 5.000 karakterlik metni metin alanına yapıştırıp neden kesildiğini anlamamak. Platform sessizce kesiyor — uyarı vermiyor. Her zaman karakter sayını kontrol et.
+
+### 4.3 Ses üretimini tetikleme
+
+Metni yapıştırdıktan ve sesi seçtikten sonra **Generate** butonuna bas. Üretim süresi:
+
+- 500 karakter → yaklaşık 3–5 saniye
+- 2.500 karakter → yaklaşık 15–20 saniye
+
+Üretim tamamlandığında alt kısımda bir ses oynatıcı beliriyor.
+
+---
+
+## Adım 5: Stability ve Similarity Ayarları
+
+Ses oynatıcının yanında iki kaydırıcı var. Çoğu kullanıcı bunları görmezden geliyor — hata.
+
+### 5.1 Stability
+
+**Stability** sesin ne kadar tutarlı olduğunu belirliyor.
+
+- Yüksek (0.8–1.0): Monoton ama öngörülebilir. Kurumsal içerik için iyi.
+- Düşük (0.3–0.5): Daha ekspresif, daha insana yakın. Ama bazen beklenmedik vurgu kaymaları çıkıyor.
+
+Türkçe ticari içerik için 0.6–0.75 arası ideal başlangıç noktası.
+
+### 5.2 Similarity Enhancement
+
+Bu kaydırıcı sesin orijinal ses klonuna ne kadar yakın kalacağını belirliyor.
+
+- Çok düşük: Ses kendi karakterini kaybediyor, robotik hissettiriyor.
+- Çok yüksek: Bazı arka plan gürültüleri veya orijinal kayıttaki kusurlar da kopyalanabiliyor.
+
+0.75 olarak bırakman çoğu senaryo için yeterli.
+
+**Bu neden önemli:** Yanlış ayarlarla üretilen ses, düzeltmek için ekstra kredi harcatır. İlk üretimde 30 saniye harcayıp ayarları test etmek, ileride tasarruf sağlıyor.
+
+---
+
+## Adım 6: Seslendirmeyi Dışa Aktarma
+
+Ses beğendiysen sağ alt köşedeki **Download** butonuna tıkla.
+
+### 6.1 Format seçenekleri
+
+Ücretsiz ve Starter planda varsayılan format **MP3 128kbps**. Creator ve üzeri planda şu seçenekler geliyor:
+
+- MP3 192kbps — podcast ve sosyal medya için yeterli
+- PCM 44.1kHz — düzenleme için ham kalite
+- μ-law — telefon sistemleri entegrasyonu
+
+YouTube, Instagram Reels ve TikTok için MP3 192kbps fazlasıyla yeterli.
+
+### 6.2 Dosya adı ve organizasyon
+
+Platform dosyayı "speech_[timestamp].mp3" formatında kaydediyor. Çok sayıda içerik üretiyorsan, indirdikten hemen sonra dosyayı yeniden adlandır. 50 "speech_" dosyası arasında doğru olanı bulmak zor.
+
+---
+
+## Adım 7: Ödeme ve Plan Yükseltme (Türkiye Özel)
+
+Ticari kullanım için plan yükseltmen gerekiyorsa sol alt köşedeki kullanıcı menüsünden **Subscription** sekmesine gir.
+
+### 7.1 Ödeme yöntemi
+
+ElevenLabs Stripe altyapısı kullanıyor. Kabul edilen yöntemler:
+
+- Visa / Mastercard — en güvenilir
+- Apple Pay / Google Pay — sorunsuz çalışıyor
+- Troy kart — Discover network üzerinden çalışması gerekiyor ama uluslararası işlemlerde sıkça reddediliyor. Visa/Mastercard tercih et.
+
+**PayPal:** 2016'dan bu yana Türkiye'de çalışmıyor. Seçenek olarak görsen de kullanılamıyor.
+
+Sabit kur riskinden kaçınmak istiyorsan, Airwallex veya Papara gibi sanal kart sağlayıcıları USD hesabı açmanı sağlıyor — aylık yazılım harcamalarında kur dalgalanmalarından korunuyorsun.
+
+### 7.2 KDV (Türkiye zorunluluğu)
+
+ElevenLabs Türkiye'de KDV kesmiyor. Kurumsal kullanıcılar için "Sorumlu Sıfatıyla KDV" mekanizması geçerli: ödediğin USD tutarın TL karşılığı üzerinden %20 KDV hesaplayıp KDV-2 beyannamesiyle ödüyorsun, sonra KDV-1'de indirim konusu yapıyorsun. Muhasebecine danışmadan abonelik başlatma.
+
+---
+
+## Sık Yapılan Hatalar
+
+1. **Ücretsiz planda üretilen içeriği ticari kullanmak.** ElevenLabs attribution zorunluluğunu ciddi takip ediyor — telif hakkı ihlali riski var.
+
+2. **Türkçe teknik terimlerin yanlış telaffuzu.** "Yapay zeka", "blockchain", "e-ticaret" gibi kelimeler zaman zaman yanlış vurguyla çıkıyor. Pronunciation Dictionary özelliğiyle (Settings > Pronunciation) bu kelimeleri fonetik olarak tanımlayabilirsin.
+
+3. **6.000 kelimeyi aşan metinlerde ses kayması.** Uzun projeler için metni 1.500–2.000 karakter bloklara böl. Her bloğu aynı ayarlarla üret ve sonra bir ses editöründe birleştir (Audacity ücretsiz ve yeterli).
+
+4. **Flash modeliyle Türkçe içerik üretmek.** Flash model hız için optimize edilmiş — Türkçe telaffuzda "İngilizce fonetik bias" belirginleşiyor. Kalite öncelikliyse v3 kullan.
+
+5. **Kredi tükenmesini fark etmemek.** Dashboard'un sağ üst köşesindeki kredi göstergesi her zaman güncel değil. Settings > Usage ekranından gerçek zamanlı takip et.
+
+6. **Stability'yi 1.0'a çekmek.** Tamamen stabil ses, Türkçe'de doğal olmayan bir ritim yaratıyor. Özellikle uzun cümlelerde monoton hale geliyor.
+
+---
+
+## İpuçları
+
+**Expressive Mode için audio tag kullan.** Eleven v3 modeli şu formatı anlıyor: `[heyecanla] Bu fırsatı kaçırmayın! [duraklama]` — ses tonu ve ritmi buna göre değişiyor. Reklam seslendirmeleri için etkili.
+
+**Türkçe ö, ü, ı sorununu azalt.** Metni yüklemeden önce bu harfleri içeren kelimeleri Pronunciation Dictionary'e ekle. Özellikle özel isimler ve teknik terimler için gerekli.
+
+**Aylık kredi planlaması:** Bir Türkçe podcast bölümü ortalama 8.000–12.000 karakter. Creator plandaki 100.000 krediyle ayda 8–12 bölüm rahatça üretebilirsin. Daha fazlası için Pro plana bakmak gerek.
+
+**Ses önizleme öncesi test metni:** Kütüphanedeki sesi seçmeden önce arama kutusunun altındaki preview metnini Türkçeye çevir. Varsayılan İngilizce metin, Türkçe performansı yanlış ölçüyor.
+
+---
+
+## Test ve Doğrulama
+
+Ses dosyasını dışa aktarmadan önce şunları kontrol et:
+
+**Dinleme testi:**
+- Cümle sonlarında pitch doğal mı düşüyor?
+- "ğ" sesi yumuşak geçiş yapıyor mu, yoksa belirgin bir boşluk mu var?
+- Rakamlar doğru okunuyor mu? (Örn: "2026" → "iki bin yirmi altı" mı yoksa "twenty twenty-six" mi çıkıyor?)
+
+**Teknik kontrol:**
+- Dosya boyutu beklenen aralıkta mı? (1 dakika MP3 128kbps ≈ 1 MB)
+- Ses başında veya sonunda anormal sessizlik var mı?
+- Yüklediğin metin tamamen okunmuş mu? (Karakter limiti nedeniyle kesilen bölümler olabilir)
+
+**Başarı kriterleri:** Ürettiğin ses, metnin tamamını kesiksiz okumuşsa, Türkçe karakterleri doğru telaffuz ediyorsa ve dosya biçiminle uyumlu kalitede çıkmışsa üretim başarılı.
+
+---
+
+## Editör Notu
+
+Bu rehber ElevenLabs'ın Text to Speech modülüne odaklanıyor. Platform çok daha geniş bir ekosistem sunuyor: Voice Cloning, Dubbing Studio, ElevenAgents ve Projects modülleri farklı ihtiyaçlara yanıt veriyor. Platform seçimini yapmadan önce fiyatlandırma, Türkiye uyumu ve rakip karşılaştırması için ElevenLabs incelememize bakabilirsin: [ElevenLabs İncelemesi →](/incelemeler/elevenlabs)

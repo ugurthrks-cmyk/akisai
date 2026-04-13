@@ -25,6 +25,10 @@
   margin-bottom: 1rem;
 }
 
+.workflow-container .mdx-content hr {
+  display: none;
+}
+
 .workflow-meta {
   display: flex;
   gap: 0.7rem;

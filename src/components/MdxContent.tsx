@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 
 type MdxContentProps = {
   source: string;
@@ -31,5 +32,15 @@ const mdxComponents = {
 };
 
 export default function MdxContent({ source }: MdxContentProps) {
-  return <MDXRemote source={source} components={mdxComponents} />;
+  return (
+    <MDXRemote
+      source={source}
+      components={mdxComponents}
+      options={{
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+        },
+      }}
+    />
+  );
 }

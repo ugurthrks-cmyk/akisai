@@ -52,7 +52,7 @@ export default async function HomePage() {
         getFreshnessValue(left.dateModified, left.datePublished, left.date),
     )
     .slice(0, 6);
-  const featuredGuides = (featureReadyGuides.length > 0 ? featureReadyGuides : guides).slice(0, 3);
+  const featuredGuides = (featureReadyGuides.length > 0 ? featureReadyGuides : guides).slice(0, 6);
 
   const trustSignals = [
     {
