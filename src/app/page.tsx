@@ -51,7 +51,7 @@ export default async function HomePage() {
         getFreshnessValue(right.dateModified, right.datePublished, right.date) -
         getFreshnessValue(left.dateModified, left.datePublished, left.date),
     )
-    .slice(0, 3);
+    .slice(0, 6);
   const featuredGuides = (featureReadyGuides.length > 0 ? featureReadyGuides : guides).slice(0, 3);
 
   const trustSignals = [
@@ -185,6 +185,12 @@ export default async function HomePage() {
               </div>
             )}
           </div>
+
+          <div className="section-actions">
+            <Link href="/incelemeler" className="secondary-btn">
+              Tüm İncelemelere Git
+            </Link>
+          </div>
         </section>
 
         <section className="section-shell section-shell-guides container">
@@ -229,6 +235,12 @@ export default async function HomePage() {
                 </Link>
               </div>
             )}
+          </div>
+
+          <div className="section-actions">
+            <Link href="/rehber" className="secondary-btn">
+              Tüm Rehberlere Git
+            </Link>
           </div>
         </section>
       </div>
