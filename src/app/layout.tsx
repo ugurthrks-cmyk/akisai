@@ -70,7 +70,10 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [settings.defaultSocialImageUrl || "/twitter-image"],
     },
     icons: {
-      icon: "/favicon.ico",
+      icon: [
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/favicon.ico", sizes: "any" },
+      ],
       shortcut: "/favicon.ico",
       apple: "/apple-touch-icon.png",
     },
