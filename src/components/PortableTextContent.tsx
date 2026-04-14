@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
+import { getExternalLinkProps, isExternalHref } from "@/lib/link-utils";
 import { urlForImage } from "@/sanity/lib/image";
 
 type PortableTextContentProps = {
@@ -23,14 +24,16 @@ const portableTextComponents: PortableTextComponents = {
         return <Link href={href}>{children}</Link>;
       }
 
+      if (isExternalHref(href)) {
+        return (
+          <a href={href} {...getExternalLinkProps(href)}>
+            {children}
+          </a>
+        );
+      }
+
       return (
-        <a
-          href={href}
-          target={value?.openInNewTab ? "_blank" : undefined}
-          rel={value?.openInNewTab ? "noopener noreferrer" : undefined}
-        >
-          {children}
-        </a>
+        <a href={href}>{children}</a>
       );
     },
   },

@@ -1,12 +1,40 @@
 import Image from "next/image";
+import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import { getExternalLinkProps, isExternalHref } from "@/lib/link-utils";
 
 type MdxContentProps = {
   source: string;
 };
 
 const mdxComponents = {
+  a: (props: React.ComponentPropsWithoutRef<"a">) => {
+    const href = typeof props.href === "string" ? props.href : "";
+    const { children, ...rest } = props;
+
+    if (href.startsWith("/")) {
+      return (
+        <Link href={href} {...rest}>
+          {children}
+        </Link>
+      );
+    }
+
+    if (isExternalHref(href)) {
+      return (
+        <a href={href} {...getExternalLinkProps(href)} {...rest}>
+          {children}
+        </a>
+      );
+    }
+
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
+  },
   img: ({
     src,
     alt,
