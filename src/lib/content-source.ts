@@ -68,6 +68,9 @@ export interface ToolSummary {
   name: string;
   title?: string;
   h1?: string;
+  seoTitle?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
   description: string;
   metaDescription?: string;
   heroIntro?: string;
@@ -75,9 +78,14 @@ export interface ToolSummary {
   categorySlug?: string;
   author?: DirectoryAuthor | null;
   pricing?: string;
+  priceRangeText?: string;
   tags: string[];
   hasFreeTier: boolean;
+  freeTierNote?: string;
   isTRSupported: boolean;
+  trSupportLevel?: "none" | "partial" | "full";
+  trSupportNote?: string;
+  paymentMethodsText?: string;
   websiteUrl?: string;
   priceAmount?: string;
   priceCurrency?: string;
@@ -109,6 +117,9 @@ export interface GuideSummary {
   slug: string;
   title: string;
   h1?: string;
+  seoTitle?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
   name?: string;
   description: string;
   metaDescription?: string;
@@ -195,6 +206,9 @@ type SanityToolValue = {
   name?: string;
   title?: string;
   h1?: string;
+  seoTitle?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
   description?: string;
   metaDescription?: string;
   heroIntro?: string;
@@ -202,9 +216,14 @@ type SanityToolValue = {
   categorySlug?: string;
   author?: SanityAuthorValue;
   pricing?: string;
+  priceRangeText?: string;
   tags?: unknown;
   hasFreeTier?: boolean;
+  freeTierNote?: string;
   isTRSupported?: boolean;
+  trSupportLevel?: "none" | "partial" | "full";
+  trSupportNote?: string;
+  paymentMethodsText?: string;
   websiteUrl?: string;
   priceAmount?: number | string;
   priceCurrency?: string;
@@ -236,6 +255,9 @@ type SanityGuideValue = {
   slug?: string;
   title?: string;
   h1?: string;
+  seoTitle?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
   description?: string;
   metaDescription?: string;
   heroIntro?: string;
@@ -315,13 +337,21 @@ const toolListQuery = groq`*[_type == "tool" && defined(slug.current)] | order(c
   name,
   title,
   h1,
+  "seoTitle": seo.seoTitle,
+  "openGraphTitle": seo.openGraphTitle,
+  "openGraphDescription": seo.openGraphDescription,
   description,
   metaDescription,
   heroIntro,
   pricing,
+  priceRangeText,
   tags,
   hasFreeTier,
+  freeTierNote,
   isTRSupported,
+  trSupportLevel,
+  trSupportNote,
+  paymentMethodsText,
   websiteUrl,
   priceAmount,
   priceCurrency,
@@ -357,12 +387,20 @@ const toolBySlugQuery = groq`*[_type == "tool" && slug.current == $slug][0] {
   name,
   title,
   h1,
+  "seoTitle": seo.seoTitle,
+  "openGraphTitle": seo.openGraphTitle,
+  "openGraphDescription": seo.openGraphDescription,
   description,
   metaDescription,
   heroIntro,
   pricing,
+  priceRangeText,
   hasFreeTier,
+  freeTierNote,
   isTRSupported,
+  trSupportLevel,
+  trSupportNote,
+  paymentMethodsText,
   websiteUrl,
   priceAmount,
   priceCurrency,
@@ -407,6 +445,9 @@ const guideListQuery = groq`*[_type == "guide" && defined(slug.current)] | order
   "slug": slug.current,
   title,
   h1,
+  "seoTitle": seo.seoTitle,
+  "openGraphTitle": seo.openGraphTitle,
+  "openGraphDescription": seo.openGraphDescription,
   description,
   metaDescription,
   heroIntro,
@@ -436,6 +477,9 @@ const guideBySlugQuery = groq`*[_type == "guide" && slug.current == $slug][0] {
   "slug": slug.current,
   title,
   h1,
+  "seoTitle": seo.seoTitle,
+  "openGraphTitle": seo.openGraphTitle,
+  "openGraphDescription": seo.openGraphDescription,
   description,
   metaDescription,
   heroIntro,
@@ -851,6 +895,9 @@ function mapSanityToolSummary(item: SanityToolValue): ToolSummary {
     name: item.name || item.title || item.slug || "",
     title: item.title,
     h1: item.h1,
+    seoTitle: asString(item.seoTitle),
+    openGraphTitle: asString(item.openGraphTitle),
+    openGraphDescription: asString(item.openGraphDescription),
     description: item.description || "",
     metaDescription: item.metaDescription || item.description || "",
     heroIntro: item.heroIntro,
@@ -858,9 +905,14 @@ function mapSanityToolSummary(item: SanityToolValue): ToolSummary {
     categorySlug: item.categorySlug,
     author: mapSanityAuthor(item.author),
     pricing: item.pricing,
+    priceRangeText: asString(item.priceRangeText),
     tags: asStringArray(item.tags),
     hasFreeTier: Boolean(item.hasFreeTier),
+    freeTierNote: asString(item.freeTierNote),
     isTRSupported: Boolean(item.isTRSupported),
+    trSupportLevel: item.trSupportLevel,
+    trSupportNote: asString(item.trSupportNote),
+    paymentMethodsText: asString(item.paymentMethodsText),
     websiteUrl: item.websiteUrl,
     priceAmount:
       typeof item.priceAmount === "number" || typeof item.priceAmount === "string"
@@ -888,6 +940,9 @@ function mapSanityGuideSummary(item: SanityGuideValue): GuideSummary {
     slug: item.slug || "",
     title: item.title || item.slug || "",
     h1: item.h1,
+    seoTitle: asString(item.seoTitle),
+    openGraphTitle: asString(item.openGraphTitle),
+    openGraphDescription: asString(item.openGraphDescription),
     description: item.description || "",
     metaDescription: item.metaDescription || item.description || "",
     heroIntro: item.heroIntro,

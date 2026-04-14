@@ -54,21 +54,6 @@ export default async function HomePage() {
     .slice(0, 6);
   const featuredGuides = (featureReadyGuides.length > 0 ? featureReadyGuides : guides).slice(0, 6);
 
-  const trustSignals = [
-    {
-      title: "Test Edilmiş İncelemeler",
-      description: "Araç sayfaları kullanım senaryosu, karar sinyalleri ve gerçek sınırlamaları birlikte açıklar.",
-    },
-    {
-      title: "Adım Adım Rehberler",
-      description: "Rehberler, kullanıcıların en sık aradığı nasıl kullanılır niyetine doğrudan yanıt verir.",
-    },
-    {
-      title: "Şeffaf Editoryal Yapı",
-      description: "Yazarlar, yayın ilkeleri ve kategori mantığı açık şekilde görünür.",
-    },
-  ];
-
   const heroTopics = coreCategoryTaxonomy.map((topic) => ({
     href: `/kategori/${topic.slug}`,
     label: topic.name,
@@ -126,19 +111,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      <div className="trust-banner-wrapper">
-        <aside className="trust-banner container">
-          <div className="trust-content trust-content-compact">
-            {trustSignals.map((signal) => (
-              <div className="trust-item" key={signal.title}>
-                <strong>{signal.title}</strong>
-                <span>{signal.description}</span>
-              </div>
-            ))}
-          </div>
-        </aside>
-      </div>
 
       <div className="page-sections">
         <section className="section-shell section-shell-tools container">

@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
     return { title: "Araç bulunamadı" };
   }
 
-  const title = tool.title || `${tool.name} incelemesi ve kullanım alanları`;
+  const title = tool.seoTitle || tool.title || `${tool.name} incelemesi ve kullanım alanları`;
   const description = tool.metaDescription || tool.description;
   const publishedTime = toIsoDate(tool.datePublished ?? tool.date);
   const modifiedTime = toIsoDate(tool.dateModified ?? tool.updatedAt ?? tool.datePublished ?? tool.date);
@@ -56,6 +56,8 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
     description,
     path: `/incelemeler/${resolvedParams.slug}`,
     canonicalUrl: tool.canonicalUrl,
+    openGraphTitle: tool.openGraphTitle,
+    openGraphDescription: tool.openGraphDescription,
     type: "article",
     imagePath: tool.featuredImageUrl || socialImagePath,
     twitterImagePath: tool.featuredImageUrl || socialTwitterImagePath,
@@ -118,6 +120,9 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
     }))
     .filter((item) => typeof item.value === "number");
   const reviewScore = tool.reviewScore ?? tool.reviewRating;
+  const heroIntroParagraphs = tool.heroIntro
+    ? tool.heroIntro.split(/\r?\n\s*\r?\n/).map((item) => item.trim()).filter(Boolean)
+    : [];
 
   const publisherEntity = {
     "@type": "Organization",
@@ -303,7 +308,16 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
             ) : null}
             <div>
               <h1>{pageTitle}</h1>
-              {tool.heroIntro ? <p className="tool-vision-description">{tool.heroIntro}</p> : null}
+              {heroIntroParagraphs.length > 0
+                ? heroIntroParagraphs.map((paragraph, index) => (
+                    <p
+                      key={`hero-intro-${index}`}
+                      className="tool-vision-description"
+                    >
+                      {paragraph}
+                    </p>
+                  ))
+                : null}
             </div>
           </div>
 
@@ -326,7 +340,16 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
               },
               {
                 label: "Türkçe desteği",
-                value: tool.isTRSupported ? "Var" : "Yok",
+                value:
+                  tool.trSupportLevel === "partial"
+                    ? "Kısmen"
+                    : tool.trSupportLevel === "full"
+                      ? "Var"
+                      : tool.trSupportLevel === "none"
+                        ? "Yok"
+                        : tool.isTRSupported
+                          ? "Var"
+                          : "Yok",
               },
               {
                 label: "Yazar",

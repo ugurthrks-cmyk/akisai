@@ -165,6 +165,44 @@ function parsePriceAmount(frontmatter) {
   return undefined;
 }
 
+function parseTRSupportLevel(value) {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const normalized = value
+    .trim()
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ı/g, "i")
+    .replace(/ş/g, "s")
+    .replace(/ğ/g, "g")
+    .replace(/ü/g, "u")
+    .replace(/ö/g, "o")
+    .replace(/ç/g, "c");
+
+  if (!normalized) {
+    return undefined;
+  }
+
+  if (["var", "full", "tam"].includes(normalized)) {
+    return "full";
+  }
+
+  if (["kismi", "kismen", "partial"].includes(normalized)) {
+    return "partial";
+  }
+
+  if (["kismi", "kısmi", "kismen", "kısmen", "partial"].includes(normalized)) {
+    return "partial";
+  }
+
+  if (["yok", "none"].includes(normalized)) {
+    return "none";
+  }
+
+  return undefined;
+}
+
 function parseReviewRating(frontmatter) {
   if (typeof frontmatter.reviewRating === "number") {
     return frontmatter.reviewRating;
@@ -176,6 +214,59 @@ function parseReviewRating(frontmatter) {
   }
 
   return undefined;
+}
+
+function buildSeoMetadata(frontmatter) {
+  const seoTitle = frontmatter.seoTitle ? String(frontmatter.seoTitle) : undefined;
+  const openGraphTitle = frontmatter.ogTitle ? String(frontmatter.ogTitle) : undefined;
+  const openGraphDescription = frontmatter.ogDescription ? String(frontmatter.ogDescription) : undefined;
+  const focusKeyword = frontmatter.focusKeyword ? String(frontmatter.focusKeyword) : undefined;
+  const keywords = Array.isArray(frontmatter.secondaryKeywords)
+    ? frontmatter.secondaryKeywords.map(String)
+    : Array.isArray(frontmatter.keywords)
+      ? frontmatter.keywords.map(String)
+      : [];
+  const speakableHeadings = Array.isArray(frontmatter.speakableHeadings)
+    ? frontmatter.speakableHeadings.map(String)
+    : [];
+  const geoFaqs = Array.isArray(frontmatter.geoFaqs)
+    ? frontmatter.geoFaqs
+        .filter((faq) => faq && typeof faq === "object")
+        .map((faq) => ({
+          _type: "faqItem",
+          question: String(faq.question),
+          answer: String(faq.answer),
+        }))
+    : [];
+  const canonicalUrl = frontmatter.canonicalUrl ? String(frontmatter.canonicalUrl) : undefined;
+  const noIndex = typeof frontmatter.noIndex === "boolean" ? frontmatter.noIndex : undefined;
+
+  if (
+    !seoTitle &&
+    !openGraphTitle &&
+    !openGraphDescription &&
+    !focusKeyword &&
+    keywords.length === 0 &&
+    speakableHeadings.length === 0 &&
+    geoFaqs.length === 0 &&
+    !canonicalUrl &&
+    typeof noIndex !== "boolean"
+  ) {
+    return undefined;
+  }
+
+  return {
+    _type: "seoMetadata",
+    seoTitle,
+    openGraphTitle,
+    openGraphDescription,
+    focusKeyword,
+    keywords,
+    speakableHeadings,
+    geoFaqs,
+    canonicalUrl,
+    noIndex,
+  };
 }
 
 function parseRatingValue(value) {
@@ -282,6 +373,8 @@ const categoryAliasIdByName = new Map([
   ["Yapay Zeka Ses Üretimi / TTS / Ses Klonlama", "category.ses-olusturma"],
   ["Sesli AI / Metin-Seslendirme", "category.ses-olusturma"],
   ["Grafik Tasarım & İçerik Üretimi", "category.gorsel-olusturma"],
+  ["AI Logo & Marka Kimliği", "category.logo-tasarimi"],
+  ["Yapay Zeka Video Üretimi", "category.video-olusturma"],
 ]);
 
 const categoryDocs = categoryEntries.map((entry) => ({
@@ -317,10 +410,15 @@ const toolDocs = toolEntries.map((entry) => {
     category: categoryId ? toReference(categoryId) : undefined,
     tags: Array.isArray(frontmatter.tags) ? frontmatter.tags.map(String) : [],
     pricing: frontmatter.pricing ? String(frontmatter.pricing) : undefined,
+    priceRangeText: frontmatter.priceRangeText ? String(frontmatter.priceRangeText) : undefined,
     hasFreeTier: Boolean(frontmatter.hasFreeTier),
+    freeTierNote: frontmatter.freeTierNote ? String(frontmatter.freeTierNote) : undefined,
     priceAmount: parsePriceAmount(frontmatter),
     priceCurrency: frontmatter.priceCurrency ? String(frontmatter.priceCurrency) : "TRY",
     isTRSupported: Boolean(frontmatter.isTRSupported),
+    trSupportLevel: parseTRSupportLevel(frontmatter.trSupportLevel),
+    trSupportNote: frontmatter.trSupportNote ? String(frontmatter.trSupportNote) : undefined,
+    paymentMethodsText: frontmatter.paymentMethodsText ? String(frontmatter.paymentMethodsText) : undefined,
     websiteUrl: frontmatter.websiteUrl ? String(frontmatter.websiteUrl) : undefined,
     pros: Array.isArray(frontmatter.pros) ? frontmatter.pros.map(String) : [],
     cons: Array.isArray(frontmatter.cons) ? frontmatter.cons.map(String) : [],
@@ -340,6 +438,7 @@ const toolDocs = toolEntries.map((entry) => {
       : [],
     datePublished: toSanityDate(frontmatter.datePublished || frontmatter.date),
     dateModified: toSanityDate(frontmatter.dateModified),
+    seo: buildSeoMetadata(frontmatter),
   };
 });
 
@@ -397,6 +496,7 @@ const guideDocs = guideEntries.map((entry) => {
       : [],
     datePublished: toSanityDate(frontmatter.datePublished || frontmatter.date),
     dateModified: toSanityDate(frontmatter.dateModified),
+    seo: buildSeoMetadata(frontmatter),
   };
 });
 

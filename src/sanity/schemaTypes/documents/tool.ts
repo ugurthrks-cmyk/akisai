@@ -188,11 +188,25 @@ export const tool = defineType({
       description: "Gorunen fiyatlama ozeti. Ornek: Ucretsiz plan var, Pro 199 TL/ay",
     }),
     defineField({
+      name: "priceRangeText",
+      title: "Yerel fiyat araligi",
+      type: "string",
+      group: "commercial",
+      description: "Kart veya operasyonel notlar icin yerel para birimi araligi.",
+    }),
+    defineField({
       name: "hasFreeTier",
       title: "Ucretsiz plan var",
       type: "boolean",
       group: "commercial",
       initialValue: false,
+    }),
+    defineField({
+      name: "freeTierNote",
+      title: "Ucretsiz plan notu",
+      type: "string",
+      group: "commercial",
+      description: "Ornek: Tasarim ucretsiz, indirme ucretli.",
     }),
     defineField({
       name: "priceAmount",
@@ -221,6 +235,34 @@ export const tool = defineType({
       type: "boolean",
       group: "commercial",
       initialValue: false,
+    }),
+    defineField({
+      name: "trSupportLevel",
+      title: "Turkce destek seviyesi",
+      type: "string",
+      group: "commercial",
+      options: {
+        list: [
+          { title: "Yok", value: "none" },
+          { title: "Kismen", value: "partial" },
+          { title: "Var", value: "full" },
+        ],
+        layout: "radio",
+      },
+    }),
+    defineField({
+      name: "trSupportNote",
+      title: "Turkce destek notu",
+      type: "string",
+      group: "commercial",
+    }),
+    defineField({
+      name: "paymentMethodsText",
+      title: "Odeme yontemleri notu",
+      type: "text",
+      rows: 3,
+      group: "commercial",
+      description: "Kart/odeme yontemi notlarini teknik olarak saklamak icin kullanin.",
     }),
     defineField({
       name: "pros",

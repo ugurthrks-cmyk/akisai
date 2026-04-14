@@ -192,10 +192,12 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
   const modifiedTime = toIsoDate(guide.dateModified ?? guide.updatedAt ?? guide.datePublished ?? guide.date);
 
   const metadata = buildMetadata({
-    title: guide.title,
+    title: guide.seoTitle || guide.title,
     description: guide.metaDescription || guide.description,
     path: `/rehber/${resolvedParams.slug}`,
     canonicalUrl: guide.canonicalUrl,
+    openGraphTitle: guide.openGraphTitle,
+    openGraphDescription: guide.openGraphDescription,
     type: "article",
     imagePath: guide.featuredImageUrl || socialImagePath,
     twitterImagePath: guide.featuredImageUrl || socialTwitterImagePath,

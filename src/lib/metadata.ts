@@ -10,6 +10,8 @@ type BuildMetadataOptions = {
   description: string;
   path: string;
   canonicalUrl?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
   type?: MetadataPageType;
   imagePath?: string;
   twitterImagePath?: string;
@@ -52,6 +54,8 @@ export function buildMetadata({
   description,
   path,
   canonicalUrl,
+  openGraphTitle,
+  openGraphDescription,
   type = "website",
   imagePath = "/opengraph-image",
   twitterImagePath = "/twitter-image",
@@ -71,6 +75,7 @@ export function buildMetadata({
   defaultTwitterImagePath,
 }: BuildMetadataOptions): Metadata {
   const normalizedDescription = clampText(description, 155);
+  const normalizedOpenGraphDescription = clampText(openGraphDescription || description, 200);
   const canonical = normalizeAbsoluteUrl(canonicalUrl || absoluteUrl(path, baseUrl));
   const resolvedImagePath = imagePath ?? defaultImagePath ?? "/opengraph-image";
   const resolvedTwitterImagePath =
@@ -97,8 +102,8 @@ export function buildMetadata({
       },
     },
     openGraph: {
-      title,
-      description: normalizedDescription,
+      title: openGraphTitle || title,
+      description: normalizedOpenGraphDescription,
       url: canonical,
       siteName,
       locale,
