@@ -16,17 +16,17 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     lang: "tr",
     icons: [
       {
-        src: "/icon-192-v3.png",
+        src: "/icon-192-v4.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
-        src: "/icon-512-v3.png",
+        src: "/icon-512-v4.png",
         sizes: "512x512",
         type: "image/png",
       },
       {
-        src: "/apple-touch-icon-v3.png",
+        src: "/apple-touch-icon-v4.png",
         sizes: "180x180",
         type: "image/png",
       },
