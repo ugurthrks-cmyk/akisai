@@ -71,11 +71,11 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     icons: {
       icon: [
-        { url: "/favicon.svg", type: "image/svg+xml" },
-        { url: "/favicon.ico", sizes: "any" },
+        { url: "/favicon-v3.svg", type: "image/svg+xml" },
+        { url: "/favicon-v3.ico", sizes: "any" },
       ],
-      shortcut: "/favicon.ico",
-      apple: "/apple-touch-icon.png",
+      shortcut: "/favicon-v3.ico",
+      apple: "/apple-touch-icon-v3.png",
     },
     verification: {
       google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
