@@ -50,6 +50,11 @@ export default async function GlobalCategoriesHub() {
         hasPart: [
           {
             "@type": "CollectionPage",
+            name: "Yapay Zeka Asistanları",
+            url: "https://akisai.com.tr/kategori/yapay-zeka-asistanlari",
+          },
+          {
+            "@type": "CollectionPage",
             name: "Video Düzenleme",
             url: "https://akisai.com.tr/kategori/video-duzenleme",
           },
@@ -154,6 +159,10 @@ export default async function GlobalCategoriesHub() {
         <div className="category-hub-section">
           <h2 className="category-hub-heading">İhtiyaca Göre Hangi Kategoriye Gitmelisiniz?</h2>
           <p>
+            ChatGPT, Claude, Gemini ve benzeri genel amaçlı araçları karşılaştırmak istiyorsanız{" "}
+            <Link href="/kategori/yapay-zeka-asistanlari">Yapay Zeka Asistanları</Link> doğru başlangıç noktasıdır.
+          </p>
+          <p>
             Hazır çekilmiş videoları kesmek, altyazı eklemek ve sosyal medya formatına uyarlamak istiyorsanız{" "}
             <Link href="/kategori/video-duzenleme">Video Düzenleme</Link> doğru başlangıçtır. Metinden sahne üretmek,
             avatar video hazırlamak veya reklam taslağı çıkarmak istiyorsanız{" "}
@@ -162,9 +171,10 @@ export default async function GlobalCategoriesHub() {
           <p>
             Formlar, CRM kayıtları ve ekip bildirimleri arasında tekrar eden işleri devretmek için{" "}
             <Link href="/kategori/is-akisi-otomasyonu">İş Akışı Otomasyonu</Link> kategorisine geçin. Kampanya
-            kreatifi, ürün görseli ve sosyal medya taslakları için <Link href="/kategori/gorsel-olusturma">Görsel Oluşturma</Link>,
-            anlatım sesi ve klonlama için <Link href="/kategori/ses-olusturma">Ses Oluşturma</Link>, hızlı marka yönü
-            görmek için de <Link href="/kategori/logo-tasarimi">Logo Tasarımı</Link> daha doğru giriş noktalarıdır.
+            kreatifi, ürün görseli ve sosyal medya taslakları için{" "}
+            <Link href="/kategori/gorsel-olusturma">Görsel Oluşturma</Link>, anlatım sesi ve klonlama için{" "}
+            <Link href="/kategori/ses-olusturma">Ses Oluşturma</Link>, hızlı marka yönü görmek için de{" "}
+            <Link href="/kategori/logo-tasarimi">Logo Tasarımı</Link> daha doğru giriş noktalarıdır.
           </p>
         </div>
 

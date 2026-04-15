@@ -54,10 +54,12 @@ export default async function HomePage() {
     .slice(0, 6);
   const featuredGuides = (featureReadyGuides.length > 0 ? featureReadyGuides : guides).slice(0, 6);
 
-  const heroTopics = coreCategoryTaxonomy.map((topic) => ({
-    href: `/kategori/${topic.slug}`,
-    label: topic.name,
-  }));
+  const heroTopics = coreCategoryTaxonomy
+    .filter((topic) => topic.slug !== "is-akisi-otomasyonu")
+    .map((topic) => ({
+      href: `/kategori/${topic.slug}`,
+      label: topic.name,
+    }));
 
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -95,7 +97,7 @@ export default async function HomePage() {
         <div className="container hero-stack">
           <div className="hero-content hero-content-compact">
             <span className="hero-kicker">Türkiye İçin Yapay Zeka Araçları ve Rehberleri</span>
-            <h1>Yapay Zeka Araçları, İncelemeleri ve Nasıl Kullanılır Rehberleri</h1>
+            <h1>Yapay Zeka Araçları, İncelemeleri ve Rehberleri</h1>
             <p className="vision-paragraph">
               AkışAI; Türkiye için yapay zeka araç incelemelerini, kullanım alanı merkezlerini ve adım adım kullanım
               rehberlerini tek bir editoryal karar katmanında birleştirir.

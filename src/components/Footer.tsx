@@ -62,6 +62,9 @@ export default function Footer({
             <h3>Kategoriler</h3>
             <ul>
               <li>
+                <Link href="/kategori/yapay-zeka-asistanlari">Yapay Zeka Asistanları</Link>
+              </li>
+              <li>
                 <Link href="/kategori/video-duzenleme">Video Düzenleme</Link>
               </li>
               <li>

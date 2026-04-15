@@ -165,6 +165,19 @@ function parsePriceAmount(frontmatter) {
   return undefined;
 }
 
+function parseYear(value) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const match = value.match(/\d{4}/);
+    return match ? Number(match[0]) : undefined;
+  }
+
+  return undefined;
+}
+
 function parseTRSupportLevel(value) {
   if (typeof value !== "string") {
     return undefined;
@@ -375,7 +388,12 @@ const categoryAliasIdByName = new Map([
   ["Grafik Tasarım & İçerik Üretimi", "category.gorsel-olusturma"],
   ["AI Logo & Marka Kimliği", "category.logo-tasarimi"],
   ["Yapay Zeka Video Üretimi", "category.video-olusturma"],
+  ["Üretken yapay zeka / sohbet asistanı", "category.yapay-zeka-asistanlari"],
 ]);
+
+function resolveCategoryIdByName(value) {
+  return categoryIdByName.get(String(value)) || categoryAliasIdByName.get(String(value));
+}
 
 const categoryDocs = categoryEntries.map((entry) => ({
   _id: `category.${entry.slug}`,
@@ -393,7 +411,7 @@ const categoryDocs = categoryEntries.map((entry) => ({
 const toolDocs = toolEntries.map((entry) => {
   const frontmatter = entry.frontmatter;
   const categoryName = String(frontmatter.category);
-  const categoryId = categoryIdByName.get(categoryName) || categoryAliasIdByName.get(categoryName);
+  const categoryId = resolveCategoryIdByName(categoryName);
 
   return {
     _id: `tool.${entry.slug}`,
@@ -408,6 +426,9 @@ const toolDocs = toolEntries.map((entry) => {
     bodyMarkdown: entry.bodyMarkdown,
     author: toReference(`author.${String(frontmatter.author)}`),
     category: categoryId ? toReference(categoryId) : undefined,
+    developerName: frontmatter.developerName ? String(frontmatter.developerName) : undefined,
+    developerLocation: frontmatter.developerLocation ? String(frontmatter.developerLocation) : undefined,
+    developerFoundedYear: parseYear(frontmatter.developerFoundedYear),
     tags: Array.isArray(frontmatter.tags) ? frontmatter.tags.map(String) : [],
     pricing: frontmatter.pricing ? String(frontmatter.pricing) : undefined,
     priceRangeText: frontmatter.priceRangeText ? String(frontmatter.priceRangeText) : undefined,
@@ -438,6 +459,8 @@ const toolDocs = toolEntries.map((entry) => {
       : [],
     datePublished: toSanityDate(frontmatter.datePublished || frontmatter.date),
     dateModified: toSanityDate(frontmatter.dateModified),
+    lastVerified: frontmatter.lastVerified ? String(frontmatter.lastVerified) : undefined,
+    verificationNotes: frontmatter.verificationNotes ? String(frontmatter.verificationNotes) : undefined,
     seo: buildSeoMetadata(frontmatter),
   };
 });
@@ -448,7 +471,7 @@ for (const categoryDoc of categoryDocs) {
   categoryDoc.featuredTools = toolDocs
     .filter((toolDoc) => {
       const entry = toolEntries.find((item) => `tool.${item.slug}` === toolDoc._id);
-      return entry && String(entry.frontmatter.category) === categoryDoc.name;
+      return entry && resolveCategoryIdByName(entry.frontmatter.category) === categoryDoc._id;
     })
     .map((toolDoc) => toReference(toolDoc._id));
 }
@@ -480,8 +503,8 @@ const guideDocs = guideEntries.map((entry) => {
     heroIntro: frontmatter.heroIntro ? String(frontmatter.heroIntro) : undefined,
     bodyMarkdown: entry.bodyMarkdown,
     author: toReference(`author.${String(frontmatter.author)}`),
-    category: categoryIdByName.get(String(frontmatter.category)) || categoryAliasIdByName.get(String(frontmatter.category))
-      ? toReference(categoryIdByName.get(String(frontmatter.category)) || categoryAliasIdByName.get(String(frontmatter.category)))
+    category: resolveCategoryIdByName(String(frontmatter.category))
+      ? toReference(resolveCategoryIdByName(String(frontmatter.category)))
       : undefined,
     relatedTools,
     difficulty: frontmatter.difficulty ? String(frontmatter.difficulty) : undefined,

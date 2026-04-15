@@ -1,5 +1,10 @@
 export const coreCategoryTaxonomy = [
   {
+    slug: "yapay-zeka-asistanlari",
+    name: "Yapay Zeka Asistanları",
+    heroLabel: "Yapay Zeka Asistanları",
+  },
+  {
     slug: "video-duzenleme",
     name: "Video Düzenleme",
     heroLabel: "Yapay Zeka ile Video Düzenleme",
