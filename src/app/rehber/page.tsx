@@ -7,7 +7,7 @@ import "./rehber.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata({
-    title: "Yapay zeka nasıl kullanılır rehberleri | AkışAI",
+    title: "Yapay Zeka Nasıl Kullanılır Rehberleri | AkışAI",
     description:
       "Yapay zeka araçları nasıl kullanılır? CapCut, Zapier ve benzeri araçlar için adım adım kullanım rehberlerini inceleyin.",
     path: "/rehber",

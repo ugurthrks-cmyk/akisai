@@ -9,7 +9,7 @@ import "./authors.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata({
-    title: "Yazar profilleri ve editoryal kadro",
+    title: "Yazar Profilleri ve Editoryal Kadro",
     description:
       "Yapay zeka araç incelemeleri ve nasıl kullanılır rehberlerini hazırlayan editörleri, araştırmacıları ve otomasyon uzmanlarını yakından tanıyın.",
     path: "/yazar",

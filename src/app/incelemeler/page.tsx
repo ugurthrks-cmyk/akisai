@@ -8,7 +8,7 @@ import "../ai/ai-hub.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata({
-    title: "Yapay zeka araç incelemeleri | AkışAI",
+    title: "Yapay Zeka Araç İncelemeleri | AkışAI",
     description:
       "Karar vermeyi hızlandıran yapay zeka araç incelemeleri, fiyat başlangıçları, Türkçe destek sinyalleri ve kategori ilişkileriyle AkışAI inceleme merkezini keşfedin.",
     path: "/incelemeler",
