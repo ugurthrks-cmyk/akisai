@@ -175,6 +175,21 @@ export const guide = defineType({
       group: "trust",
     }),
     defineField({
+      name: "lastVerified",
+      title: "Son dogrulama tarihi",
+      type: "date",
+      group: "trust",
+      description: "Icerigin teknik ve operasyonel sinyallerinin son kontrol tarihi.",
+    }),
+    defineField({
+      name: "verificationNotes",
+      title: "Dogrulama notlari",
+      type: "text",
+      rows: 3,
+      group: "trust",
+      description: "Icerigin hangi kaynaklar veya sinyaller uzerinden dogrulandigina dair ic not.",
+    }),
+    defineField({
       name: "seo",
       title: "SEO",
       type: "seoMetadata",

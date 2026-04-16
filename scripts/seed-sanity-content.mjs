@@ -389,6 +389,7 @@ const categoryAliasIdByName = new Map([
   ["AI Logo & Marka Kimliği", "category.logo-tasarimi"],
   ["Yapay Zeka Video Üretimi", "category.video-olusturma"],
   ["Üretken yapay zeka / sohbet asistanı", "category.yapay-zeka-asistanlari"],
+  ["Yapay Zeka Sohbet Asistanı / Üretkenlik", "category.yapay-zeka-asistanlari"],
 ]);
 
 function resolveCategoryIdByName(value) {
@@ -519,6 +520,8 @@ const guideDocs = guideEntries.map((entry) => {
       : [],
     datePublished: toSanityDate(frontmatter.datePublished || frontmatter.date),
     dateModified: toSanityDate(frontmatter.dateModified),
+    lastVerified: frontmatter.lastVerified ? String(frontmatter.lastVerified) : undefined,
+    verificationNotes: frontmatter.verificationNotes ? String(frontmatter.verificationNotes) : undefined,
     seo: buildSeoMetadata(frontmatter),
   };
 });
