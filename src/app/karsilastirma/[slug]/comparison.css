@@ -50,31 +50,29 @@
   color: #9a5a1c;
 }
 
-.comparison-verdict {
-  width: min(100%, var(--measure));
-  margin: 0 auto 2rem;
-  padding: 1.4rem 1.5rem;
-  border-radius: 22px;
-  border: 1px solid rgba(180, 83, 9, 0.16);
-  background: linear-gradient(180deg, rgba(255, 251, 235, 0.96), rgba(255, 247, 237, 0.92));
-  box-shadow: var(--shadow-soft);
+.comparison-header .content-signal-grid {
+  grid-template-columns: repeat(2, minmax(0, 220px));
+  gap: 0.65rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
 }
 
-.comparison-verdict span {
-  display: inline-flex;
-  margin-bottom: 0.55rem;
-  color: #9a5a1c;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.comparison-header .content-signal-card {
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
 }
 
-.comparison-verdict p {
-  margin: 0;
-  color: var(--text-base);
-  font-size: 1rem;
-  line-height: 1.7;
+.comparison-header .content-signal-label {
+  margin-bottom: 0.2rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+
+.comparison-header .content-signal-value {
+  font-size: 0.96rem;
+  font-weight: 650;
 }
 
 .comparison-tools-section {
@@ -148,5 +146,15 @@
 @media (max-width: 768px) {
   .comparison-container {
     padding-top: 1.2rem;
+  }
+
+  .comparison-header .content-signal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .comparison-header .content-signal-grid {
+    grid-template-columns: 1fr;
   }
 }

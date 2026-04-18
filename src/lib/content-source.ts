@@ -158,7 +158,6 @@ export interface ComparisonSummary {
   description: string;
   metaDescription?: string;
   heroIntro?: string;
-  verdict?: string;
   category?: string;
   categorySlug?: string;
   author?: DirectoryAuthor | null;
@@ -324,7 +323,6 @@ type SanityComparisonValue = {
   description?: string;
   metaDescription?: string;
   heroIntro?: string;
-  verdict?: string;
   category?: string;
   categorySlug?: string;
   author?: SanityAuthorValue;
@@ -582,7 +580,6 @@ const comparisonListQuery = groq`*[_type == "comparison" && defined(slug.current
   description,
   metaDescription,
   heroIntro,
-  verdict,
   datePublished,
   dateModified,
   "updatedAt": _updatedAt,
@@ -616,7 +613,6 @@ const comparisonBySlugQuery = groq`*[_type == "comparison" && slug.current == $s
   description,
   metaDescription,
   heroIntro,
-  verdict,
   faqs,
   body,
   datePublished,
@@ -1109,7 +1105,6 @@ function mapSanityComparisonSummary(item: SanityComparisonValue): ComparisonSumm
     description: item.description || "",
     metaDescription: item.metaDescription || item.description || "",
     heroIntro: item.heroIntro,
-    verdict: asString(item.verdict),
     category: item.category,
     categorySlug: item.categorySlug,
     author: mapSanityAuthor(item.author),

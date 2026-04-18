@@ -6,79 +6,102 @@ export default function NotFound() {
       style={{
         minHeight: "80vh",
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        textAlign: "center",
-        padding: "2rem",
+        padding: "2rem 1.25rem 3rem",
       }}
     >
-      <h1
+      <div
         style={{
-          fontSize: "8rem",
-          fontWeight: "900",
-          color: "var(--text-base)",
-          margin: "0",
-          lineHeight: "1",
-          textShadow: "0 0 40px rgba(138, 43, 226, 0.3)",
+          width: "min(100%, 760px)",
+          textAlign: "center",
+          padding: "2.25rem 1.5rem",
+          borderRadius: "28px",
+          background: "rgba(255, 252, 247, 0.78)",
+          border: "1px solid rgba(19, 35, 47, 0.08)",
+          boxShadow: "0 24px 70px rgba(19, 35, 47, 0.08)",
+          backdropFilter: "blur(10px)",
         }}
       >
-        404
-      </h1>
-      <h2
-        style={{
-          fontSize: "2rem",
-          color: "#e4e4e7",
-          marginTop: "1rem",
-          marginBottom: "1.5rem",
-        }}
-      >
-        Aradığınız sayfa bulunamadı
-      </h2>
-      <p
-        style={{
-          color: "#a1a1aa",
-          fontSize: "1.2rem",
-          maxWidth: "500px",
-          lineHeight: "1.6",
-          marginBottom: "3rem",
-        }}
-      >
-        Aradığınız içerik silinmiş, adı değişmiş ya da henüz yayımlanmamış olabilir. Ana sayfaya
-        dönerek kategorilerden, rehberlerden ve araç incelemelerinden ilerleyebilirsiniz.
-      </p>
+        <h1
+          style={{
+            fontSize: "clamp(5rem, 20vw, 8rem)",
+            fontWeight: "900",
+            color: "var(--text-base)",
+            margin: 0,
+            lineHeight: 1,
+            textShadow: "0 18px 36px rgba(198, 106, 23, 0.14)",
+          }}
+        >
+          404
+        </h1>
 
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <Link
-          href="/"
+        <h2
           style={{
-            padding: "0.8rem 2rem",
-            background: "linear-gradient(135deg, var(--accent) 0%, #6b21a8 100%)",
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "bold",
-            borderRadius: "12px",
-            transition: "transform 0.2s ease",
-            boxShadow: "0 4px 15px rgba(138, 43, 226, 0.2)",
+            fontSize: "clamp(1.9rem, 5vw, 2.5rem)",
+            color: "var(--text-base)",
+            marginTop: "0.9rem",
+            marginBottom: "1rem",
+            lineHeight: 1.1,
           }}
         >
-          Ana sayfaya dön
-        </Link>
-        <Link
-          href="/kategori"
+          Aradığınız sayfa bulunamadı
+        </h2>
+
+        <p
           style={{
-            padding: "0.8rem 2rem",
-            background: "rgba(255, 255, 255, 0.05)",
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "bold",
-            borderRadius: "12px",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            transition: "background 0.2s ease",
+            color: "var(--text-muted)",
+            fontSize: "1.15rem",
+            maxWidth: "34rem",
+            lineHeight: "1.75",
+            margin: "0 auto 2rem",
           }}
         >
-          Kategorileri keşfet
-        </Link>
+          Aradığınız içerik silinmiş, adı değişmiş ya da henüz yayımlanmamış olabilir. Ana sayfaya dönerek
+          kategorilerden, rehberlerden ve araç incelemelerinden ilerleyebilirsiniz.
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.9rem",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            href="/"
+            style={{
+              minWidth: "220px",
+              padding: "0.95rem 1.5rem",
+              background: "linear-gradient(135deg, var(--accent-primary) 0%, #6b21a8 100%)",
+              color: "#ffffff",
+              textDecoration: "none",
+              fontWeight: 700,
+              borderRadius: "16px",
+              boxShadow: "0 10px 24px rgba(107, 33, 168, 0.18)",
+            }}
+          >
+            Ana sayfaya dön
+          </Link>
+
+          <Link
+            href="/kategori"
+            style={{
+              minWidth: "220px",
+              padding: "0.95rem 1.5rem",
+              background: "rgba(255, 255, 255, 0.92)",
+              color: "var(--text-base)",
+              textDecoration: "none",
+              fontWeight: 700,
+              borderRadius: "16px",
+              border: "1px solid rgba(19, 35, 47, 0.12)",
+              boxShadow: "0 10px 24px rgba(19, 35, 47, 0.06)",
+            }}
+          >
+            Kategorileri keşfet
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -552,7 +552,6 @@ const comparisonDocs = comparisonEntries.map((entry) => {
     description: String(frontmatter.description),
     metaDescription: frontmatter.metaDescription ? String(frontmatter.metaDescription) : undefined,
     heroIntro: frontmatter.heroIntro ? String(frontmatter.heroIntro) : undefined,
-    verdict: frontmatter.verdict ? String(frontmatter.verdict) : undefined,
     bodyMarkdown: entry.bodyMarkdown,
     author: toReference(`author.${String(frontmatter.author)}`),
     category: resolveCategoryIdByName(String(frontmatter.category))

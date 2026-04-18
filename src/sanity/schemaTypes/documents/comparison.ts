@@ -67,14 +67,6 @@ export const comparison = defineType({
       group: "editorial",
     }),
     defineField({
-      name: "verdict",
-      title: "Kısa karar özeti",
-      type: "text",
-      rows: 3,
-      group: "editorial",
-      description: "Sayfa üstünde ve liste kartlarında kullanılabilecek kısa sonuç metni.",
-    }),
-    defineField({
       name: "bodyMarkdown",
       title: "Eski MDX gövdesi",
       type: "text",
@@ -192,7 +184,7 @@ export const comparison = defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "verdict",
+      subtitle: "description",
       media: "featuredImage",
     },
   },

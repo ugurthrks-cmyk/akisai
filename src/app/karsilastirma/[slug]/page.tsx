@@ -106,7 +106,6 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
   const pageTitle = comparison.h1 || comparison.title;
   const publishedAt = comparison.datePublished ?? comparison.date;
   const updatedAt = comparison.dateModified ?? comparison.updatedAt ?? comparison.datePublished ?? comparison.date;
-  const verifiedAt = comparison.lastVerified;
   const socialImageUrl = absoluteUrl(`/karsilastirma/${resolvedParams.slug}/opengraph-image`, settings.url);
   const mdxSource = comparison.body.kind === "mdx" ? comparison.body.source ?? null : null;
   const findMatchedTool = (name: string) =>
@@ -181,7 +180,7 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
     }),
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: [".comparison-header h1", ".comparison-hero-intro", ".comparison-verdict p"],
+      cssSelector: [".comparison-header h1", ".comparison-hero-intro"],
     },
     image: comparison.featuredImageUrl || socialImageUrl,
     ...(comparedTools.length > 0
@@ -268,9 +267,6 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
 
         <ContentSignalGrid
           items={[
-            { label: "Kategori", value: comparison.category || "Belirtilmedi" },
-            { label: "Kapsam", value: displayToolNames.length > 0 ? `${displayToolNames.length} araç` : "Belirtilmedi" },
-            { label: "Karar", value: comparison.verdict || "Senaryo bazlı editör karşılaştırması" },
             {
               label: "Yazar",
               value: comparison.author?.fullName || "Editör ekibi",
@@ -280,20 +276,9 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
               label: "Son güncelleme",
               value: formatDisplayDate(updatedAt) || "Belirtilmedi",
             },
-            {
-              label: "Son doğrulama",
-              value: formatDisplayDate(verifiedAt) || "Belirtilmedi",
-            },
           ]}
         />
       </header>
-
-      {comparison.verdict ? (
-        <section className="comparison-verdict">
-          <span>Hızlı Karar</span>
-          <p>{comparison.verdict}</p>
-        </section>
-      ) : null}
 
       <article className="mdx-content reading-surface" style={{ marginTop: "1.35rem" }}>
         {mdxSource ? (

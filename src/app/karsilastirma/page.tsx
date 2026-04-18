@@ -100,10 +100,9 @@ export default async function ComparisonHubPage() {
 
             <div className="ai-hub-card-footer">
               <div className="ai-price-tag">
-                {comparison.verdict ||
-                  (comparison.comparedToolNames && comparison.comparedToolNames.length > 0
-                    ? comparison.comparedToolNames.join(" • ")
-                    : "Senaryo bazlı karar notları")}
+                {comparison.comparedToolNames && comparison.comparedToolNames.length > 0
+                  ? comparison.comparedToolNames.join(" • ")
+                  : "Senaryo bazlı araç karşılaştırması"}
               </div>
               <div className="read-more-btn">
                 Karşılaştırmayı Aç <span>→</span>

@@ -64,7 +64,7 @@ export default async function SearchResultsPage({
     const safeCategory = "category" in item && item.category ? String(item.category).toLowerCase() : "";
     const safeHero = "heroIntro" in item && item.heroIntro ? String(item.heroIntro).toLowerCase() : "";
     const safeTags = "tags" in item && Array.isArray(item.tags) ? item.tags.join(" ").toLowerCase() : "";
-    const safeVerdict = "verdict" in item && item.verdict ? String(item.verdict).toLowerCase() : "";
+    const safeVerdict = "";
 
     return [safeTitle, safeName, safeDesc, safeCategory, safeHero, safeTags, safeVerdict].some((field) =>
       field.includes(query),
