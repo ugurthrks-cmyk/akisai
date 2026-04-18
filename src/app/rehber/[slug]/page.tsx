@@ -8,6 +8,7 @@ import ContentSignalGrid from "@/components/ContentSignalGrid";
 import FaqSection from "@/components/FaqSection";
 import MdxContent from "@/components/MdxContent";
 import PortableTextContent from "@/components/PortableTextContent";
+import SourceList from "@/components/SourceList";
 import { absoluteUrl, formatDisplayDate, toIsoDate } from "@/lib/content";
 import { getAllGuides, getGuideBySlug, getToolBySlug } from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
@@ -227,6 +228,10 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
     metadataOtherEntries.push(["last-modified", modifiedTime]);
   }
 
+  if (guide.lastVerified) {
+    metadataOtherEntries.push(["last-verified", guide.lastVerified]);
+  }
+
   return metadataOtherEntries.length > 0
     ? { ...metadata, other: Object.fromEntries(metadataOtherEntries) }
     : metadata;
@@ -251,6 +256,12 @@ export default async function GuidePage({ params }: GuidePageProps) {
   const pageTitle = guide.h1 || guide.title;
   const publishedAt = guide.datePublished ?? guide.date;
   const updatedAt = guide.dateModified ?? guide.updatedAt ?? guide.datePublished ?? guide.date;
+  const publishedTimestamp = publishedAt ? new Date(publishedAt).getTime() : Number.NaN;
+  const updatedTimestamp = updatedAt ? new Date(updatedAt).getTime() : Number.NaN;
+  const showUpdatedDate =
+    Number.isFinite(publishedTimestamp) && Number.isFinite(updatedTimestamp)
+      ? updatedTimestamp > publishedTimestamp
+      : Boolean(updatedAt && publishedAt && updatedAt !== publishedAt);
   const socialImageUrl = absoluteUrl(`/rehber/${resolvedParams.slug}/opengraph-image`, settings.url);
   const mdxSource = guide.body.kind === "mdx" ? guide.body.source ?? null : null;
   const relatedToolUrl = relatedTool
@@ -314,10 +325,6 @@ export default async function GuidePage({ params }: GuidePageProps) {
     publisher: publisherEntity,
     articleSection: guide.category || "Nasıl kullanılır rehberi",
     about: guide.tools.length > 0 ? guide.tools.map((tool) => ({ "@type": "SoftwareApplication", name: tool })) : undefined,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [".workflow-header h1", ".workflow-description"],
-    },
     image:
       guide.featuredImageUrl ||
       socialImageUrl,
@@ -416,8 +423,12 @@ export default async function GuidePage({ params }: GuidePageProps) {
               href: guide.author ? `/yazar/${guide.author.slug}` : undefined,
             },
             {
+              label: "Yayınlanma tarihi",
+              value: formatDisplayDate(publishedAt) || "Belirtilmedi",
+            },
+            {
               label: "Son güncelleme",
-              value: formatDisplayDate(updatedAt) || "Belirtilmedi",
+              value: showUpdatedDate ? (formatDisplayDate(updatedAt) ?? "") : "",
             },
           ]}
         />
@@ -430,6 +441,12 @@ export default async function GuidePage({ params }: GuidePageProps) {
           <PortableTextContent value={guide.body.kind === "portableText" ? guide.body.value : []} />
         )}
       </article>
+
+      <SourceList
+        sources={guide.sources}
+        lastVerified={guide.lastVerified}
+        verificationNotes={guide.verificationNotes}
+      />
 
       <AuthorBox author={guide.author} />
 

@@ -233,24 +233,6 @@ function buildSeoMetadata(frontmatter) {
   const seoTitle = frontmatter.seoTitle ? String(frontmatter.seoTitle) : undefined;
   const openGraphTitle = frontmatter.ogTitle ? String(frontmatter.ogTitle) : undefined;
   const openGraphDescription = frontmatter.ogDescription ? String(frontmatter.ogDescription) : undefined;
-  const focusKeyword = frontmatter.focusKeyword ? String(frontmatter.focusKeyword) : undefined;
-  const keywords = Array.isArray(frontmatter.secondaryKeywords)
-    ? frontmatter.secondaryKeywords.map(String)
-    : Array.isArray(frontmatter.keywords)
-      ? frontmatter.keywords.map(String)
-      : [];
-  const speakableHeadings = Array.isArray(frontmatter.speakableHeadings)
-    ? frontmatter.speakableHeadings.map(String)
-    : [];
-  const geoFaqs = Array.isArray(frontmatter.geoFaqs)
-    ? frontmatter.geoFaqs
-        .filter((faq) => faq && typeof faq === "object")
-        .map((faq) => ({
-          _type: "faqItem",
-          question: String(faq.question),
-          answer: String(faq.answer),
-        }))
-    : [];
   const canonicalUrl = frontmatter.canonicalUrl ? String(frontmatter.canonicalUrl) : undefined;
   const noIndex = typeof frontmatter.noIndex === "boolean" ? frontmatter.noIndex : undefined;
 
@@ -258,10 +240,6 @@ function buildSeoMetadata(frontmatter) {
     !seoTitle &&
     !openGraphTitle &&
     !openGraphDescription &&
-    !focusKeyword &&
-    keywords.length === 0 &&
-    speakableHeadings.length === 0 &&
-    geoFaqs.length === 0 &&
     !canonicalUrl &&
     typeof noIndex !== "boolean"
   ) {
@@ -273,10 +251,6 @@ function buildSeoMetadata(frontmatter) {
     seoTitle,
     openGraphTitle,
     openGraphDescription,
-    focusKeyword,
-    keywords,
-    speakableHeadings,
-    geoFaqs,
     canonicalUrl,
     noIndex,
   };

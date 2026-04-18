@@ -93,6 +93,7 @@
 .source-section {
   margin-top: 4rem;
   padding: 1.5rem;
+  position: relative;
 }
 
 .source-section h2 {
@@ -121,6 +122,31 @@
   color: var(--accent-glow);
 }
 
+.source-verification-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.42rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(19, 35, 47, 0.1);
+  background: rgba(246, 248, 245, 0.96);
+  color: var(--text-base);
+  box-shadow: 0 8px 18px rgba(19, 35, 47, 0.08);
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.source-verification-label {
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.68rem;
+}
+
 @media (max-width: 768px) {
   .publishing-meta {
     grid-template-columns: 1fr;
@@ -128,6 +154,11 @@
 
   .content-signal-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .source-verification-badge {
+    position: static;
+    margin-bottom: 0.9rem;
   }
 }
 

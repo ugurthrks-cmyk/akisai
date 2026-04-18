@@ -100,6 +100,8 @@ export interface ToolSummary {
   date?: string;
   datePublished?: string;
   dateModified?: string;
+  lastVerified?: string;
+  verificationNotes?: string;
   updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
@@ -136,6 +138,8 @@ export interface GuideSummary {
   date?: string;
   datePublished?: string;
   dateModified?: string;
+  lastVerified?: string;
+  verificationNotes?: string;
   updatedAt?: string;
   sources?: SourceItem[];
   canonicalUrl?: string;
@@ -169,6 +173,7 @@ export interface ComparisonSummary {
   datePublished?: string;
   dateModified?: string;
   lastVerified?: string;
+  verificationNotes?: string;
   updatedAt?: string;
   sources?: SourceItem[];
   canonicalUrl?: string;
@@ -278,6 +283,8 @@ type SanityToolValue = {
   faqs?: unknown;
   datePublished?: string;
   dateModified?: string;
+  lastVerified?: string;
+  verificationNotes?: string;
   updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
@@ -307,6 +314,8 @@ type SanityGuideValue = {
   faqs?: unknown;
   datePublished?: string;
   dateModified?: string;
+  lastVerified?: string;
+  verificationNotes?: string;
   updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
@@ -337,6 +346,7 @@ type SanityComparisonValue = {
   datePublished?: string;
   dateModified?: string;
   lastVerified?: string;
+  verificationNotes?: string;
   updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
@@ -425,6 +435,8 @@ const toolListQuery = groq`*[_type == "tool" && defined(slug.current)] | order(c
   destek,
   datePublished,
   dateModified,
+  lastVerified,
+  verificationNotes,
   "updatedAt": _updatedAt,
   "category": category->name,
   "categorySlug": category->slug.current,
@@ -484,6 +496,8 @@ const toolBySlugQuery = groq`*[_type == "tool" && slug.current == $slug][0] {
   },
   datePublished,
   dateModified,
+  lastVerified,
+  verificationNotes,
   "updatedAt": _updatedAt,
   "category": category->name,
   "categorySlug": category->slug.current,
@@ -517,6 +531,8 @@ const guideListQuery = groq`*[_type == "guide" && defined(slug.current)] | order
   estimatedTimeMinutes,
   datePublished,
   dateModified,
+  lastVerified,
+  verificationNotes,
   "updatedAt": _updatedAt,
   "category": category->name,
   "categorySlug": category->slug.current,
@@ -551,6 +567,8 @@ const guideBySlugQuery = groq`*[_type == "guide" && slug.current == $slug][0] {
   body,
   datePublished,
   dateModified,
+  lastVerified,
+  verificationNotes,
   "updatedAt": _updatedAt,
   "category": category->name,
   "categorySlug": category->slug.current,
@@ -599,6 +617,7 @@ const comparisonListQuery = groq`*[_type == "comparison" && defined(slug.current
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex,
   lastVerified,
+  verificationNotes,
   bodyMarkdown,
   "author": author->{${authorProjection}}
 }`;
@@ -634,6 +653,7 @@ const comparisonBySlugQuery = groq`*[_type == "comparison" && slug.current == $s
   "canonicalUrl": seo.canonicalUrl,
   "noIndex": seo.noIndex,
   lastVerified,
+  verificationNotes,
   bodyMarkdown,
   "author": author->{${authorProjection}}
 }`;
@@ -1059,6 +1079,8 @@ function mapSanityToolSummary(item: SanityToolValue): ToolSummary {
     sources: asSourceArray(item.sources),
     datePublished: item.datePublished,
     dateModified: item.dateModified,
+    lastVerified: asString(item.lastVerified),
+    verificationNotes: asString(item.verificationNotes),
     updatedAt: item.updatedAt,
     canonicalUrl: asString(item.canonicalUrl),
     noIndex: Boolean(item.noIndex),
@@ -1087,6 +1109,8 @@ function mapSanityGuideSummary(item: SanityGuideValue): GuideSummary {
     featuredImageAlt: asString(item.featuredImageAlt),
     datePublished: item.datePublished,
     dateModified: item.dateModified,
+    lastVerified: asString(item.lastVerified),
+    verificationNotes: asString(item.verificationNotes),
     updatedAt: item.updatedAt,
     sources: asSourceArray(item.sources),
     canonicalUrl: asString(item.canonicalUrl),
@@ -1115,6 +1139,7 @@ function mapSanityComparisonSummary(item: SanityComparisonValue): ComparisonSumm
     datePublished: item.datePublished,
     dateModified: item.dateModified,
     lastVerified: asString(item.lastVerified),
+    verificationNotes: asString(item.verificationNotes),
     updatedAt: item.updatedAt,
     sources: asSourceArray(item.sources),
     canonicalUrl: asString(item.canonicalUrl),

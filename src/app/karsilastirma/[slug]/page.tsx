@@ -7,6 +7,7 @@ import ContentSignalGrid from "@/components/ContentSignalGrid";
 import FaqSection from "@/components/FaqSection";
 import MdxContent from "@/components/MdxContent";
 import PortableTextContent from "@/components/PortableTextContent";
+import SourceList from "@/components/SourceList";
 import { absoluteUrl, formatDisplayDate, toIsoDate } from "@/lib/content";
 import { getAllComparisons, getComparisonBySlug, getToolBySlug } from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
@@ -106,6 +107,12 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
   const pageTitle = comparison.h1 || comparison.title;
   const publishedAt = comparison.datePublished ?? comparison.date;
   const updatedAt = comparison.dateModified ?? comparison.updatedAt ?? comparison.datePublished ?? comparison.date;
+  const publishedTimestamp = publishedAt ? new Date(publishedAt).getTime() : Number.NaN;
+  const updatedTimestamp = updatedAt ? new Date(updatedAt).getTime() : Number.NaN;
+  const showUpdatedDate =
+    Number.isFinite(publishedTimestamp) && Number.isFinite(updatedTimestamp)
+      ? updatedTimestamp > publishedTimestamp
+      : Boolean(updatedAt && publishedAt && updatedAt !== publishedAt);
   const socialImageUrl = absoluteUrl(`/karsilastirma/${resolvedParams.slug}/opengraph-image`, settings.url);
   const mdxSource = comparison.body.kind === "mdx" ? comparison.body.source ?? null : null;
   const findMatchedTool = (name: string) =>
@@ -178,10 +185,6 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
           : {}),
       };
     }),
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [".comparison-header h1", ".comparison-hero-intro"],
-    },
     image: comparison.featuredImageUrl || socialImageUrl,
     ...(comparedTools.length > 0
       ? {
@@ -273,8 +276,12 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
               href: comparison.author ? `/yazar/${comparison.author.slug}` : undefined,
             },
             {
+              label: "Yayınlanma tarihi",
+              value: formatDisplayDate(publishedAt) || "Belirtilmedi",
+            },
+            {
               label: "Son güncelleme",
-              value: formatDisplayDate(updatedAt) || "Belirtilmedi",
+              value: showUpdatedDate ? (formatDisplayDate(updatedAt) ?? "") : "",
             },
           ]}
         />
@@ -287,6 +294,12 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
           <PortableTextContent value={comparison.body.kind === "portableText" ? comparison.body.value : []} />
         )}
       </article>
+
+      <SourceList
+        sources={comparison.sources}
+        lastVerified={comparison.lastVerified}
+        verificationNotes={comparison.verificationNotes}
+      />
 
       <AuthorBox author={comparison.author} />
 

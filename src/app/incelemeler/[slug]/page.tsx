@@ -8,6 +8,7 @@ import ContentSignalGrid from "@/components/ContentSignalGrid";
 import FaqSection from "@/components/FaqSection";
 import MdxContent from "@/components/MdxContent";
 import PortableTextContent from "@/components/PortableTextContent";
+import SourceList from "@/components/SourceList";
 import {
   absoluteUrl,
   formatDisplayDate,
@@ -87,6 +88,10 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
     metadataOtherEntries.push(["last-modified", modifiedTime]);
   }
 
+  if (tool.lastVerified) {
+    metadataOtherEntries.push(["last-verified", tool.lastVerified]);
+  }
+
   return metadataOtherEntries.length > 0
     ? { ...metadata, other: Object.fromEntries(metadataOtherEntries) }
     : metadata;
@@ -109,6 +114,12 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
   const pageTitle = tool.h1 || tool.title || `${tool.name} incelemesi`;
   const publishedAt = tool.datePublished ?? tool.date;
   const updatedAt = tool.dateModified ?? tool.updatedAt ?? tool.datePublished ?? tool.date;
+  const publishedTimestamp = publishedAt ? new Date(publishedAt).getTime() : Number.NaN;
+  const updatedTimestamp = updatedAt ? new Date(updatedAt).getTime() : Number.NaN;
+  const showUpdatedDate =
+    Number.isFinite(publishedTimestamp) && Number.isFinite(updatedTimestamp)
+      ? updatedTimestamp > publishedTimestamp
+      : Boolean(updatedAt && publishedAt && updatedAt !== publishedAt);
   const socialImageUrl = absoluteUrl(`/incelemeler/${resolvedParams.slug}/opengraph-image`, settings.url);
   const mdxSource = tool.body.kind === "mdx" ? tool.body.source ?? null : null;
   const relatedGuideUrl = relatedGuide
@@ -227,10 +238,6 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
         : null,
     ].filter(Boolean),
     isAccessibleForFree: Boolean(tool.hasFreeTier),
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [".tool-header h1", ".tool-vision-description"],
-    },
     image:
       tool.featuredImageUrl ||
       tool.logoUrl ||
@@ -359,8 +366,12 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
                 href: tool.author ? `/yazar/${tool.author.slug}` : undefined,
               },
               {
+                label: "Yayınlanma tarihi",
+                value: formatDisplayDate(publishedAt) || "Belirtilmedi",
+              },
+              {
                 label: "Son güncelleme",
-                value: formatDisplayDate(updatedAt) || "Belirtilmedi",
+                value: showUpdatedDate ? (formatDisplayDate(updatedAt) ?? "") : "",
               },
             ]}
           />
@@ -456,6 +467,12 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
           <PortableTextContent value={tool.body.kind === "portableText" ? tool.body.value : []} />
         )}
       </article>
+
+      <SourceList
+        sources={tool.sources}
+        lastVerified={tool.lastVerified}
+        verificationNotes={tool.verificationNotes}
+      />
 
       <AuthorBox author={tool.author} />
 

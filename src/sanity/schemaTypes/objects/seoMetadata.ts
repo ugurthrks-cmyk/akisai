@@ -28,33 +28,6 @@ export const seoMetadata = defineType({
       description: "Sosyal paylasim aciklamasi icin ayrik metin gerekiyorsa kullanin.",
     }),
     defineField({
-      name: "focusKeyword",
-      title: "Focus keyword",
-      type: "string",
-      description: "Editoryal SEO planlama icin hedef ana anahtar kelime.",
-    }),
-    defineField({
-      name: "keywords",
-      title: "Secondary keywords",
-      type: "array",
-      of: [{ type: "string" }],
-      description: "Destekleyici anahtar kelimeler.",
-    }),
-    defineField({
-      name: "speakableHeadings",
-      title: "Speakable bolumler",
-      type: "array",
-      of: [{ type: "string" }],
-      description: "GEO/speakable planlamasinda one cikarmak istediginiz basliklar.",
-    }),
-    defineField({
-      name: "geoFaqs",
-      title: "GEO soru-cevaplari",
-      type: "array",
-      of: [{ type: "faqItem" }],
-      description: "Makale govdesinde gostermeden saklanan ana soru-cevap ciftleri.",
-    }),
-    defineField({
       name: "canonicalUrl",
       title: "Canonical URL override",
       type: "url",
