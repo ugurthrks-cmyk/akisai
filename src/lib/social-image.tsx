@@ -8,7 +8,7 @@ export const socialImageSize = {
 
 export const socialImageContentType = "image/png";
 
-type SocialImageVariant = "tool" | "guide";
+type SocialImageVariant = "tool" | "guide" | "comparison";
 
 type BuildContentSocialImageOptions = {
   title: string;
@@ -31,13 +31,27 @@ function clampText(value: string | undefined, limit: number) {
 }
 
 function getVariantLabel(variant: SocialImageVariant) {
-  return variant === "tool" ? "Arac Incelemesi" : "Nasil Kullanilir Rehberi";
+  if (variant === "tool") {
+    return "Arac Incelemesi";
+  }
+
+  if (variant === "guide") {
+    return "Nasil Kullanilir Rehberi";
+  }
+
+  return "Arac Karsilastirmasi";
 }
 
 function getVariantAccent(variant: SocialImageVariant) {
-  return variant === "tool"
-    ? { primary: "#0f766e", soft: "#99f6e4" }
-    : { primary: "#2563eb", soft: "#bfdbfe" };
+  if (variant === "tool") {
+    return { primary: "#0f766e", soft: "#99f6e4" };
+  }
+
+  if (variant === "guide") {
+    return { primary: "#2563eb", soft: "#bfdbfe" };
+  }
+
+  return { primary: "#b45309", soft: "#fed7aa" };
 }
 
 export async function buildContentSocialImage({

@@ -1,6 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getAllCategories, getAllGuides, getAllPages, getAllTools } from "@/lib/content-source";
+import {
+  getAllCategories,
+  getAllComparisons,
+  getAllGuides,
+  getAllPages,
+  getAllTools,
+} from "@/lib/content-source";
 import { buildSiteMetadata } from "@/lib/metadata";
 import { getManagedPagePath } from "@/lib/managed-pages";
 import "./arama.css";
@@ -8,7 +14,7 @@ import "./arama.css";
 export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata({
     title: "Arama Sonuçları",
-    description: "Platformdaki yapay zeka araçları, incelemeler, rehberler ve sayfalar içinde arama yapın.",
+    description: "Platformdaki yapay zeka araçları, incelemeler, karşılaştırmalar, rehberler ve sayfalar içinde arama yapın.",
     path: "/arama",
     noIndex: true,
   });
@@ -28,7 +34,7 @@ export default async function SearchResultsPage({
         <header style={{ marginBottom: "2rem" }}>
           <h1 style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>Arama yapın</h1>
           <p style={{ color: "var(--text-muted)", maxWidth: 720, lineHeight: 1.7 }}>
-            Araç adı, kategori, rehber başlığı, sayfa başlığı veya açıklama ile arama yapabilirsiniz. Bu sayfa
+            Araç adı, kategori, rehber, karşılaştırma, sayfa başlığı veya açıklama ile arama yapabilirsiniz. Bu sayfa
             dizine alınmaz; yalnızca kullanıcı arama deneyimi için kullanılır.
           </p>
         </header>
@@ -36,18 +42,20 @@ export default async function SearchResultsPage({
     );
   }
 
-  const [tools, guides, pages, categories] = await Promise.all([
+  const [tools, comparisons, guides, pages, categories] = await Promise.all([
     getAllTools(),
+    getAllComparisons(),
     getAllGuides(),
     getAllPages(),
     getAllCategories(),
   ]);
 
   const formattedTools = tools.map((tool) => ({ ...tool, type: "inceleme" as const }));
+  const formattedComparisons = comparisons.map((comparison) => ({ ...comparison, type: "karsilastirma" as const }));
   const formattedGuides = guides.map((guide) => ({ ...guide, type: "rehber" as const }));
   const formattedPages = pages.map((page) => ({ ...page, type: "sayfa" as const }));
   const formattedCategories = categories.map((category) => ({ ...category, type: "kategori" as const }));
-  const allContent = [...formattedTools, ...formattedGuides, ...formattedPages, ...formattedCategories];
+  const allContent = [...formattedTools, ...formattedComparisons, ...formattedGuides, ...formattedPages, ...formattedCategories];
 
   const searchResults = allContent.filter((item) => {
     const safeTitle = "title" in item && item.title ? String(item.title).toLowerCase() : "";
@@ -56,8 +64,9 @@ export default async function SearchResultsPage({
     const safeCategory = "category" in item && item.category ? String(item.category).toLowerCase() : "";
     const safeHero = "heroIntro" in item && item.heroIntro ? String(item.heroIntro).toLowerCase() : "";
     const safeTags = "tags" in item && Array.isArray(item.tags) ? item.tags.join(" ").toLowerCase() : "";
+    const safeVerdict = "verdict" in item && item.verdict ? String(item.verdict).toLowerCase() : "";
 
-    return [safeTitle, safeName, safeDesc, safeCategory, safeHero, safeTags].some((field) =>
+    return [safeTitle, safeName, safeDesc, safeCategory, safeHero, safeTags, safeVerdict].some((field) =>
       field.includes(query),
     );
   });
@@ -82,9 +91,11 @@ export default async function SearchResultsPage({
                   ? getManagedPagePath(result.slug)
                   : result.type === "kategori"
                     ? `/kategori/${result.slug}`
-                    : result.type === "inceleme"
-                      ? `/incelemeler/${result.slug}`
-                      : `/${result.type}/${result.slug}`
+                    : result.type === "karsilastirma"
+                      ? `/karsilastirma/${result.slug}`
+                      : result.type === "inceleme"
+                        ? `/incelemeler/${result.slug}`
+                        : `/${result.type}/${result.slug}`
               }
               key={`${result.slug}-${index}`}
               className="search-result-card"
@@ -116,19 +127,23 @@ export default async function SearchResultsPage({
                     background:
                       result.type === "inceleme"
                         ? "rgba(15, 118, 110, 0.12)"
-                        : result.type === "rehber"
-                          ? "rgba(21, 128, 61, 0.12)"
-                          : result.type === "kategori"
-                            ? "rgba(198, 106, 23, 0.12)"
-                            : "rgba(19, 35, 47, 0.08)",
+                        : result.type === "karsilastirma"
+                          ? "rgba(180, 83, 9, 0.12)"
+                          : result.type === "rehber"
+                            ? "rgba(21, 128, 61, 0.12)"
+                            : result.type === "kategori"
+                              ? "rgba(198, 106, 23, 0.12)"
+                              : "rgba(19, 35, 47, 0.08)",
                     color:
                       result.type === "inceleme"
                         ? "var(--accent-glow)"
-                        : result.type === "rehber"
-                          ? "#166534"
-                          : result.type === "kategori"
-                            ? "#9a5a1c"
-                            : "var(--text-light)",
+                        : result.type === "karsilastirma"
+                          ? "#9a5a1c"
+                          : result.type === "rehber"
+                            ? "#166534"
+                            : result.type === "kategori"
+                              ? "#9a5a1c"
+                              : "var(--text-light)",
                     padding: "0.3rem 0.8rem",
                     borderRadius: "20px",
                     fontWeight: "bold",
@@ -136,11 +151,13 @@ export default async function SearchResultsPage({
                 >
                   {result.type === "inceleme"
                     ? "ARAÇ İNCELEMESİ"
-                    : result.type === "rehber"
-                      ? "REHBER"
-                      : result.type === "kategori"
-                        ? "KATEGORİ"
-                        : "SAYFA"}
+                    : result.type === "karsilastirma"
+                      ? "KARŞILAŞTIRMA"
+                      : result.type === "rehber"
+                        ? "REHBER"
+                        : result.type === "kategori"
+                          ? "KATEGORİ"
+                          : "SAYFA"}
                 </span>
                 <h2 style={{ fontSize: "1.35rem", color: "var(--text-base)", margin: 0 }}>
                   {"name" in result && result.name
@@ -166,7 +183,7 @@ export default async function SearchResultsPage({
         >
           <h2 style={{ marginTop: 0 }}>Sonuç bulunamadı</h2>
           <p style={{ marginBottom: 0, color: "var(--text-muted)", lineHeight: 1.7 }}>
-            Bu sorgu için henüz eşleşen araç, rehber veya sayfa yok. Daha genel bir kelimeyle arayın ya da kategori
+            Bu sorgu için henüz eşleşen araç, karşılaştırma, rehber veya sayfa yok. Daha genel bir kelimeyle arayın ya da kategori
             merkezlerine göz atın.
           </p>
         </div>

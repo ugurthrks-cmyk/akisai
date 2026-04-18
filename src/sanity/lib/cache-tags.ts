@@ -3,6 +3,7 @@ export const SANITY_BASE_TAG = "sanity";
 export const sanityTags = {
   siteSettings: "sanity:site-settings",
   tools: "sanity:tools",
+  comparisons: "sanity:comparisons",
   guides: "sanity:guides",
   categories: "sanity:categories",
   pages: "sanity:pages",
@@ -19,6 +20,8 @@ export function getSanityTypeTag(type?: string) {
       return sanityTags.siteSettings;
     case "tool":
       return sanityTags.tools;
+    case "comparison":
+      return sanityTags.comparisons;
     case "guide":
       return sanityTags.guides;
     case "category":

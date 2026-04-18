@@ -77,6 +77,10 @@ const query = `{
     "slug": slug.current,
     "updatedAt": coalesce(dateModified, _updatedAt, datePublished)
   },
+  "comparisons": *[_type == "comparison" && defined(slug.current)]{
+    "slug": slug.current,
+    "updatedAt": coalesce(dateModified, _updatedAt, datePublished)
+  },
   "guides": *[_type == "guide" && defined(slug.current)]{
     "slug": slug.current,
     "updatedAt": coalesce(dateModified, _updatedAt, datePublished)
@@ -90,6 +94,13 @@ for (const item of result.tools ?? []) {
   const httpDate = toHttpDate(item.updatedAt);
   if (item.slug && httpDate) {
     manifest[`/incelemeler/${item.slug}`] = httpDate;
+  }
+}
+
+for (const item of result.comparisons ?? []) {
+  const httpDate = toHttpDate(item.updatedAt);
+  if (item.slug && httpDate) {
+    manifest[`/karsilastirma/${item.slug}`] = httpDate;
   }
 }
 

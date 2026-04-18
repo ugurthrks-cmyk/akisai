@@ -15,16 +15,11 @@ export default function SearchBar() {
         type="search"
         name="q"
         className="search-input"
-        placeholder="Örn: en iyi yapay zeka video aracı"
+        placeholder="Örn: ChatGPT mi Claude mu veya en iyi yapay zeka aracı"
         inputMode="search"
       />
       <button type="submit" className="search-submit" aria-label="Arama yap">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
           <path d="M20 20L16.65 16.65" />
         </svg>

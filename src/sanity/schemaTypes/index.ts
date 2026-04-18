@@ -1,5 +1,6 @@
 import { author } from "@/sanity/schemaTypes/documents/author";
 import { category } from "@/sanity/schemaTypes/documents/category";
+import { comparison } from "@/sanity/schemaTypes/documents/comparison";
 import { guide } from "@/sanity/schemaTypes/documents/guide";
 import { page } from "@/sanity/schemaTypes/documents/page";
 import { siteSettings } from "@/sanity/schemaTypes/documents/siteSettings";
@@ -12,6 +13,7 @@ import { sourceItem } from "@/sanity/schemaTypes/objects/sourceItem";
 export const schemaTypes = [
   author,
   category,
+  comparison,
   guide,
   page,
   siteSettings,

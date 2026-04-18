@@ -14,7 +14,7 @@ import {
   normalizeSoftwareApplicationCategory,
   toIsoDate,
 } from "@/lib/content";
-import { getAllTools, getGuideByToolSlug, getToolBySlug } from "@/lib/content-source";
+import { getAllTools, getComparisonsByToolSlug, getGuideByToolSlug, getToolBySlug } from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
 import { getSiteSettings } from "@/lib/site-settings";
 import "../../ai/[slug]/tool.css";
@@ -94,9 +94,10 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
 
 export default async function ReviewDetailPage({ params }: ToolPageProps) {
   const resolvedParams = await params;
-  const [tool, relatedGuide, settings] = await Promise.all([
+  const [tool, relatedGuide, relatedComparisons, settings] = await Promise.all([
     getToolBySlug(resolvedParams.slug),
     getGuideByToolSlug(resolvedParams.slug),
+    getComparisonsByToolSlug(resolvedParams.slug),
     getSiteSettings(),
   ]);
 
@@ -113,6 +114,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
   const relatedGuideUrl = relatedGuide
     ? relatedGuide.canonicalUrl || absoluteUrl(`/rehber/${relatedGuide.slug}`, settings.url)
     : null;
+  const relatedComparison = relatedComparisons[0] ?? null;
   const ratingRows = ratingLabels
     .map((item) => ({
       label: item.label,
@@ -482,6 +484,19 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
           </div>
           <Link href={`/rehber/${relatedGuide.slug}`} className="related-link-cta">
             Rehbere git
+          </Link>
+        </section>
+      ) : null}
+
+      {relatedComparison ? (
+        <section className="related-link-panel">
+          <div className="related-link-copy">
+            <span className="related-link-kicker">Bu Aracin Karsilastirmasi</span>
+            <h2>{relatedComparison.h1 || relatedComparison.title}</h2>
+            <p>{relatedComparison.description}</p>
+          </div>
+          <Link href={`/karsilastirma/${relatedComparison.slug}`} className="related-link-cta">
+            Karsilastirmaya git
           </Link>
         </section>
       ) : null}

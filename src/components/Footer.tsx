@@ -9,7 +9,7 @@ type FooterProps = {
 
 export default function Footer({
   siteName = "AkışAI",
-  description = "Türkiye için yapay zeka araçları, incelemeleri ve nasıl kullanılır rehberleri.",
+  description = "Türkiye için yapay zeka araçları, incelemeleri, karşılaştırmaları ve nasıl kullanılır rehberleri.",
   socialProfiles = [],
 }: FooterProps) {
   const currentYear = new Date().getFullYear();
@@ -86,8 +86,17 @@ export default function Footer({
           </div>
 
           <div className="footer-column">
-            <h3>Nasıl Kullanılır</h3>
+            <h3>İçerik Merkezleri</h3>
             <ul>
+              <li>
+                <Link href="/incelemeler">Tüm İncelemeler</Link>
+              </li>
+              <li>
+                <Link href="/karsilastirma">Tüm Karşılaştırmalar</Link>
+              </li>
+              <li>
+                <Link href="/rehber">Tüm Rehberler</Link>
+              </li>
               <li>
                 <Link href="/rehber/capcut-nasil-kullanilir">CapCut Nasıl Kullanılır</Link>
               </li>
@@ -96,9 +105,6 @@ export default function Footer({
               </li>
               <li>
                 <Link href="/rehber/canva-nasil-kullanilir">Canva Nasıl Kullanılır</Link>
-              </li>
-              <li>
-                <Link href="/rehber">Tüm Rehberler</Link>
               </li>
             </ul>
           </div>

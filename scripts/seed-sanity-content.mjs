@@ -373,6 +373,7 @@ async function uploadImage(relativePath, alt) {
 const categoryEntries = readMdxCollection("src/content/kategori");
 const toolEntries = readMdxCollection("src/content/ai");
 const guideEntries = readMdxCollection("src/content/rehber");
+const comparisonEntries = readMdxCollection("src/content/karsilastirma");
 const retiredCategoryReplacements = new Map([
   ["category.video-ai", "category.video-duzenleme"],
   ["category.otomasyon", "category.is-akisi-otomasyonu"],
@@ -526,6 +527,55 @@ const guideDocs = guideEntries.map((entry) => {
   };
 });
 
+const comparisonDocs = comparisonEntries.map((entry) => {
+  const frontmatter = entry.frontmatter;
+  const comparedTools = Array.isArray(frontmatter.tools)
+    ? frontmatter.tools
+        .map((toolLabel) => String(toolLabel).toLowerCase())
+        .flatMap((toolLabel) => {
+          for (const [name, id] of toolNameIndex.entries()) {
+            if (toolLabel.includes(name)) {
+              return [toReference(id)];
+            }
+          }
+
+          return [];
+        })
+    : [];
+
+  return {
+    _id: `comparison.${entry.slug}`,
+    _type: "comparison",
+    title: String(frontmatter.title),
+    h1: frontmatter.h1 ? String(frontmatter.h1) : undefined,
+    slug: toSanitySlug(entry.slug),
+    description: String(frontmatter.description),
+    metaDescription: frontmatter.metaDescription ? String(frontmatter.metaDescription) : undefined,
+    heroIntro: frontmatter.heroIntro ? String(frontmatter.heroIntro) : undefined,
+    verdict: frontmatter.verdict ? String(frontmatter.verdict) : undefined,
+    bodyMarkdown: entry.bodyMarkdown,
+    author: toReference(`author.${String(frontmatter.author)}`),
+    category: resolveCategoryIdByName(String(frontmatter.category))
+      ? toReference(resolveCategoryIdByName(String(frontmatter.category)))
+      : undefined,
+    toolNames: Array.isArray(frontmatter.tools) ? frontmatter.tools.map(String) : [],
+    comparedTools,
+    sources: parseSources(frontmatter),
+    faqs: Array.isArray(frontmatter.faqs)
+      ? frontmatter.faqs.map((faq) => ({
+          _type: "faqItem",
+          question: String(faq.question),
+          answer: String(faq.answer),
+        }))
+      : [],
+    datePublished: toSanityDate(frontmatter.datePublished || frontmatter.date),
+    dateModified: toSanityDate(frontmatter.dateModified),
+    lastVerified: frontmatter.lastVerified ? String(frontmatter.lastVerified) : undefined,
+    verificationNotes: frontmatter.verificationNotes ? String(frontmatter.verificationNotes) : undefined,
+    seo: buildSeoMetadata(frontmatter),
+  };
+});
+
 const authorDocs = [];
 
 for (const author of authorSeed) {
@@ -547,7 +597,7 @@ for (const author of authorSeed) {
   });
 }
 
-const documents = [...authorDocs, ...categoryDocs, ...toolDocs, ...guideDocs];
+const documents = [...authorDocs, ...categoryDocs, ...toolDocs, ...comparisonDocs, ...guideDocs];
 
 if (isDryRun) {
   console.log(
@@ -558,6 +608,7 @@ if (isDryRun) {
           authors: authorDocs.length,
           categories: categoryDocs.length,
           tools: toolDocs.length,
+          comparisons: comparisonDocs.length,
           guides: guideDocs.length,
           total: documents.length,
         },
@@ -611,10 +662,12 @@ console.log(
         authors: authorDocs.length,
         categories: categoryDocs.length,
         tools: toolDocs.length,
+        comparisons: comparisonDocs.length,
         guides: guideDocs.length,
         total: documents.length,
       },
       importedTools: toolDocs.map((doc) => doc.title),
+      importedComparisons: comparisonDocs.map((doc) => doc.title),
       importedGuides: guideDocs.map((doc) => doc.title),
     },
     null,

@@ -21,6 +21,11 @@ const navItems = [
     description: "Yapay zeka araç incelemeleri",
   },
   {
+    href: "/karsilastirma",
+    label: "Karşılaştırmalar",
+    description: "Senaryo bazlı araç karşılaştırmaları",
+  },
+  {
     href: "/rehber",
     label: "Nasıl Kullanılır",
     description: "Adım adım kurulum rehberleri",
@@ -97,18 +102,19 @@ export default function Header({ siteName = "AkışAI" }: HeaderProps) {
     });
   };
 
+  const closePanels = () => {
+    setIsMenuOpen(false);
+    setIsSearchOpen(false);
+  };
+
   return (
-    <header
-      className={`site-header ${
-        isSearchOpen || isMenuOpen ? "site-header-expanded" : ""
-      }`}
-    >
+    <header className={`site-header ${isSearchOpen || isMenuOpen ? "site-header-expanded" : ""}`}>
       <div className="header-container">
         <div className="header-mobile-trigger header-mobile-trigger-left">
           <button
             type="button"
             className={`mobile-icon-btn ${isMenuOpen ? "is-active" : ""}`}
-            aria-label="Kategorileri aç"
+            aria-label="Menüyü aç"
             aria-expanded={isMenuOpen}
             aria-controls="mobile-nav-panel"
             onClick={toggleMenu}
@@ -141,13 +147,7 @@ export default function Header({ siteName = "AkışAI" }: HeaderProps) {
         </div>
 
         <div className="header-actions">
-          <form
-            action="/arama"
-            method="GET"
-            className="header-search-form"
-            role="search"
-            aria-label="Site içi arama"
-          >
+          <form action="/arama" method="GET" className="header-search-form" role="search" aria-label="Site içi arama">
             <label htmlFor="header-site-search" className="sr-only">
               Sitede arama yap
             </label>
@@ -155,7 +155,7 @@ export default function Header({ siteName = "AkışAI" }: HeaderProps) {
               id="header-site-search"
               type="search"
               name="q"
-              placeholder="Yapay zeka aracı, kategori veya rehber ara"
+              placeholder="Yapay zeka aracı, kategori, rehber veya karşılaştırma ara"
               autoComplete="off"
               inputMode="search"
               required
@@ -181,10 +181,7 @@ export default function Header({ siteName = "AkışAI" }: HeaderProps) {
         </div>
       </div>
 
-      <div
-        id="mobile-search-panel"
-        className={`header-mobile-panel ${isSearchOpen ? "is-open" : ""}`}
-      >
+      <div id="mobile-search-panel" className={`header-mobile-panel ${isSearchOpen ? "is-open" : ""}`}>
         <form
           action="/arama"
           method="GET"
@@ -199,37 +196,30 @@ export default function Header({ siteName = "AkışAI" }: HeaderProps) {
             id="mobile-site-search"
             type="search"
             name="q"
-            placeholder="Yapay zeka aracı, kategori veya rehber ara"
+            placeholder="Yapay zeka aracı, kategori, rehber veya karşılaştırma ara"
             autoComplete="off"
             inputMode="search"
             required
             className="header-mobile-search-input"
           />
-          <button
-            type="submit"
-            className="mobile-search-submit"
-            aria-label="Aramayı başlat"
-          >
+          <button type="submit" className="mobile-search-submit" aria-label="Aramayı başlat">
             <SearchIcon />
           </button>
         </form>
       </div>
 
-      <div
-        id="mobile-nav-panel"
-        className={`header-mobile-panel ${isMenuOpen ? "is-open" : ""}`}
-      >
+      <div id="mobile-nav-panel" className={`header-mobile-panel ${isMenuOpen ? "is-open" : ""}`}>
+        <nav className="mobile-nav-links" aria-label="Mobil ana gezinme">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} className="mobile-nav-link" onClick={closePanels}>
+              <strong>{item.label}</strong>
+              <span>{item.description}</span>
+            </Link>
+          ))}
+        </nav>
         <nav className="mobile-category-grid" aria-label="Mobil kategoriler">
           {mobileCategories.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="mobile-category-card"
-              onClick={() => {
-                setIsMenuOpen(false);
-                setIsSearchOpen(false);
-              }}
-            >
+            <Link key={item.href} href={item.href} className="mobile-category-card" onClick={closePanels}>
               <strong>{item.label}</strong>
             </Link>
           ))}

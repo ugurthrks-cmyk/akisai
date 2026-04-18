@@ -63,6 +63,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/karsilastirmalar",
+        destination: "/karsilastirma",
+        permanent: true,
+      },
+      {
+        source: "/karsilastirmalar/:slug",
+        destination: "/karsilastirma/:slug",
+        permanent: true,
+      },
+      {
         source: "/search",
         destination: "/arama",
         permanent: true,

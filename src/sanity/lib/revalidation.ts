@@ -40,6 +40,9 @@ export function getSanityRevalidationTargets(payload: SanityWebhookPayload) {
   const tags = uniqueSanityTags(
     [SANITY_BASE_TAG, getSanityTypeTag(type)],
     type === "tool" ? [getSanitySlugTag("sanity:tool", slug), getSanitySlugTag("sanity:tool", oldSlug)] : [],
+    type === "comparison"
+      ? [getSanitySlugTag("sanity:comparison", slug), getSanitySlugTag("sanity:comparison", oldSlug)]
+      : [],
     type === "guide" ? [getSanitySlugTag("sanity:guide", slug), getSanitySlugTag("sanity:guide", oldSlug)] : [],
     type === "category"
       ? [getSanitySlugTag("sanity:category", slug), getSanitySlugTag("sanity:category", oldSlug)]
@@ -55,11 +58,14 @@ export function getSanityRevalidationTargets(payload: SanityWebhookPayload) {
       [
         "/",
         "/incelemeler",
+        "/karsilastirma",
         "/rehber",
         "/kategori",
         "/yazar",
         type === "tool" && slug ? `/incelemeler/${slug}` : undefined,
         type === "tool" && oldSlug ? `/incelemeler/${oldSlug}` : undefined,
+        type === "comparison" && slug ? `/karsilastirma/${slug}` : undefined,
+        type === "comparison" && oldSlug ? `/karsilastirma/${oldSlug}` : undefined,
         type === "guide" && slug ? `/rehber/${slug}` : undefined,
         type === "guide" && oldSlug ? `/rehber/${oldSlug}` : undefined,
         type === "category" && slug ? `/kategori/${slug}` : undefined,
@@ -76,6 +82,7 @@ export function getSanityRevalidationTargets(payload: SanityWebhookPayload) {
   const essentialTags = uniqueSanityTags(
     [sanityTags.siteSettings],
     type === "tool" || type === "category" ? [sanityTags.tools, sanityTags.categories] : [],
+    type === "comparison" ? [sanityTags.comparisons, sanityTags.tools, sanityTags.categories] : [],
     type === "guide" ? [sanityTags.guides] : [],
     type === "author" ? [sanityTags.authors] : [],
     type === "page" ? [sanityTags.pages] : [],

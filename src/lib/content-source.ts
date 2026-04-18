@@ -148,6 +148,39 @@ export interface GuideEntry extends GuideSummary {
   faqs: FaqItem[];
 }
 
+export interface ComparisonSummary {
+  slug: string;
+  title: string;
+  h1?: string;
+  seoTitle?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
+  description: string;
+  metaDescription?: string;
+  heroIntro?: string;
+  verdict?: string;
+  category?: string;
+  categorySlug?: string;
+  author?: DirectoryAuthor | null;
+  comparedToolSlugs?: string[];
+  comparedToolNames?: string[];
+  featuredImageUrl?: string;
+  featuredImageAlt?: string;
+  date?: string;
+  datePublished?: string;
+  dateModified?: string;
+  lastVerified?: string;
+  updatedAt?: string;
+  sources?: SourceItem[];
+  canonicalUrl?: string;
+  noIndex?: boolean;
+}
+
+export interface ComparisonEntry extends ComparisonSummary {
+  body: RichBody;
+  faqs: FaqItem[];
+}
+
 export interface CategorySummary {
   slug: string;
   name: string;
@@ -275,6 +308,37 @@ type SanityGuideValue = {
   faqs?: unknown;
   datePublished?: string;
   dateModified?: string;
+  updatedAt?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  sources?: unknown;
+};
+
+type SanityComparisonValue = {
+  slug?: string;
+  title?: string;
+  h1?: string;
+  seoTitle?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
+  description?: string;
+  metaDescription?: string;
+  heroIntro?: string;
+  verdict?: string;
+  category?: string;
+  categorySlug?: string;
+  author?: SanityAuthorValue;
+  featuredImageUrl?: string;
+  featuredImageAlt?: string;
+  bodyMarkdown?: string;
+  body?: PortableTextBlock[];
+  faqs?: unknown;
+  toolNames?: unknown;
+  comparedToolSlugs?: unknown;
+  comparedToolNames?: unknown;
+  datePublished?: string;
+  dateModified?: string;
+  lastVerified?: string;
   updatedAt?: string;
   canonicalUrl?: string;
   noIndex?: boolean;
@@ -504,6 +568,76 @@ const guideBySlugQuery = groq`*[_type == "guide" && slug.current == $slug][0] {
   },
   "relatedToolSlugs": relatedTools[]->slug.current,
   "tools": relatedTools[]->name,
+  bodyMarkdown,
+  "author": author->{${authorProjection}}
+}`;
+
+const comparisonListQuery = groq`*[_type == "comparison" && defined(slug.current)] | order(coalesce(dateModified, datePublished, _updatedAt) desc) {
+  "slug": slug.current,
+  title,
+  h1,
+  "seoTitle": seo.seoTitle,
+  "openGraphTitle": seo.openGraphTitle,
+  "openGraphDescription": seo.openGraphDescription,
+  description,
+  metaDescription,
+  heroIntro,
+  verdict,
+  datePublished,
+  dateModified,
+  "updatedAt": _updatedAt,
+  "category": category->name,
+  "categorySlug": category->slug.current,
+  "featuredImageUrl": featuredImage.asset->url,
+  "featuredImageAlt": featuredImage.alt,
+  sources[]{
+    label,
+    publisher,
+    url,
+    note
+  },
+  toolNames,
+  "comparedToolSlugs": comparedTools[]->slug.current,
+  "comparedToolNames": coalesce(toolNames, comparedTools[]->name),
+  "canonicalUrl": seo.canonicalUrl,
+  "noIndex": seo.noIndex,
+  lastVerified,
+  bodyMarkdown,
+  "author": author->{${authorProjection}}
+}`;
+
+const comparisonBySlugQuery = groq`*[_type == "comparison" && slug.current == $slug][0] {
+  "slug": slug.current,
+  title,
+  h1,
+  "seoTitle": seo.seoTitle,
+  "openGraphTitle": seo.openGraphTitle,
+  "openGraphDescription": seo.openGraphDescription,
+  description,
+  metaDescription,
+  heroIntro,
+  verdict,
+  faqs,
+  body,
+  datePublished,
+  dateModified,
+  "updatedAt": _updatedAt,
+  "category": category->name,
+  "categorySlug": category->slug.current,
+  "featuredImageUrl": featuredImage.asset->url,
+  "featuredImageAlt": featuredImage.alt,
+  sources[]{
+    label,
+    publisher,
+    url,
+    note
+  },
+  toolNames,
+  "comparedToolSlugs": comparedTools[]->slug.current,
+  "comparedToolNames": coalesce(toolNames, comparedTools[]->name),
+  "canonicalUrl": seo.canonicalUrl,
+  "noIndex": seo.noIndex,
+  lastVerified,
   bodyMarkdown,
   "author": author->{${authorProjection}}
 }`;
@@ -964,6 +1098,35 @@ function mapSanityGuideSummary(item: SanityGuideValue): GuideSummary {
   };
 }
 
+function mapSanityComparisonSummary(item: SanityComparisonValue): ComparisonSummary {
+  return {
+    slug: item.slug || "",
+    title: item.title || item.slug || "",
+    h1: item.h1,
+    seoTitle: asString(item.seoTitle),
+    openGraphTitle: asString(item.openGraphTitle),
+    openGraphDescription: asString(item.openGraphDescription),
+    description: item.description || "",
+    metaDescription: item.metaDescription || item.description || "",
+    heroIntro: item.heroIntro,
+    verdict: asString(item.verdict),
+    category: item.category,
+    categorySlug: item.categorySlug,
+    author: mapSanityAuthor(item.author),
+    comparedToolSlugs: asStringArray(item.comparedToolSlugs),
+    comparedToolNames: asStringArray(item.comparedToolNames),
+    featuredImageUrl: item.featuredImageUrl,
+    featuredImageAlt: asString(item.featuredImageAlt),
+    datePublished: item.datePublished,
+    dateModified: item.dateModified,
+    lastVerified: asString(item.lastVerified),
+    updatedAt: item.updatedAt,
+    sources: asSourceArray(item.sources),
+    canonicalUrl: asString(item.canonicalUrl),
+    noIndex: Boolean(item.noIndex),
+  };
+}
+
 function mapSanityCategorySummary(item: SanityCategoryValue): CategorySummary {
   return {
     slug: item.slug || "",
@@ -1068,6 +1231,39 @@ async function getSanityGuide(slug: string) {
   } satisfies GuideEntry;
 }
 
+async function getSanityComparisons() {
+  const items = await fetchPublishedSanity<SanityComparisonValue[]>(comparisonListQuery, {}, {
+    tags: [sanityTags.comparisons],
+  });
+  return items.map(mapSanityComparisonSummary);
+}
+
+async function getSanityComparison(slug: string) {
+  const item = await fetchPublishedSanity<SanityComparisonValue | null>(comparisonBySlugQuery, { slug }, {
+    tags: uniqueSanityTags([sanityTags.comparisons], [getSanitySlugTag("sanity:comparison", slug)]),
+  });
+
+  if (!item?.slug) {
+    return null;
+  }
+
+  const bodyMarkdown = asString(item.bodyMarkdown);
+
+  return {
+    ...mapSanityComparisonSummary(item),
+    body: bodyMarkdown
+      ? ({
+          kind: "mdx",
+          source: bodyMarkdown,
+        } satisfies RichBody)
+      : ({
+          kind: "portableText",
+          value: Array.isArray(item.body) ? item.body : [],
+        } satisfies RichBody),
+    faqs: asFaqArray(item.faqs),
+  } satisfies ComparisonEntry;
+}
+
 async function getSanityCategories() {
   const items = await fetchPublishedSanity<SanityCategoryValue[]>(categoryListQuery, {}, {
     tags: [sanityTags.categories],
@@ -1155,9 +1351,19 @@ export async function getAllGuides() {
   return getSanityGuides();
 }
 
+export async function getAllComparisons() {
+  requireSanityContent();
+  return getSanityComparisons();
+}
+
 export async function getGuideBySlug(slug: string) {
   requireSanityContent();
   return getSanityGuide(slug);
+}
+
+export async function getComparisonBySlug(slug: string) {
+  requireSanityContent();
+  return getSanityComparison(slug);
 }
 
 export async function getGuideByToolSlug(toolSlug: string) {
@@ -1172,6 +1378,11 @@ export async function getGuideByToolSlug(toolSlug: string) {
 
   const fallbackSlug = `${toolSlug}-nasil-kullanilir`;
   return guides.find((guide) => guide.slug === fallbackSlug) ?? null;
+}
+
+export async function getComparisonsByToolSlug(toolSlug: string) {
+  const comparisons = await getAllComparisons();
+  return comparisons.filter((comparison) => comparison.comparedToolSlugs?.includes(toolSlug));
 }
 
 export async function getAllCategories() {

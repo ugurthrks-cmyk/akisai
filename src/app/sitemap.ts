@@ -1,5 +1,12 @@
 import type { MetadataRoute } from "next";
-import { getAllAuthors, getAllCategories, getAllGuides, getAllPages, getAllTools } from "@/lib/content-source";
+import {
+  getAllAuthors,
+  getAllCategories,
+  getAllComparisons,
+  getAllGuides,
+  getAllPages,
+  getAllTools,
+} from "@/lib/content-source";
 import { getManagedPagePath } from "@/lib/managed-pages";
 import { getSiteSettings } from "@/lib/site-settings";
 
@@ -29,11 +36,12 @@ function getLatestDate(values: Array<string | Date | null | undefined>) {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [settings, authors, tools, categories, guides, pages] = await Promise.all([
+  const [settings, authors, tools, categories, comparisons, guides, pages] = await Promise.all([
     getSiteSettings(),
     getAllAuthors(),
     getAllTools(),
     getAllCategories(),
+    getAllComparisons(),
     getAllGuides(),
     getAllPages(),
   ]);
@@ -42,6 +50,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const toolHubLastModified = getLatestDate(
     tools.map((tool) => tool.dateModified || tool.updatedAt || tool.datePublished || tool.date),
   );
+  const comparisonHubLastModified = getLatestDate(
+    comparisons.map(
+      (comparison) => comparison.dateModified || comparison.updatedAt || comparison.datePublished || comparison.date,
+    ),
+  );
   const guideHubLastModified = getLatestDate(
     guides.map((guide) => guide.dateModified || guide.updatedAt || guide.datePublished || guide.date),
   );
@@ -49,8 +62,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const authorHubLastModified = getLatestDate(authors.map((author) => author.profileUpdatedAt || author.profileCreatedAt));
   const pageHubLastModified = getLatestDate(pages.map((page) => page.updatedAt));
   const siteLastModified =
-    getLatestDate([toolHubLastModified, guideHubLastModified, categoryHubLastModified, authorHubLastModified, pageHubLastModified]) ??
-    new Date();
+    getLatestDate([
+      toolHubLastModified,
+      comparisonHubLastModified,
+      guideHubLastModified,
+      categoryHubLastModified,
+      authorHubLastModified,
+      pageHubLastModified,
+    ]) ?? new Date();
 
   const staticRoutes = [
     {
@@ -62,6 +81,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/incelemeler`,
       lastModified: toolHubLastModified ?? siteLastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/karsilastirma`,
+      lastModified: comparisonHubLastModified ?? siteLastModified,
       changeFrequency: "weekly" as const,
       priority: 0.85,
     },
@@ -97,6 +122,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: toDate(tool.dateModified || tool.updatedAt || tool.datePublished || tool.date) ?? siteLastModified,
     changeFrequency: "weekly" as const,
     priority: 0.9,
+  }));
+
+  const comparisonRoutes = comparisons.map((comparison) => ({
+    url: `${baseUrl}/karsilastirma/${comparison.slug}`,
+    lastModified:
+      toDate(comparison.dateModified || comparison.updatedAt || comparison.datePublished || comparison.date) ??
+      siteLastModified,
+    changeFrequency: "weekly" as const,
+    priority: 0.88,
   }));
 
   const toolCountsByCategorySlug = new Map<string, number>();
@@ -135,11 +169,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const routeMap = new Map<string, MetadataRoute.Sitemap[number]>();
 
-  [...staticRoutes, ...authorRoutes, ...toolRoutes, ...categoryRoutes, ...guideRoutes, ...pageRoutes].forEach(
-    (entry) => {
-      routeMap.set(entry.url, entry);
-    },
-  );
+  [
+    ...staticRoutes,
+    ...authorRoutes,
+    ...toolRoutes,
+    ...comparisonRoutes,
+    ...categoryRoutes,
+    ...guideRoutes,
+    ...pageRoutes,
+  ].forEach((entry) => {
+    routeMap.set(entry.url, entry);
+  });
 
   return Array.from(routeMap.values());
 }

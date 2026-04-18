@@ -10,6 +10,7 @@ export const deskStructure: StructureResolver = (S) =>
         .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
       S.divider(),
       S.documentTypeListItem("tool").title("Araç kütüphanesi"),
+      S.documentTypeListItem("comparison").title("Karşılaştırmalar"),
       S.documentTypeListItem("guide").title("Rehberler"),
       S.documentTypeListItem("category").title("Kategori merkezleri"),
       S.documentTypeListItem("author").title("Yazar profilleri"),

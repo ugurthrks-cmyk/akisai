@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SearchBar from "@/components/SearchBar";
 import { coreCategoryTaxonomy } from "@/lib/category-taxonomy";
-import { getAllGuides, getAllTools } from "@/lib/content-source";
+import { getAllComparisons, getAllGuides, getAllTools } from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
 import { getSiteSettings } from "@/lib/site-settings";
 
@@ -30,9 +30,10 @@ function getFreshnessValue(dateModified?: string, datePublished?: string, date?:
 }
 
 export default async function HomePage() {
-  const [settings, tools, guides] = await Promise.all([
+  const [settings, tools, comparisons, guides] = await Promise.all([
     getSiteSettings(),
     getAllTools(),
+    getAllComparisons(),
     getAllGuides(),
   ]);
 
@@ -52,6 +53,13 @@ export default async function HomePage() {
         getFreshnessValue(left.dateModified, left.datePublished, left.date),
     )
     .slice(0, 6);
+  const latestComparisons = [...comparisons]
+    .sort(
+      (left, right) =>
+        getFreshnessValue(right.dateModified, right.datePublished, right.date) -
+        getFreshnessValue(left.dateModified, left.datePublished, left.date),
+    )
+    .slice(0, 3);
   const featuredGuides = (featureReadyGuides.length > 0 ? featureReadyGuides : guides).slice(0, 6);
 
   const heroTopics = coreCategoryTaxonomy
@@ -96,11 +104,11 @@ export default async function HomePage() {
       <section className="hero-wrapper">
         <div className="container hero-stack">
           <div className="hero-content hero-content-compact">
-            <span className="hero-kicker">Türkiye İçin Yapay Zeka Araçları ve Rehberleri</span>
+            <span className="hero-kicker">Türkiye İçin Yapay Zeka Araçları, Karşılaştırmaları ve Rehberleri</span>
             <h1>Yapay Zeka Araçları, İncelemeleri ve Rehberleri</h1>
             <p className="vision-paragraph">
-              AkışAI; Türkiye için yapay zeka araç incelemelerini, kullanım alanı merkezlerini ve adım adım kullanım
-              rehberlerini tek bir editoryal karar katmanında birleştirir.
+              AkışAI; Türkiye için yapay zeka araç incelemelerini, araç karşılaştırmalarını, kullanım alanı
+              merkezlerini ve adım adım kullanım rehberlerini tek bir editoryal karar katmanında birleştirir.
             </p>
             <SearchBar />
             <div className="hero-topic-strip" aria-label="Öne çıkan kullanım alanları">
@@ -149,10 +157,7 @@ export default async function HomePage() {
             ) : (
               <div className="glass-card empty-state-card">
                 <h3>İnceleme Arşivi Güncelleniyor</h3>
-                <p>
-                  Yeni araç incelemeleri yayına girdikçe bu alan dolacak. Şimdilik kullanım rehberlerinden
-                  başlayabilirsiniz.
-                </p>
+                <p>Yeni araç incelemeleri yayına girdikçe bu alan dolacak. Şimdilik kullanım rehberlerinden başlayabilirsiniz.</p>
                 <Link href="/incelemeler" className="secondary-btn">
                   Tüm İncelemelere Git
                 </Link>
@@ -163,6 +168,56 @@ export default async function HomePage() {
           <div className="section-actions">
             <Link href="/incelemeler" className="secondary-btn">
               Tüm İncelemeleri Gör
+            </Link>
+          </div>
+        </section>
+
+        <section className="section-shell section-shell-guides container">
+          <div className="section-header">
+            <div>
+              <span className="section-kicker">Araç Karşılaştırmaları</span>
+              <h2>Hangi Araç Hangi Senaryoda Daha Mantıklı?</h2>
+              <p className="section-description">
+                Karşılaştırma sayfaları, birbirine yakın ihtiyaçları çözen araçları aynı karar çerçevesinde yan yana
+                koyar. Böylece özellik listesi yerine gerçek seçim eşiğine odaklanabilirsiniz.
+              </p>
+            </div>
+          </div>
+
+          <div className="guide-grid">
+            {latestComparisons.length > 0 ? (
+              latestComparisons.map((comparison) => (
+                <Link href={`/karsilastirma/${comparison.slug}`} key={comparison.slug} className="glass-card guide-card">
+                  <div className="tool-header">
+                    <div>
+                      <div className="card-eyebrow">Karşılaştırma</div>
+                      <h3>{comparison.h1 || comparison.title}</h3>
+                    </div>
+                  </div>
+                  <p className="tool-desc">{comparison.description}</p>
+                  <div className="tool-pills">
+                    {comparison.category ? <span className="tool-pill">{comparison.category}</span> : null}
+                    {comparison.comparedToolNames?.length ? (
+                      <span className="tool-pill">{comparison.comparedToolNames.join(" vs ")}</span>
+                    ) : null}
+                  </div>
+                  <span className="guide-card-cta">Karşılaştırmayı Aç</span>
+                </Link>
+              ))
+            ) : (
+              <div className="glass-card empty-state-card">
+                <h3>Karşılaştırma Arşivi Hazırlanıyor</h3>
+                <p>Yeni araç karşılaştırmaları yayına girdikçe bu alan dolacak. Şimdilik inceleme ve rehberlerden ilerleyebilirsiniz.</p>
+                <Link href="/karsilastirma" className="secondary-btn">
+                  Tüm Karşılaştırmaları Gör
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <div className="section-actions">
+            <Link href="/karsilastirma" className="secondary-btn">
+              Tüm Karşılaştırmaları Gör
             </Link>
           </div>
         </section>
@@ -200,10 +255,7 @@ export default async function HomePage() {
             ) : (
               <div className="glass-card empty-state-card">
                 <h3>Rehberler Hazırlanıyor</h3>
-                <p>
-                  Yeni kullanım rehberleri yayına girdikçe bu alan dolacak. Şimdilik araç incelemelerinden
-                  ilerleyebilirsiniz.
-                </p>
+                <p>Yeni kullanım rehberleri yayına girdikçe bu alan dolacak. Şimdilik araç incelemelerinden ilerleyebilirsiniz.</p>
                 <Link href="/rehber" className="secondary-btn">
                   Tüm Rehberlere Git
                 </Link>
