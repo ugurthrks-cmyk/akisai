@@ -48,6 +48,10 @@ function getBlockText(block: PortableTextLikeBlock) {
     .trim();
 }
 
+function isEditorNoteText(text: string) {
+  return text.startsWith("[EDİTÖR NOTU:");
+}
+
 function splitPipeRow(text: string) {
   const parts = text
     .split("|")
@@ -128,6 +132,20 @@ function buildRenderChunks(value: PortableTextBlock[]): RenderChunk[] {
 
 const portableTextComponents: PortableTextComponents = {
   block: {
+    normal: ({ children, value }) => {
+      const block = value as PortableTextLikeBlock;
+      const text = getBlockText(block);
+
+      if (isEditorNoteText(text)) {
+        return (
+          <aside className="editor-note">
+            <p>{children}</p>
+          </aside>
+        );
+      }
+
+      return <p>{children}</p>;
+    },
     h2: ({ children }) => <h2>{children}</h2>,
     h3: ({ children }) => <h3>{children}</h3>,
     blockquote: ({ children }) => <blockquote>{children}</blockquote>,
