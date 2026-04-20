@@ -508,12 +508,12 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
       {relatedComparison ? (
         <section className="related-link-panel">
           <div className="related-link-copy">
-            <span className="related-link-kicker">Bu Aracin Karsilastirmasi</span>
+            <span className="related-link-kicker">Bu Aracın Karşılaştırması</span>
             <h2>{relatedComparison.h1 || relatedComparison.title}</h2>
             <p>{relatedComparison.description}</p>
           </div>
           <Link href={`/karsilastirma/${relatedComparison.slug}`} className="related-link-cta">
-            Karsilastirmaya git
+            Karşılaştırmaya git
           </Link>
         </section>
       ) : null}
