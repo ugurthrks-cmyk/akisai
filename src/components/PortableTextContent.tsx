@@ -19,6 +19,7 @@ type PortableTextLikeBlock = PortableTextBlock & {
   _key?: string;
   style?: string;
   listItem?: string;
+  editorNote?: boolean;
   children?: PortableTextChild[];
 };
 
@@ -136,7 +137,7 @@ const portableTextComponents: PortableTextComponents = {
       const block = value as PortableTextLikeBlock;
       const text = getBlockText(block);
 
-      if (isEditorNoteText(text)) {
+      if (block.editorNote || isEditorNoteText(text)) {
         return (
           <aside className="editor-note">
             <p>{children}</p>
@@ -148,7 +149,20 @@ const portableTextComponents: PortableTextComponents = {
     },
     h2: ({ children }) => <h2>{children}</h2>,
     h3: ({ children }) => <h3>{children}</h3>,
-    blockquote: ({ children }) => <blockquote>{children}</blockquote>,
+    blockquote: ({ children, value }) => {
+      const block = value as PortableTextLikeBlock;
+      const text = getBlockText(block);
+
+      if (text.startsWith("TL;DR:")) {
+        return <blockquote>{children}</blockquote>;
+      }
+
+      return (
+        <aside className="editor-note">
+          <p>{children}</p>
+        </aside>
+      );
+    },
   },
   marks: {
     link: ({ children, value }) => {
