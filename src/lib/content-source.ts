@@ -19,11 +19,6 @@ export type FaqItem = {
   answer: string;
 };
 
-export type GuideStep = {
-  title: string;
-  description: string;
-};
-
 export type MediaAsset = {
   url: string;
   alt?: string;
@@ -742,31 +737,6 @@ function asNumber(value: unknown): number | undefined {
   return undefined;
 }
 
-function normalizeAuthorText(value?: string) {
-  if (!value) {
-    return value;
-  }
-
-  return value
-    .replace(/\bAI tool evaluation\b/gi, "yapay zeka araç değerlendirmesi")
-    .replace(/\bLLM market analysis\b/gi, "büyük dil modeli pazar çözümlemesi")
-    .replace(/\bTurkey localization\b/gi, "Türkiye yerelleştirmesi")
-    .replace(/\bpricing research\b/gi, "fiyatlandırma araştırması")
-    .replace(/\bcontent operations\b/gi, "içerik operasyonları")
-    .replace(/\bworkflow automation\b/gi, "iş akışı otomasyonu")
-    .replace(/\bno-code architecture\b/gi, "kodsuz sistem mimarisi")
-    .replace(/\bAI operations\b/gi, "yapay zeka operasyonları")
-    .replace(/\bprocess design\b/gi, "süreç tasarımı")
-    .replace(/\bno-code\b/gi, "kodsuz")
-    .replace(/\bAI\b/g, "yapay zeka");
-}
-
-// Legacy helpers kept temporarily for migration safety.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function normalizeAuthorArray(values: string[]) {
-  return values.map((value) => normalizeAuthorText(value) || value);
-}
-
 function normalizeDisplayAuthorText(value?: string) {
   return value
     ?.replace(/\bYapay Zeka\b/g, "Yapay Zeka")
@@ -846,32 +816,6 @@ function asSourceArray(value: unknown): SourceItem[] {
   return items;
 }
 
-// Legacy helpers kept temporarily for migration safety.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function asGuideSteps(value: unknown): GuideStep[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  const items: GuideStep[] = [];
-
-  for (const item of value) {
-    if (!item || typeof item !== "object") {
-      continue;
-    }
-
-    const record = item as Record<string, unknown>;
-    const title = asString(record.title);
-    const description = asString(record.description);
-
-    if (title && description) {
-      items.push({ title, description });
-    }
-  }
-
-  return items;
-}
-
 function asMediaAssets(value: unknown): MediaAsset[] {
   if (!Array.isArray(value)) {
     return [];
@@ -927,60 +871,6 @@ function resolvePriceCurrency(currency?: string, pricing?: string) {
   }
 
   return undefined;
-}
-
-// Legacy helpers kept temporarily for migration safety.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function parseMinutes(label?: string) {
-  if (!label) {
-    return undefined;
-  }
-
-  const match = label.match(/\d+/);
-  return match ? Number(match[0]) : undefined;
-}
-
-function toDateValue(...values: Array<string | undefined>) {
-  for (const value of values) {
-    if (!value) {
-      continue;
-    }
-
-    const date = new Date(value);
-    if (!Number.isNaN(date.getTime())) {
-      return date.getTime();
-    }
-  }
-
-  return 0;
-}
-
-// Legacy helpers kept temporarily for migration safety.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function sortByFreshness<T extends { date?: string; datePublished?: string; dateModified?: string }>(
-  items: T[],
-) {
-  return [...items].sort(
-    (left, right) =>
-      toDateValue(right.dateModified, right.datePublished, right.date) -
-      toDateValue(left.dateModified, left.datePublished, left.date),
-  );
-}
-
-// Legacy helpers kept temporarily for migration safety.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function mergeBySlug<T extends { slug: string }>(preferred: T[], fallback: T[]) {
-  const merged = new Map<string, T>();
-
-  for (const item of fallback) {
-    merged.set(item.slug, item);
-  }
-
-  for (const item of preferred) {
-    merged.set(item.slug, item);
-  }
-
-  return Array.from(merged.values());
 }
 
 function filterLegacyCategories<T extends { slug: string }>(items: T[]) {

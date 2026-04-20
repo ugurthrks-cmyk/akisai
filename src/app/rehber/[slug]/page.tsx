@@ -4,11 +4,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import AuthorBox from "@/components/AuthorBox";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import ContentSignalGrid from "@/components/ContentSignalGrid";
 import FaqSection from "@/components/FaqSection";
 import MdxContent from "@/components/MdxContent";
 import PortableTextContent from "@/components/PortableTextContent";
-import SourceList from "@/components/SourceList";
+import TrustBox from "@/components/TrustBox";
 import { absoluteUrl, formatDisplayDate, toIsoDate } from "@/lib/content";
 import { getAllGuides, getGuideBySlug, getToolBySlug } from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
@@ -412,7 +411,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
         <h1>{pageTitle}</h1>
         {guide.heroIntro ? <p className="workflow-description">{guide.heroIntro}</p> : null}
 
-        <ContentSignalGrid
+        <TrustBox
           items={[
             { label: "Kategori", value: guide.category || "Belirtilmedi" },
             { label: "Zorluk", value: guide.difficulty || "Belirtilmedi" },
@@ -442,7 +441,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
         )}
       </article>
 
-      <SourceList
+      <TrustBox
         sources={guide.sources}
         lastVerified={guide.lastVerified}
         verificationNotes={guide.verificationNotes}

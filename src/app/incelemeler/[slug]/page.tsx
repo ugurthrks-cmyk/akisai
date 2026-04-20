@@ -4,11 +4,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import AuthorBox from "@/components/AuthorBox";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import ContentSignalGrid from "@/components/ContentSignalGrid";
 import FaqSection from "@/components/FaqSection";
 import MdxContent from "@/components/MdxContent";
 import PortableTextContent from "@/components/PortableTextContent";
-import SourceList from "@/components/SourceList";
+import TrustBox from "@/components/TrustBox";
 import {
   absoluteUrl,
   formatDisplayDate,
@@ -340,7 +339,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
             ))}
           </div>
 
-          <ContentSignalGrid
+          <TrustBox
             items={[
               { label: "Kategori", value: tool.category || "Belirtilmedi" },
               {
@@ -468,7 +467,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
         )}
       </article>
 
-      <SourceList
+      <TrustBox
         sources={tool.sources}
         lastVerified={tool.lastVerified}
         verificationNotes={tool.verificationNotes}

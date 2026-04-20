@@ -3,11 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import AuthorBox from "@/components/AuthorBox";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import ContentSignalGrid from "@/components/ContentSignalGrid";
 import FaqSection from "@/components/FaqSection";
 import MdxContent from "@/components/MdxContent";
 import PortableTextContent from "@/components/PortableTextContent";
-import SourceList from "@/components/SourceList";
+import TrustBox from "@/components/TrustBox";
 import { absoluteUrl, formatDisplayDate, toIsoDate } from "@/lib/content";
 import { getAllComparisons, getComparisonBySlug, getToolBySlug } from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
@@ -268,7 +267,7 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
           {displayToolNames.length > 0 ? <span className="comparison-tag tools">{displayToolNames.join(" vs ")}</span> : null}
         </div>
 
-        <ContentSignalGrid
+        <TrustBox
           items={[
             {
               label: "Yazar",
@@ -295,7 +294,7 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
         )}
       </article>
 
-      <SourceList
+      <TrustBox
         sources={comparison.sources}
         lastVerified={comparison.lastVerified}
         verificationNotes={comparison.verificationNotes}
