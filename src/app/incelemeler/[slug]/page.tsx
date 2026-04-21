@@ -177,6 +177,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
   const softwareSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
+    "@id": `${pageUrl}#software`,
     name: tool.name,
     description: tool.description,
     url: pageUrl,
@@ -251,9 +252,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
           name: `${tool.name} inceleme`,
           inLanguage: "tr-TR",
           itemReviewed: {
-            "@type": "SoftwareApplication",
-            name: tool.name,
-            url: pageUrl,
+            "@id": `${pageUrl}#software`,
           },
           author: authorEntity,
           reviewRating: {
