@@ -8,9 +8,10 @@ import FaqSection from "@/components/FaqSection";
 import MdxContent from "@/components/MdxContent";
 import PortableTextContent from "@/components/PortableTextContent";
 import TrustBox from "@/components/TrustBox";
-import { absoluteUrl, formatDisplayDate, toIsoDate } from "@/lib/content";
+import { absoluteUrl, formatDisplayDate, normalizeSoftwareApplicationCategory, toIsoDate } from "@/lib/content";
 import { getAllGuides, getGuideBySlug, getToolBySlug } from "@/lib/content-source";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, clampText } from "@/lib/metadata";
+import { buildOrganizationEntity } from "@/lib/organization-schema";
 import { getSiteSettings } from "@/lib/site-settings";
 import "./workflow.css";
 
@@ -173,6 +174,35 @@ function getHowToSteps(body: { kind: "mdx" | "portableText"; source?: string; va
   return [];
 }
 
+function countWords(text: string) {
+  return stripInlineMarkdown(text)
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
+function getPortableTextWordCount(value: PortableTextBlock[]) {
+  return value.reduce((total, item) => {
+    const block = item as PortableTextBlock & { _type?: string };
+    if (block?._type !== "block") {
+      return total;
+    }
+
+    return total + countWords(getPortableTextBlockText(block));
+  }, 0);
+}
+
+function getArticleWordCount(body: { kind: "mdx" | "portableText"; source?: string; value?: PortableTextBlock[] }) {
+  if (body.kind === "mdx" && body.source) {
+    return countWords(body.source);
+  }
+
+  if (body.kind === "portableText" && Array.isArray(body.value)) {
+    return getPortableTextWordCount(body.value);
+  }
+
+  return 0;
+}
+
 export async function generateStaticParams() {
   const guides = await getAllGuides();
   return guides.map((guide) => ({ slug: guide.slug }));
@@ -217,23 +247,11 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
     locale: settings.locale,
     defaultImagePath: settings.defaultSocialImageUrl || "/opengraph-image",
     defaultTwitterImagePath: settings.defaultSocialImageUrl || "/twitter-image",
+    extraOther: {
+      "last-verified": guide.lastVerified,
+    },
   });
-
-  const metadataOtherEntries = Object.entries(metadata.other ?? {}).filter(
-    ([, value]) => value !== undefined,
-  ) as Array<[string, string | number | (string | number)[]]>;
-
-  if (modifiedTime) {
-    metadataOtherEntries.push(["last-modified", modifiedTime]);
-  }
-
-  if (guide.lastVerified) {
-    metadataOtherEntries.push(["last-verified", guide.lastVerified]);
-  }
-
-  return metadataOtherEntries.length > 0
-    ? { ...metadata, other: Object.fromEntries(metadataOtherEntries) }
-    : metadata;
+  return metadata;
 }
 
 export default async function GuidePage({ params }: GuidePageProps) {
@@ -244,12 +262,16 @@ export default async function GuidePage({ params }: GuidePageProps) {
     notFound();
   }
 
-  const relatedToolSlug = guide.relatedToolSlugs?.[0];
   const fallbackToolSlug = guide.slug.endsWith("-nasil-kullanilir")
     ? guide.slug.replace("-nasil-kullanilir", "")
     : null;
-  const resolvedToolSlug = relatedToolSlug || fallbackToolSlug;
-  const relatedTool = resolvedToolSlug ? await getToolBySlug(resolvedToolSlug) : null;
+  const resolvedToolSlugs = [
+    ...new Set([...(guide.relatedToolSlugs ?? []), ...(fallbackToolSlug ? [fallbackToolSlug] : [])]),
+  ];
+  const relatedTools = (
+    await Promise.all(resolvedToolSlugs.map((toolSlug) => getToolBySlug(toolSlug)))
+  ).filter((tool): tool is NonNullable<typeof tool> => tool !== null);
+  const relatedTool = relatedTools[0] ?? null;
 
   const pageUrl = guide.canonicalUrl || absoluteUrl(`/rehber/${resolvedParams.slug}`, settings.url);
   const pageTitle = guide.h1 || guide.title;
@@ -263,20 +285,33 @@ export default async function GuidePage({ params }: GuidePageProps) {
       : Boolean(updatedAt && publishedAt && updatedAt !== publishedAt);
   const socialImageUrl = absoluteUrl(`/rehber/${resolvedParams.slug}/opengraph-image`, settings.url);
   const mdxSource = guide.body.kind === "mdx" ? guide.body.source ?? null : null;
+  const wordCount = getArticleWordCount(guide.body);
   const relatedToolUrl = relatedTool
     ? relatedTool.canonicalUrl || absoluteUrl(`/incelemeler/${relatedTool.slug}`, settings.url)
     : null;
+  const speakableXpaths = [
+    "/html/head/title",
+    "/html/head/meta[@name='description']/@content",
+    "/html/body//h1[1]",
+    ...(guide.heroIntro ? ["/html/body//*[@data-speakable='true'][1]"] : []),
+  ];
+  const aboutSoftwareApplications =
+    relatedTools.length > 0
+      ? relatedTools.map((tool) => ({
+          "@type": "SoftwareApplication" as const,
+          name: tool.name,
+          url: tool.canonicalUrl || absoluteUrl(`/incelemeler/${tool.slug}`, settings.url),
+          applicationCategory: normalizeSoftwareApplicationCategory(tool.category),
+          operatingSystem: "Web",
+        }))
+      : guide.tools.length > 0
+        ? guide.tools.map((toolName) => ({
+            "@type": "SoftwareApplication" as const,
+            name: toolName,
+          }))
+        : undefined;
 
-  const publisherEntity = {
-    "@type": "Organization",
-    name: settings.name,
-    url: settings.url,
-    sameAs: settings.socialProfiles,
-    logo: {
-      "@type": "ImageObject",
-      url: absoluteUrl(settings.logoPath, settings.url),
-    },
-  };
+  const publisherEntity = buildOrganizationEntity(settings);
 
   const authorCredentialsList = guide.author?.credentials ?? [];
   const authorCredentials =
@@ -313,17 +348,23 @@ export default async function GuidePage({ params }: GuidePageProps) {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: pageTitle,
+    headline: clampText(pageTitle, 110),
     description: guide.description,
     mainEntityOfPage: pageUrl,
     url: pageUrl,
     inLanguage: "tr-TR",
     datePublished: toIsoDate(publishedAt),
     dateModified: toIsoDate(updatedAt),
+    ...(wordCount > 0 ? { wordCount } : {}),
+    ...(guide.estimatedTimeMinutes ? { timeRequired: `PT${guide.estimatedTimeMinutes}M` } : {}),
     author: authorEntity,
     publisher: publisherEntity,
     articleSection: guide.category || "Nasıl kullanılır rehberi",
-    about: guide.tools.length > 0 ? guide.tools.map((tool) => ({ "@type": "SoftwareApplication", name: tool })) : undefined,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      xpath: speakableXpaths,
+    },
+    about: aboutSoftwareApplications,
     image:
       guide.featuredImageUrl ||
       socialImageUrl,
@@ -360,6 +401,22 @@ export default async function GuidePage({ params }: GuidePageProps) {
           datePublished: toIsoDate(publishedAt),
           dateModified: toIsoDate(updatedAt),
           ...(guide.estimatedTimeMinutes ? { totalTime: `PT${guide.estimatedTimeMinutes}M` } : {}),
+          ...(guide.supplies.length > 0
+            ? {
+                supply: guide.supplies.map((item) => ({
+                  "@type": "HowToSupply",
+                  name: item,
+                })),
+              }
+            : {}),
+          ...(guide.tools.length > 0
+            ? {
+                tool: guide.tools.map((toolName) => ({
+                  "@type": "HowToTool",
+                  name: toolName,
+                })),
+              }
+            : {}),
           step: howToSteps.map((step, index) => ({
             "@type": "HowToStep",
             name: step.name,
@@ -409,7 +466,11 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
       <header className="workflow-header">
         <h1>{pageTitle}</h1>
-        {guide.heroIntro ? <p className="workflow-description">{guide.heroIntro}</p> : null}
+        {guide.heroIntro ? (
+          <p className="workflow-description" data-speakable="true">
+            {guide.heroIntro}
+          </p>
+        ) : null}
 
         <TrustBox
           items={[

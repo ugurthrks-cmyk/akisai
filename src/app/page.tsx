@@ -4,6 +4,7 @@ import SearchBar from "@/components/SearchBar";
 import { coreCategoryTaxonomy } from "@/lib/category-taxonomy";
 import { getAllComparisons, getAllGuides, getAllTools } from "@/lib/content-source";
 import { buildMetadata } from "@/lib/metadata";
+import { buildOrganizationSchema } from "@/lib/organization-schema";
 import { getSiteSettings } from "@/lib/site-settings";
 
 export const revalidate = 300;
@@ -69,16 +70,7 @@ export default async function HomePage() {
       label: topic.name,
     }));
 
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: settings.name,
-    url: settings.url,
-    logo: `${settings.url}${settings.logoPath}`,
-    description: settings.organizationDescription,
-    inLanguage: "tr-TR",
-    sameAs: settings.socialProfiles,
-  };
+  const organizationSchema = buildOrganizationSchema(settings);
 
   const webSiteSchema = {
     "@context": "https://schema.org",

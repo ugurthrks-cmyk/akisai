@@ -35,6 +35,11 @@ function getLatestDate(values: Array<string | Date | null | undefined>) {
   }, null);
 }
 
+function toSitemapImages(...values: Array<string | null | undefined>) {
+  const images = values.filter((value): value is string => typeof value === "string" && value.trim().length > 0);
+  return images.length > 0 ? images : undefined;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [settings, authors, tools, categories, comparisons, guides, pages] = await Promise.all([
     getSiteSettings(),
@@ -122,6 +127,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: toDate(tool.dateModified || tool.updatedAt || tool.datePublished || tool.date) ?? siteLastModified,
     changeFrequency: "weekly" as const,
     priority: 0.9,
+    images: toSitemapImages(tool.featuredImageUrl, tool.logoUrl),
   }));
 
   const comparisonRoutes = comparisons.map((comparison) => ({
@@ -131,6 +137,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       siteLastModified,
     changeFrequency: "weekly" as const,
     priority: 0.88,
+    images: toSitemapImages(comparison.featuredImageUrl),
   }));
 
   const toolCountsByCategorySlug = new Map<string, number>();
@@ -156,6 +163,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: toDate(guide.dateModified || guide.updatedAt || guide.datePublished || guide.date) ?? siteLastModified,
     changeFrequency: "weekly" as const,
     priority: 0.9,
+    images: toSitemapImages(guide.featuredImageUrl),
   }));
 
   const pageRoutes = pages

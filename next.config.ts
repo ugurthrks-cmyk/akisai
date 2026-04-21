@@ -1,5 +1,29 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
+const scriptSrc = [
+  "'self'",
+  "'unsafe-inline'",
+  isDev ? "'unsafe-eval'" : null,
+  "https:",
+  "blob:",
+]
+  .filter(Boolean)
+  .join(" ");
+
+const connectSrc = [
+  "'self'",
+  "https://*.sanity.io",
+  "wss://*.sanity.io",
+  "https://*.google-analytics.com",
+  "https://*.googletagmanager.com",
+  isDev ? "ws:" : null,
+  isDev ? "wss:" : null,
+]
+  .filter(Boolean)
+  .join(" ");
+
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
@@ -11,8 +35,8 @@ const securityHeaders = [
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline' https:",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: blob:",
-      "connect-src 'self' https: wss:",
+      `script-src ${scriptSrc}`,
+      `connect-src ${connectSrc}`,
       "worker-src 'self' blob:",
       "frame-src 'self' https:",
       "object-src 'none'",

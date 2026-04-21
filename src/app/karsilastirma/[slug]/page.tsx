@@ -9,7 +9,8 @@ import PortableTextContent from "@/components/PortableTextContent";
 import TrustBox from "@/components/TrustBox";
 import { absoluteUrl, formatDisplayDate, toIsoDate } from "@/lib/content";
 import { getAllComparisons, getComparisonBySlug, getToolBySlug } from "@/lib/content-source";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, clampText } from "@/lib/metadata";
+import { buildOrganizationEntity } from "@/lib/organization-schema";
 import { getSiteSettings } from "@/lib/site-settings";
 import "./comparison.css";
 import "../../rehber/[slug]/workflow.css";
@@ -67,23 +68,11 @@ export async function generateMetadata({ params }: ComparisonPageProps): Promise
     locale: settings.locale,
     defaultImagePath: settings.defaultSocialImageUrl || "/opengraph-image",
     defaultTwitterImagePath: settings.defaultSocialImageUrl || "/twitter-image",
+    extraOther: {
+      "last-verified": comparison.lastVerified,
+    },
   });
-
-  const metadataOtherEntries = Object.entries(metadata.other ?? {}).filter(
-    ([, value]) => value !== undefined,
-  ) as Array<[string, string | number | (string | number)[]]>;
-
-  if (modifiedTime) {
-    metadataOtherEntries.push(["last-modified", modifiedTime]);
-  }
-
-  if (comparison.lastVerified) {
-    metadataOtherEntries.push(["last-verified", comparison.lastVerified]);
-  }
-
-  return metadataOtherEntries.length > 0
-    ? { ...metadata, other: Object.fromEntries(metadataOtherEntries) }
-    : metadata;
+  return metadata;
 }
 
 export default async function ComparisonDetailPage({ params }: ComparisonPageProps) {
@@ -117,16 +106,7 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
   const findMatchedTool = (name: string) =>
     comparedTools.find((tool) => tool.name.trim().toLocaleLowerCase("tr-TR") === name.trim().toLocaleLowerCase("tr-TR"));
 
-  const publisherEntity = {
-    "@type": "Organization",
-    name: settings.name,
-    url: settings.url,
-    sameAs: settings.socialProfiles,
-    logo: {
-      "@type": "ImageObject",
-      url: absoluteUrl(settings.logoPath, settings.url),
-    },
-  };
+  const publisherEntity = buildOrganizationEntity(settings);
 
   const authorCredentialsList = comparison.author?.credentials ?? [];
   const authorCredentials =
@@ -163,7 +143,7 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: pageTitle,
+    headline: clampText(pageTitle, 110),
     description: comparison.description,
     mainEntityOfPage: pageUrl,
     url: pageUrl,

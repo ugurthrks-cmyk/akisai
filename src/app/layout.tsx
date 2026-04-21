@@ -6,6 +6,10 @@ import Footer from "@/components/Footer";
 import Analytics from "@/components/Analytics";
 import { getSiteSettings } from "@/lib/site-settings";
 
+if (!process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && process.env.NODE_ENV === "production") {
+  console.warn("NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION is not set in production.");
+}
+
 const sourceSans = Source_Sans_3({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans",

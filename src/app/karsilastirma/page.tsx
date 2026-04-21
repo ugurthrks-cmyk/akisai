@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllComparisons } from "@/lib/content-source";
-import { buildSiteMetadata } from "@/lib/metadata";
+import { buildSiteMetadata, clampText } from "@/lib/metadata";
 import { getSiteSettings } from "@/lib/site-settings";
 import "../ai/ai-hub.css";
 
@@ -55,7 +55,7 @@ export default async function ComparisonHubPage() {
         inLanguage: "tr-TR",
         hasPart: comparisonItems.map((item) => ({
           "@type": "Article",
-          headline: item.name,
+          headline: clampText(item.name, 110),
           url: item.url,
           description: item.description,
         })),

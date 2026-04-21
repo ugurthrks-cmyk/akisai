@@ -18,14 +18,45 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ReviewsHubPage() {
   const [allTools, settings] = await Promise.all([getAllTools(), getSiteSettings()]);
 
+  const toolItems = allTools.map((tool, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    url: `${settings.url}/incelemeler/${tool.slug}`,
+    name: tool.name || tool.title || tool.h1,
+    description: tool.description,
+  }));
+
   const collectionSchema = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: `${settings.name} yapay zeka araç incelemeleri`,
-    description:
-      "Karar vermeyi hızlandıran, kullanım senaryosu odaklı yapay zeka araç incelemeleri ve değerlendirme sayfaları.",
-    url: `${settings.url}/incelemeler`,
-    inLanguage: "tr-TR",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: `${settings.name} yapay zeka araç incelemeleri`,
+        description:
+          "Karar vermeyi hızlandıran, kullanım senaryosu odaklı yapay zeka araç incelemeleri ve değerlendirme sayfaları.",
+        url: `${settings.url}/incelemeler`,
+        inLanguage: "tr-TR",
+        hasPart: toolItems.map((item) => ({
+          "@type": "Article",
+          headline: item.name,
+          url: item.url,
+          description: item.description,
+        })),
+        isPartOf: {
+          "@type": "WebSite",
+          name: settings.name,
+          url: settings.url,
+        },
+      },
+      {
+        "@type": "ItemList",
+        name: "Yapay zeka araç incelemeleri",
+        inLanguage: "tr-TR",
+        itemListOrder: "https://schema.org/ItemListUnordered",
+        numberOfItems: toolItems.length,
+        itemListElement: toolItems,
+      },
+    ],
   };
 
   return (

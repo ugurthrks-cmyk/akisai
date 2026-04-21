@@ -15,7 +15,8 @@ import {
   toIsoDate,
 } from "@/lib/content";
 import { getAllTools, getComparisonsByToolSlug, getGuideByToolSlug, getToolBySlug } from "@/lib/content-source";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, clampText } from "@/lib/metadata";
+import { buildOrganizationEntity } from "@/lib/organization-schema";
 import { getSiteSettings } from "@/lib/site-settings";
 import "../../ai/[slug]/tool.css";
 
@@ -77,23 +78,11 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
     locale: settings.locale,
     defaultImagePath: settings.defaultSocialImageUrl || "/opengraph-image",
     defaultTwitterImagePath: settings.defaultSocialImageUrl || "/twitter-image",
+    extraOther: {
+      "last-verified": tool.lastVerified,
+    },
   });
-
-  const metadataOtherEntries = Object.entries(metadata.other ?? {}).filter(
-    ([, value]) => value !== undefined,
-  ) as Array<[string, string | number | (string | number)[]]>;
-
-  if (modifiedTime) {
-    metadataOtherEntries.push(["last-modified", modifiedTime]);
-  }
-
-  if (tool.lastVerified) {
-    metadataOtherEntries.push(["last-verified", tool.lastVerified]);
-  }
-
-  return metadataOtherEntries.length > 0
-    ? { ...metadata, other: Object.fromEntries(metadataOtherEntries) }
-    : metadata;
+  return metadata;
 }
 
 export default async function ReviewDetailPage({ params }: ToolPageProps) {
@@ -136,15 +125,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
     ? tool.heroIntro.split(/\r?\n\s*\r?\n/).map((item) => item.trim()).filter(Boolean)
     : [];
 
-  const publisherEntity = {
-    "@type": "Organization",
-    name: settings.name,
-    url: settings.url,
-    logo: {
-      "@type": "ImageObject",
-      url: absoluteUrl(settings.logoPath, settings.url),
-    },
-  };
+  const publisherEntity = buildOrganizationEntity(settings);
 
   const authorCredentialsList = tool.author?.credentials ?? [];
   const authorCredentials =
@@ -214,7 +195,7 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: pageTitle,
+    headline: clampText(pageTitle, 110),
     description: tool.description,
     mainEntityOfPage: pageUrl,
     url: pageUrl,

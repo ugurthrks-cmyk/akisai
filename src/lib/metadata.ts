@@ -4,6 +4,7 @@ import { siteConfig } from "@/lib/site";
 import { getSiteSettings } from "@/lib/site-settings";
 
 type MetadataPageType = "website" | "article" | "profile";
+type MetadataOtherValue = string | number;
 
 type BuildMetadataOptions = {
   title: string;
@@ -29,9 +30,10 @@ type BuildMetadataOptions = {
   locale?: string;
   defaultImagePath?: string;
   defaultTwitterImagePath?: string;
+  extraOther?: Record<string, MetadataOtherValue | undefined>;
 };
 
-function clampText(value: string, limit: number) {
+export function clampText(value: string, limit: number) {
   const normalized = value.replace(/\s+/g, " ").trim();
 
   if (normalized.length <= limit) {
@@ -73,6 +75,7 @@ export function buildMetadata({
   locale = siteConfig.locale,
   defaultImagePath,
   defaultTwitterImagePath,
+  extraOther,
 }: BuildMetadataOptions): Metadata {
   const normalizedDescription = clampText(description, 155);
   const normalizedOpenGraphDescription = clampText(openGraphDescription || description, 200);
@@ -80,6 +83,9 @@ export function buildMetadata({
   const resolvedImagePath = imagePath ?? defaultImagePath ?? "/opengraph-image";
   const resolvedTwitterImagePath =
     twitterImagePath ?? defaultTwitterImagePath ?? resolvedImagePath;
+  const filteredExtraOther = Object.fromEntries(
+    Object.entries(extraOther ?? {}).filter(([, value]) => value !== undefined),
+  );
 
   return {
     title,
@@ -127,8 +133,9 @@ export function buildMetadata({
     },
     other: {
       "geo.region": "TR",
-      "geo.placename": "Türkiye",
+      "geo.placename": "Turkiye",
       ...(modifiedTime ? { "last-modified": modifiedTime } : {}),
+      ...filteredExtraOther,
     },
   };
 }

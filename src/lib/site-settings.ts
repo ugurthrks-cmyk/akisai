@@ -16,6 +16,9 @@ export type ResolvedSiteSettings = {
   category: string;
   logoPath: string;
   organizationDescription: string;
+  organizationKnowsAbout: string[];
+  organizationLanguages: string[];
+  organizationAreasServed: string[];
   socialProfiles: string[];
   defaultSocialImageUrl?: string;
   defaultSocialImageAlt?: string;
@@ -29,6 +32,9 @@ type SanitySiteSettings = {
   defaultTitle?: string;
   defaultDescription?: string;
   organizationDescription?: string;
+  organizationKnowsAbout?: unknown;
+  organizationLanguages?: unknown;
+  organizationAreasServed?: unknown;
   socialProfiles?: unknown;
   defaultSocialImageUrl?: string;
   defaultSocialImageAlt?: string;
@@ -42,6 +48,9 @@ const siteSettingsQuery = groq`*[_type == "siteSettings" && _id == "siteSettings
   defaultTitle,
   defaultDescription,
   organizationDescription,
+  organizationKnowsAbout,
+  organizationLanguages,
+  organizationAreasServed,
   socialProfiles,
   "defaultSocialImageUrl": defaultSocialImage.asset->url,
   "defaultSocialImageAlt": defaultSocialImage.alt
@@ -51,6 +60,11 @@ function asStringArray(value: unknown) {
   return Array.isArray(value)
     ? value.filter((item): item is string => typeof item === "string" && item.trim().length > 0)
     : [];
+}
+
+function resolveStringArray(value: unknown, fallback: string[]) {
+  const resolved = asStringArray(value);
+  return resolved.length > 0 ? resolved : fallback;
 }
 
 function buildFallbackSettings(): ResolvedSiteSettings {
@@ -64,6 +78,9 @@ function buildFallbackSettings(): ResolvedSiteSettings {
     category: siteConfig.category,
     logoPath: siteConfig.logoPath,
     organizationDescription: siteConfig.description,
+    organizationKnowsAbout: [...siteConfig.organizationKnowsAbout],
+    organizationLanguages: [...siteConfig.organizationLanguages],
+    organizationAreasServed: [...siteConfig.organizationAreasServed],
     socialProfiles: [],
   };
 }
@@ -93,6 +110,18 @@ export const getSiteSettings = cache(async (): Promise<ResolvedSiteSettings> => 
     locale: settings.locale || fallback.locale,
     organizationDescription:
       settings.organizationDescription || settings.defaultDescription || fallback.description,
+    organizationKnowsAbout: resolveStringArray(
+      settings.organizationKnowsAbout,
+      fallback.organizationKnowsAbout,
+    ),
+    organizationLanguages: resolveStringArray(
+      settings.organizationLanguages,
+      fallback.organizationLanguages,
+    ),
+    organizationAreasServed: resolveStringArray(
+      settings.organizationAreasServed,
+      fallback.organizationAreasServed,
+    ),
     socialProfiles: asStringArray(settings.socialProfiles),
     defaultSocialImageUrl: settings.defaultSocialImageUrl,
     defaultSocialImageAlt: settings.defaultSocialImageAlt,

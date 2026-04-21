@@ -75,6 +75,17 @@ export const guide = defineType({
       description: "Rehberin adimlarini tek tek girmek isterseniz kullanin.",
     }),
     defineField({
+      name: "supplies",
+      title: "Gerekenler",
+      type: "array",
+      group: "editorial",
+      of: [{ type: "string" }],
+      options: {
+        layout: "tags",
+      },
+      description: "HowTo schema icindeki supply alani icin gerekli hesap, cihaz veya kaynaklari listeleyin.",
+    }),
+    defineField({
       name: "bodyMarkdown",
       title: "Eski MDX govdesi",
       type: "text",

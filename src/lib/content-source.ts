@@ -144,6 +144,7 @@ export interface GuideSummary {
 export interface GuideEntry extends GuideSummary {
   body: RichBody;
   tools: string[];
+  supplies: string[];
   faqs: FaqItem[];
 }
 
@@ -305,6 +306,7 @@ type SanityGuideValue = {
   bodyMarkdown?: string;
   body?: PortableTextBlock[];
   tools?: unknown;
+  supplies?: unknown;
   relatedToolSlugs?: unknown;
   faqs?: unknown;
   datePublished?: string;
@@ -524,6 +526,7 @@ const guideListQuery = groq`*[_type == "guide" && defined(slug.current)] | order
   heroIntro,
   difficulty,
   estimatedTimeMinutes,
+  supplies,
   datePublished,
   dateModified,
   lastVerified,
@@ -559,6 +562,7 @@ const guideBySlugQuery = groq`*[_type == "guide" && slug.current == $slug][0] {
   difficulty,
   estimatedTimeMinutes,
   faqs,
+  supplies,
   body,
   datePublished,
   dateModified,
@@ -1137,6 +1141,7 @@ async function getSanityGuide(slug: string) {
           value: Array.isArray(item.body) ? item.body : [],
     } satisfies RichBody),
     tools: asStringArray(item.tools),
+    supplies: asStringArray(item.supplies),
     faqs: asFaqArray(item.faqs),
   } satisfies GuideEntry;
 }

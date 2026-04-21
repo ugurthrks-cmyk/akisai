@@ -17,13 +17,44 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RehberHubPage() {
   const [allGuides, settings] = await Promise.all([getAllGuides(), getSiteSettings()]);
 
+  const guideItems = allGuides.map((guide, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    url: `${settings.url}/rehber/${guide.slug}`,
+    name: guide.h1 || guide.title,
+    description: guide.description,
+  }));
+
   const collectionSchema = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: `${settings.name} yapay zeka nasıl kullanılır rehberleri`,
-    description: "Adım adım yapay zeka kullanım rehberleri ve uygulanabilir kurulum içerikleri.",
-    url: `${settings.url}/rehber`,
-    inLanguage: "tr-TR",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: `${settings.name} yapay zeka nasıl kullanılır rehberleri`,
+        description: "Adım adım yapay zeka kullanım rehberleri ve uygulanabilir kurulum içerikleri.",
+        url: `${settings.url}/rehber`,
+        inLanguage: "tr-TR",
+        hasPart: guideItems.map((item) => ({
+          "@type": "Article",
+          headline: item.name,
+          url: item.url,
+          description: item.description,
+        })),
+        isPartOf: {
+          "@type": "WebSite",
+          name: settings.name,
+          url: settings.url,
+        },
+      },
+      {
+        "@type": "ItemList",
+        name: "Nasıl kullanılır rehberleri",
+        inLanguage: "tr-TR",
+        itemListOrder: "https://schema.org/ItemListUnordered",
+        numberOfItems: guideItems.length,
+        itemListElement: guideItems,
+      },
+    ],
   };
 
   return (
