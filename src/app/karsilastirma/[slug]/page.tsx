@@ -155,13 +155,14 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
     articleSection: comparison.category || "Araç karşılaştırması",
     about: displayToolNames.map((name) => {
       const matchedTool = findMatchedTool(name);
+      const toolUrl = matchedTool
+        ? matchedTool.canonicalUrl || absoluteUrl(`/incelemeler/${matchedTool.slug}`, settings.url)
+        : undefined;
 
       return {
-        "@type": "SoftwareApplication",
+        "@type": "Thing",
         name,
-        ...(matchedTool
-          ? { url: matchedTool.canonicalUrl || absoluteUrl(`/incelemeler/${matchedTool.slug}`, settings.url) }
-          : {}),
+        ...(toolUrl ? { sameAs: toolUrl } : {}),
       };
     }),
     image: comparison.featuredImageUrl || socialImageUrl,
@@ -203,19 +204,17 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
           numberOfItems: displayToolNames.length,
           itemListElement: displayToolNames.map((name, index) => {
             const matchedTool = findMatchedTool(name);
+            const toolUrl = matchedTool
+              ? matchedTool.canonicalUrl || absoluteUrl(`/incelemeler/${matchedTool.slug}`, settings.url)
+              : undefined;
 
             return {
               "@type": "ListItem",
               position: index + 1,
               item: {
-                "@type": "SoftwareApplication",
+                "@type": "Thing",
                 name,
-                ...(matchedTool
-                  ? {
-                      url: matchedTool.canonicalUrl || absoluteUrl(`/incelemeler/${matchedTool.slug}`, settings.url),
-                      applicationCategory: matchedTool.category,
-                    }
-                  : {}),
+                ...(toolUrl ? { sameAs: toolUrl } : {}),
               },
             };
           }),
