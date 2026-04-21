@@ -8,7 +8,7 @@ import FaqSection from "@/components/FaqSection";
 import MdxContent from "@/components/MdxContent";
 import PortableTextContent from "@/components/PortableTextContent";
 import TrustBox from "@/components/TrustBox";
-import { absoluteUrl, formatDisplayDate, normalizeSoftwareApplicationCategory, toIsoDate } from "@/lib/content";
+import { absoluteUrl, formatDisplayDate, toIsoDate } from "@/lib/content";
 import { getAllGuides, getGuideBySlug, getToolBySlug } from "@/lib/content-source";
 import { buildMetadata, clampText } from "@/lib/metadata";
 import { buildOrganizationEntity } from "@/lib/organization-schema";
@@ -295,18 +295,20 @@ export default async function GuidePage({ params }: GuidePageProps) {
     "/html/body//h1[1]",
     ...(guide.heroIntro ? ["/html/body//*[@data-speakable='true'][1]"] : []),
   ];
-  const aboutSoftwareApplications =
+  const aboutEntities =
     relatedTools.length > 0
       ? relatedTools.map((tool) => ({
-          "@type": "SoftwareApplication" as const,
+          "@type": "Thing" as const,
           name: tool.name,
-          url: tool.canonicalUrl || absoluteUrl(`/incelemeler/${tool.slug}`, settings.url),
-          applicationCategory: normalizeSoftwareApplicationCategory(tool.category),
-          operatingSystem: "Web",
+          ...(tool.slug
+            ? {
+                sameAs: tool.canonicalUrl || absoluteUrl(`/incelemeler/${tool.slug}`, settings.url),
+              }
+            : {}),
         }))
       : guide.tools.length > 0
         ? guide.tools.map((toolName) => ({
-            "@type": "SoftwareApplication" as const,
+            "@type": "Thing" as const,
             name: toolName,
           }))
         : undefined;
@@ -364,7 +366,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
       "@type": "SpeakableSpecification",
       xpath: speakableXpaths,
     },
-    about: aboutSoftwareApplications,
+    about: aboutEntities,
     image:
       guide.featuredImageUrl ||
       socialImageUrl,
