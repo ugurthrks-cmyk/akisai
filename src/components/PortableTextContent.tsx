@@ -116,6 +116,47 @@ const promptFieldLabels = [
   "Kaçın:",
 ].sort((left, right) => right.length - left.length);
 
+const normalizedPromptFieldLabels = [
+  "Orijinal hedef kitle:",
+  "Yeni hedef kitle:",
+  "\u0130stenen slayt say\u0131s\u0131:",
+  "\u00c7\u0131kt\u0131y\u0131 \u015fu formatta ver:",
+  "\u00c7\u0131kt\u0131y\u0131 iki s\u00fctunlu gibi d\u00fc\u015f\u00fcn:",
+  "L\u00fctfen a\u015fa\u011f\u0131dakileri g\u00fcncelle:",
+  "Her slayt i\u00e7in:",
+  "Her slayt i\u00e7in \u00f6ner:",
+  "\u0130stenen \u00e7\u0131kt\u0131:",
+  "Sunum s\u00fcresi:",
+  "Toplam s\u00fcre:",
+  "Sunum dili:",
+  "\u0130stenen ton:",
+  "\u00dcr\u00fcn/Hizmet:",
+  "Hedef kitle:",
+  "Kat\u0131l\u0131mc\u0131lar:",
+  "Sunum t\u00fcr\u00fc:",
+  "Marka tonu:",
+  "Renk paleti:",
+  "Aspect ratio:",
+  "Slayt ba\u015fl\u0131\u011f\u0131:",
+  "Ana mesaj:",
+  "\u0130stenen tarz:",
+  "Slaytlar:",
+  "Kurallar:",
+  "Sunum:",
+  "Metin:",
+  "Konu:",
+  "Ama\u00e7:",
+  "Hedef:",
+  "Seviye:",
+  "Yap\u0131:",
+  "Veri:",
+  "Ka\u00e7\u0131n:",
+].sort((left, right) => right.length - left.length);
+
+function getPromptFieldLabel(text: string) {
+  return normalizedPromptFieldLabels.find((label) => text.startsWith(label));
+}
+
 function insertLineBreaksOutsideBrackets(text: string) {
   let result = "";
   let bracketDepth = 0;
@@ -138,7 +179,7 @@ function insertLineBreaksOutsideBrackets(text: string) {
     if (currentChar === " " && bracketDepth === 0) {
       const remaining = text.slice(index + 1);
 
-      if (promptFieldLabels.some((label) => remaining.startsWith(label)) || /^\d+\)\s/.test(remaining)) {
+      if (getPromptFieldLabel(remaining) || /^\d+\)\s/.test(remaining)) {
         result += "\n";
         continue;
       }
@@ -150,18 +191,45 @@ function insertLineBreaksOutsideBrackets(text: string) {
   return result;
 }
 
+function formatPromptLineValue(text: string) {
+  return text
+    .replace(/\s+(?=\d+\)\s)/g, "\n")
+    .replace(/-\s+/g, "\n- ")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function formatPromptSegment(text: string) {
+  return insertLineBreaksOutsideBrackets(text)
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .flatMap((line) => {
+      const fieldLabel = getPromptFieldLabel(line);
+
+      if (!fieldLabel) {
+        return formatPromptLineValue(line);
+      }
+
+      const value = line.slice(fieldLabel.length).trim();
+
+      if (!value) {
+        return [fieldLabel];
+      }
+
+      return [fieldLabel, ...formatPromptLineValue(value)];
+    })
+    .join("\n");
+}
+
 function formatPromptText(text: string) {
   return text
     .split(/\s{2,}/)
     .map((segment) => segment.trim())
     .filter(Boolean)
-    .map((segment) =>
-      insertLineBreaksOutsideBrackets(segment)
-        .replace(/: (?=- )/g, ":\n")
-        .replace(/ - /g, "\n- ")
-        .replace(/\n(?=- )/g, "")
-        .replace(/\n(?=\d+\)\s)/g, "\n"),
-    )
+    .map((segment) => formatPromptSegment(segment))
+    .filter(Boolean)
     .join("\n\n");
 }
 
@@ -189,19 +257,8 @@ function renderPromptText(text: string) {
       parts.push(segment);
     });
 
-    const compactLine = line.trim();
-    const shouldKeepLineTogether =
-      compactLine.length > 0 &&
-      compactLine.length <= 72 &&
-      compactLine.includes(":") &&
-      compactLine.includes("[") &&
-      compactLine.includes("]");
-
     return (
-      <span
-        key={`line-${lineIndex}`}
-        className={shouldKeepLineTogether ? "portable-prompt-line portable-prompt-line-tight" : "portable-prompt-line"}
-      >
+      <span key={`line-${lineIndex}`} className="portable-prompt-line">
         {parts}
         {lineIndex < lines.length - 1 ? "\n" : null}
       </span>
