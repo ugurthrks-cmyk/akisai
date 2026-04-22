@@ -201,10 +201,40 @@ function formatPromptLineValue(text: string) {
 }
 
 function formatPromptSegment(text: string) {
-  return insertLineBreaksOutsideBrackets(text)
+  const sourceLines = insertLineBreaksOutsideBrackets(text)
     .split("\n")
     .map((line) => line.trim())
-    .filter(Boolean)
+    .filter(Boolean);
+  const normalizedLines: string[] = [];
+
+  for (let index = 0; index < sourceLines.length; index += 1) {
+    const line = sourceLines[index];
+    const nextLine = sourceLines[index + 1];
+
+    if (
+      line &&
+      getPromptFieldLabel(line) &&
+      nextLine &&
+      !getPromptFieldLabel(nextLine) &&
+      !/^- /.test(nextLine) &&
+      !/^\d+\)\s/.test(nextLine)
+    ) {
+      normalizedLines.push(
+        ...insertLineBreaksOutsideBrackets(`${line} ${nextLine}`)
+          .split("\n")
+          .map((mergedLine) => mergedLine.trim())
+          .filter(Boolean),
+      );
+      index += 1;
+      continue;
+    }
+
+    if (line) {
+      normalizedLines.push(line);
+    }
+  }
+
+  return normalizedLines
     .flatMap((line) => {
       if (getPromptFieldLabel(line)) {
         return [line];
