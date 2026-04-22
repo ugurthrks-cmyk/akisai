@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { getExternalLinkProps, isExternalHref } from "@/lib/link-utils";
 import { urlForImage } from "@/sanity/lib/image";
 
@@ -288,13 +288,14 @@ function renderPromptText(text: string) {
       compactLine.includes("]");
 
     return (
-      <span
-        key={`line-${lineIndex}`}
-        className={shouldKeepLineTogether ? "portable-prompt-line portable-prompt-line-tight" : "portable-prompt-line"}
-      >
-        {parts}
-        {lineIndex < lines.length - 1 ? "\n" : null}
-      </span>
+      <Fragment key={`line-${lineIndex}`}>
+        <span
+          className={shouldKeepLineTogether ? "portable-prompt-line portable-prompt-line-tight" : "portable-prompt-line"}
+        >
+          {parts}
+        </span>
+        {lineIndex < lines.length - 1 ? <br key={`break-${lineIndex}`} /> : null}
+      </Fragment>
     );
   });
 }
