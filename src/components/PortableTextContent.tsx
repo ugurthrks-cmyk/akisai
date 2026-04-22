@@ -206,19 +206,11 @@ function formatPromptSegment(text: string) {
     .map((line) => line.trim())
     .filter(Boolean)
     .flatMap((line) => {
-      const fieldLabel = getPromptFieldLabel(line);
-
-      if (!fieldLabel) {
-        return formatPromptLineValue(line);
+      if (getPromptFieldLabel(line)) {
+        return [line];
       }
 
-      const value = line.slice(fieldLabel.length).trim();
-
-      if (!value) {
-        return [fieldLabel];
-      }
-
-      return [fieldLabel, ...formatPromptLineValue(value)];
+      return formatPromptLineValue(line);
     })
     .join("\n");
 }
@@ -257,8 +249,19 @@ function renderPromptText(text: string) {
       parts.push(segment);
     });
 
+    const compactLine = line.trim();
+    const shouldKeepLineTogether =
+      compactLine.length > 0 &&
+      compactLine.length <= 72 &&
+      getPromptFieldLabel(compactLine) !== undefined &&
+      compactLine.includes("[") &&
+      compactLine.includes("]");
+
     return (
-      <span key={`line-${lineIndex}`} className="portable-prompt-line">
+      <span
+        key={`line-${lineIndex}`}
+        className={shouldKeepLineTogether ? "portable-prompt-line portable-prompt-line-tight" : "portable-prompt-line"}
+      >
         {parts}
         {lineIndex < lines.length - 1 ? "\n" : null}
       </span>
