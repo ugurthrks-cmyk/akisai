@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
+import type { ReactNode } from "react";
 import { getExternalLinkProps, isExternalHref } from "@/lib/link-utils";
 import { urlForImage } from "@/sanity/lib/image";
 
@@ -92,6 +93,50 @@ function formatPromptText(text: string) {
         .replace(/\s(?=\d+\)\s)/g, "\n"),
     )
     .join("\n\n");
+}
+
+function renderPromptText(text: string) {
+  const lines = text.split("\n");
+
+  return lines.map((line, lineIndex) => {
+    const parts: ReactNode[] = [];
+    const segments = line.split(/(\[[^\]]+\])/g);
+
+    segments.forEach((segment, segmentIndex) => {
+      if (!segment) {
+        return;
+      }
+
+      if (segment.startsWith("[") && segment.endsWith("]")) {
+        parts.push(
+          <span key={`${lineIndex}-${segmentIndex}`} className="portable-prompt-token">
+            {segment}
+          </span>,
+        );
+        return;
+      }
+
+      parts.push(segment);
+    });
+
+    const compactLine = line.trim();
+    const shouldKeepLineTogether =
+      compactLine.length > 0 &&
+      compactLine.length <= 72 &&
+      compactLine.includes(":") &&
+      compactLine.includes("[") &&
+      compactLine.includes("]");
+
+    return (
+      <span
+        key={`line-${lineIndex}`}
+        className={shouldKeepLineTogether ? "portable-prompt-line portable-prompt-line-tight" : "portable-prompt-line"}
+      >
+        {parts}
+        {lineIndex < lines.length - 1 ? "\n" : null}
+      </span>
+    );
+  });
 }
 
 function isEditorNoteText(text: string) {
@@ -344,7 +389,7 @@ export default function PortableTextContent({ value }: PortableTextContentProps)
                   <section key={item.key} className="portable-prompt-item">
                     <h3>{item.title}</h3>
                     <pre className="portable-prompt-card">
-                      <code>{formatPromptText(item.content)}</code>
+                      <code>{renderPromptText(formatPromptText(item.content))}</code>
                     </pre>
                   </section>
                 ))}

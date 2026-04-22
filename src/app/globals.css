@@ -1166,6 +1166,18 @@ p {
   line-height: inherit;
 }
 
+.portable-prompt-line {
+  display: inline;
+}
+
+.portable-prompt-line-tight {
+  white-space: nowrap;
+}
+
+.portable-prompt-token {
+  white-space: nowrap;
+}
+
 .mdx-content pre {
   margin: 1.2rem 0;
   padding: 1.1rem;
