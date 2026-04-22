@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import { Fragment, type ReactNode } from "react";
+import PortableTextEnhancer from "@/components/PortableTextEnhancer";
 import { getExternalLinkProps, isExternalHref } from "@/lib/link-utils";
 import { urlForImage } from "@/sanity/lib/image";
 
@@ -70,6 +71,10 @@ function isPromptLibraryHeading(text: string) {
 
 function isPromptTitle(text: string) {
   return text.toLocaleLowerCase("tr-TR").endsWith("promptu");
+}
+
+function isAlternativesSectionHeading(text: string) {
+  return text.toLocaleLowerCase("tr-TR").startsWith("alternatif ai sunum araçları karşılaştırması");
 }
 
 function getBlocksText(blocks: PortableTextBlock[]) {
@@ -390,6 +395,63 @@ function buildRenderChunks(value: PortableTextBlock[]): RenderChunk[] {
       }
     }
 
+    if (candidate.style === "h2" && isAlternativesSectionHeading(candidateText)) {
+      let sectionEnd = index + 1;
+
+      while (sectionEnd < value.length) {
+        const block = value[sectionEnd] as PortableTextLikeBlock;
+
+        if (block.style === "h2") {
+          break;
+        }
+
+        sectionEnd += 1;
+      }
+
+      const sectionBlocks = value.slice(index + 1, sectionEnd).filter((block) => {
+        const candidateBlock = block as PortableTextLikeBlock;
+
+        return candidateBlock.style === "normal" && !candidateBlock.listItem && getBlockText(candidateBlock);
+      });
+
+      if (sectionBlocks.length >= 16) {
+        const introBlock = sectionBlocks[0];
+        const headerBlocks = sectionBlocks.slice(1, 6);
+        const dataBlocks = sectionBlocks.slice(6);
+        const headers = headerBlocks.map((block) => getBlockText(block as PortableTextLikeBlock));
+        const rows: TableChunk["rows"] = [];
+
+        if (headers.length === 5 && dataBlocks.length >= 10 && dataBlocks.length % headers.length === 0) {
+          for (let rowIndex = 0; rowIndex < dataBlocks.length; rowIndex += headers.length) {
+            rows.push({
+              key: `alternatives-row-${index + rowIndex}`,
+              cells: dataBlocks
+                .slice(rowIndex, rowIndex + headers.length)
+                .map((block) => getBlockText(block as PortableTextLikeBlock)),
+            });
+          }
+        }
+
+        if (rows.length >= 2) {
+          bufferedBlocks.push(value[index], introBlock);
+          flushBlocks();
+          chunks.push({
+            kind: "table",
+            key: `alternatives-${candidate._key || chunks.length}`,
+            variant: "alternatives",
+            headers,
+            rows,
+          });
+          index = sectionEnd - 1;
+          continue;
+        }
+      }
+
+      if (sectionEnd > index + 1) {
+        flushBlocks();
+      }
+    }
+
     const headers = splitPipeRow(candidateText);
 
     if (candidate.style === "normal" && !candidate.listItem && headers) {
@@ -530,154 +592,157 @@ export default function PortableTextContent({ value }: PortableTextContentProps)
 
   return (
     <>
-      {chunks.map((chunk) => {
-        if (chunk.kind === "blocks") {
-          return <PortableText key={chunk.key} value={chunk.blocks} components={portableTextComponents} />;
-        }
+      <div data-portable-content>
+        {chunks.map((chunk) => {
+          if (chunk.kind === "blocks") {
+            return <PortableText key={chunk.key} value={chunk.blocks} components={portableTextComponents} />;
+          }
 
-        if (chunk.kind === "promptLibrary") {
-          return (
-            <section key={chunk.key} className="portable-prompt-library" aria-label={chunk.heading}>
-              <div className="portable-prompt-library-header">
-                <h2>{chunk.heading}</h2>
-                {chunk.introBlocks.length ? (
-                  <PortableText value={chunk.introBlocks} components={portableTextComponents} />
-                ) : null}
-              </div>
+          if (chunk.kind === "promptLibrary") {
+            return (
+              <section key={chunk.key} className="portable-prompt-library" aria-label={chunk.heading}>
+                <div className="portable-prompt-library-header">
+                  <h2>{chunk.heading}</h2>
+                  {chunk.introBlocks.length ? (
+                    <PortableText value={chunk.introBlocks} components={portableTextComponents} />
+                  ) : null}
+                </div>
 
-              <div className="portable-prompt-list">
-                {chunk.items.map((item) => (
-                  <section key={item.key} className="portable-prompt-item">
-                    <h3>{item.title}</h3>
-                    <pre className="portable-prompt-card">
-                      <code>{renderPromptText(formatPromptText(item.content))}</code>
-                    </pre>
-                  </section>
-                ))}
-              </div>
-            </section>
-          );
-        }
+                <div className="portable-prompt-list">
+                  {chunk.items.map((item) => (
+                    <section key={item.key} className="portable-prompt-item">
+                      <h3>{item.title}</h3>
+                      <pre className="portable-prompt-card">
+                        <code>{renderPromptText(formatPromptText(item.content))}</code>
+                      </pre>
+                    </section>
+                  ))}
+                </div>
+              </section>
+            );
+          }
 
-        const [titleHeader, ...detailHeaders] = chunk.headers;
+          const [titleHeader, ...detailHeaders] = chunk.headers;
 
-        if (chunk.variant === "pricing") {
-          return (
-            <section key={chunk.key} className="portable-pricing-table" aria-label={titleHeader}>
-              <div className="portable-pricing-desktop">
-                <table>
-                  <thead>
-                    <tr>
-                      {chunk.headers.map((header) => (
-                        <th key={`${chunk.key}-${header}`}>{header}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {chunk.rows.map((row) => {
-                      const isRecommended = row.cells[0]?.toLocaleLowerCase("tr-TR").includes("google ai pro");
-
-                      return (
-                      <tr
-                        key={row.key}
-                        className={isRecommended ? "portable-pricing-row-recommended" : undefined}
-                      >
-                        {row.cells.map((cell, cellIndex) => (
-                          <td key={`${row.key}-${cellIndex}`}>
-                            {cellIndex === 0 ? <strong>{cell}</strong> : cell}
-                          </td>
+          if (chunk.variant === "pricing") {
+            return (
+              <section key={chunk.key} className="portable-pricing-table" aria-label={titleHeader}>
+                <div className="portable-pricing-desktop">
+                  <table>
+                    <thead>
+                      <tr>
+                        {chunk.headers.map((header) => (
+                          <th key={`${chunk.key}-${header}`}>{header}</th>
                         ))}
                       </tr>
-                    )})}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {chunk.rows.map((row) => {
+                        const isRecommended = row.cells[0]?.toLocaleLowerCase("tr-TR").includes("google ai pro");
 
-              <div className="portable-pricing-mobile">
-                {chunk.rows.map((row) => {
-                  const [title, ...details] = row.cells;
-                  const isRecommended = title.toLocaleLowerCase("tr-TR").includes("google ai pro");
-
-                  return (
-                    <article
-                      key={row.key}
-                      className={`portable-compare-card portable-compare-card-pricing${
-                        isRecommended ? " portable-compare-card-recommended" : ""
-                      }`}
-                    >
-                      <h3>{title}</h3>
-                      <dl>
-                        {detailHeaders.map((label, detailIndex) => (
-                          <div key={`${row.key}-${label}`} className="portable-compare-row">
-                            <dt>{label}</dt>
-                            <dd>{details[detailIndex] || ""}</dd>
-                          </div>
-                        ))}
-                      </dl>
-                    </article>
-                  );
-                })}
-              </div>
-            </section>
-          );
-        }
-
-        if (chunk.variant === "alternatives") {
-          return (
-            <section key={chunk.key} className="portable-alternatives-list" aria-label={titleHeader}>
-              <div className="portable-alternatives-scroll">
-                <table className="portable-alternatives-table">
-                  <thead>
-                    <tr>
-                      {chunk.headers.map((header) => (
-                        <th key={`${chunk.key}-${header}`} scope="col">
-                          {header}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {chunk.rows.map((row) => {
-                      const [title, ...details] = row.cells;
-
-                      return (
-                        <tr key={row.key}>
-                          <th scope="row">{title}</th>
-                          {detailHeaders.map((label, detailIndex) => (
-                            <td key={`${row.key}-${label}`}>{details[detailIndex] || ""}</td>
+                        return (
+                        <tr
+                          key={row.key}
+                          className={isRecommended ? "portable-pricing-row-recommended" : undefined}
+                        >
+                          {row.cells.map((cell, cellIndex) => (
+                            <td key={`${row.key}-${cellIndex}`}>
+                              {cellIndex === 0 ? <strong>{cell}</strong> : cell}
+                            </td>
                           ))}
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+                      )})}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="portable-pricing-mobile">
+                  {chunk.rows.map((row) => {
+                    const [title, ...details] = row.cells;
+                    const isRecommended = title.toLocaleLowerCase("tr-TR").includes("google ai pro");
+
+                    return (
+                      <article
+                        key={row.key}
+                        className={`portable-compare-card portable-compare-card-pricing${
+                          isRecommended ? " portable-compare-card-recommended" : ""
+                        }`}
+                      >
+                        <h3>{title}</h3>
+                        <dl>
+                          {detailHeaders.map((label, detailIndex) => (
+                            <div key={`${row.key}-${label}`} className="portable-compare-row">
+                              <dt>{label}</dt>
+                              <dd>{details[detailIndex] || ""}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          }
+
+          if (chunk.variant === "alternatives") {
+            return (
+              <section key={chunk.key} className="portable-alternatives-list" aria-label={titleHeader}>
+                <div className="portable-alternatives-scroll">
+                  <table className="portable-alternatives-table">
+                    <thead>
+                      <tr>
+                        {chunk.headers.map((header) => (
+                          <th key={`${chunk.key}-${header}`} scope="col">
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {chunk.rows.map((row) => {
+                        const [title, ...details] = row.cells;
+
+                        return (
+                          <tr key={row.key}>
+                            <th scope="row">{title}</th>
+                            {detailHeaders.map((label, detailIndex) => (
+                              <td key={`${row.key}-${label}`}>{details[detailIndex] || ""}</td>
+                            ))}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            );
+          }
+
+          return (
+            <section key={chunk.key} className="portable-compare-grid" aria-label={titleHeader}>
+              {chunk.rows.map((row) => {
+                const [title, ...details] = row.cells;
+
+                return (
+                  <article key={row.key} className="portable-compare-card">
+                    <h3>{title}</h3>
+                    <dl>
+                      {detailHeaders.map((label, detailIndex) => (
+                        <div key={`${row.key}-${label}`} className="portable-compare-row">
+                          <dt>{label}</dt>
+                          <dd>{details[detailIndex] || ""}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </article>
+                );
+              })}
             </section>
           );
-        }
-
-        return (
-          <section key={chunk.key} className="portable-compare-grid" aria-label={titleHeader}>
-            {chunk.rows.map((row) => {
-              const [title, ...details] = row.cells;
-
-              return (
-                <article key={row.key} className="portable-compare-card">
-                  <h3>{title}</h3>
-                  <dl>
-                    {detailHeaders.map((label, detailIndex) => (
-                      <div key={`${row.key}-${label}`} className="portable-compare-row">
-                        <dt>{label}</dt>
-                        <dd>{details[detailIndex] || ""}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </article>
-              );
-            })}
-          </section>
-        );
-      })}
+        })}
+      </div>
+      <PortableTextEnhancer />
     </>
   );
 }
