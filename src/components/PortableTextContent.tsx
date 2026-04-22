@@ -40,13 +40,58 @@ type BlocksChunk = {
   blocks: PortableTextBlock[];
 };
 
-type RenderChunk = TableChunk | BlocksChunk;
+type PromptItem = {
+  key: string;
+  title: string;
+  content: string;
+};
+
+type PromptLibraryChunk = {
+  kind: "promptLibrary";
+  key: string;
+  heading: string;
+  introBlocks: PortableTextBlock[];
+  items: PromptItem[];
+};
+
+type RenderChunk = TableChunk | BlocksChunk | PromptLibraryChunk;
 
 function getBlockText(block: PortableTextLikeBlock) {
   return (block.children ?? [])
     .map((child) => (typeof child.text === "string" ? child.text : ""))
     .join("")
     .trim();
+}
+
+function isPromptLibraryHeading(text: string) {
+  return text.toLocaleLowerCase("tr-TR").startsWith("prompt k");
+}
+
+function isPromptTitle(text: string) {
+  return text.toLocaleLowerCase("tr-TR").endsWith("promptu");
+}
+
+function getBlocksText(blocks: PortableTextBlock[]) {
+  return blocks
+    .map((block) => getBlockText(block as PortableTextLikeBlock))
+    .filter(Boolean)
+    .join("\n\n")
+    .trim();
+}
+
+function formatPromptText(text: string) {
+  return text
+    .split(/\s{2,}/)
+    .map((segment) => segment.trim())
+    .filter(Boolean)
+    .map((segment) =>
+      segment
+        .replace(/ (?=\p{Lu}[^:\n]{1,40}: )/gu, "\n")
+        .replace(/: (?=- )/g, ":\n")
+        .replace(/ - /g, "\n- ")
+        .replace(/\s(?=\d+\)\s)/g, "\n"),
+    )
+    .join("\n\n");
 }
 
 function isEditorNoteText(text: string) {
@@ -81,7 +126,65 @@ function buildRenderChunks(value: PortableTextBlock[]): RenderChunk[] {
 
   for (let index = 0; index < value.length; index += 1) {
     const candidate = value[index] as PortableTextLikeBlock;
-    const headers = splitPipeRow(getBlockText(candidate));
+    const candidateText = getBlockText(candidate);
+
+    if (candidate.style === "h2" && isPromptLibraryHeading(candidateText)) {
+      const introBlocks: PortableTextBlock[] = [];
+      const items: PromptItem[] = [];
+      let cursor = index + 1;
+
+      while (cursor < value.length) {
+        const block = value[cursor] as PortableTextLikeBlock;
+        const text = getBlockText(block);
+
+        if (block.style === "h2") {
+          break;
+        }
+
+        if (block.style === "h3" && isPromptTitle(text)) {
+          const contentBlocks: PortableTextBlock[] = [];
+          const promptKey = block._key || `prompt-${cursor}`;
+          cursor += 1;
+
+          while (cursor < value.length) {
+            const nextBlock = value[cursor] as PortableTextLikeBlock;
+            const nextText = getBlockText(nextBlock);
+
+            if (nextBlock.style === "h2" || (nextBlock.style === "h3" && isPromptTitle(nextText))) {
+              break;
+            }
+
+            contentBlocks.push(value[cursor]);
+            cursor += 1;
+          }
+
+          items.push({
+            key: promptKey,
+            title: text,
+            content: getBlocksText(contentBlocks),
+          });
+          continue;
+        }
+
+        introBlocks.push(value[cursor]);
+        cursor += 1;
+      }
+
+      if (items.length) {
+        flushBlocks();
+        chunks.push({
+          kind: "promptLibrary",
+          key: candidate._key || `prompt-library-${chunks.length}`,
+          heading: candidateText,
+          introBlocks,
+          items,
+        });
+        index = cursor - 1;
+        continue;
+      }
+    }
+
+    const headers = splitPipeRow(candidateText);
 
     if (candidate.style === "normal" && !candidate.listItem && headers) {
       const rows: TableChunk["rows"] = [];
@@ -224,6 +327,30 @@ export default function PortableTextContent({ value }: PortableTextContentProps)
       {chunks.map((chunk) => {
         if (chunk.kind === "blocks") {
           return <PortableText key={chunk.key} value={chunk.blocks} components={portableTextComponents} />;
+        }
+
+        if (chunk.kind === "promptLibrary") {
+          return (
+            <section key={chunk.key} className="portable-prompt-library" aria-label={chunk.heading}>
+              <div className="portable-prompt-library-header">
+                <h2>{chunk.heading}</h2>
+                {chunk.introBlocks.length ? (
+                  <PortableText value={chunk.introBlocks} components={portableTextComponents} />
+                ) : null}
+              </div>
+
+              <div className="portable-prompt-list">
+                {chunk.items.map((item) => (
+                  <section key={item.key} className="portable-prompt-item">
+                    <h3>{item.title}</h3>
+                    <pre className="portable-prompt-card">
+                      <code>{formatPromptText(item.content)}</code>
+                    </pre>
+                  </section>
+                ))}
+              </div>
+            </section>
+          );
         }
 
         const [titleHeader, ...detailHeaders] = chunk.headers;
