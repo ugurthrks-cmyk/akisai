@@ -80,17 +80,87 @@ function getBlocksText(blocks: PortableTextBlock[]) {
     .trim();
 }
 
+const promptFieldLabels = [
+  "Orijinal hedef kitle:",
+  "Yeni hedef kitle:",
+  "İstenen slayt sayısı:",
+  "Çıktıyı şu formatta ver:",
+  "Çıktıyı iki sütunlu gibi düşün:",
+  "Lütfen aşağıdakileri güncelle:",
+  "Her slayt için öner:",
+  "İstenen çıktı:",
+  "Sunum süresi:",
+  "Toplam süre:",
+  "Sunum dili:",
+  "İstenen ton:",
+  "Ürün/Hizmet:",
+  "Hedef kitle:",
+  "Katılımcılar:",
+  "Sunum türü:",
+  "Marka tonu:",
+  "Renk paleti:",
+  "Aspect ratio:",
+  "Slayt başlığı:",
+  "Ana mesaj:",
+  "İstenen tarz:",
+  "Slaytlar:",
+  "Kurallar:",
+  "Sunum:",
+  "Metin:",
+  "Konu:",
+  "Amaç:",
+  "Hedef:",
+  "Seviye:",
+  "Yapı:",
+  "Veri:",
+  "Kaçın:",
+].sort((left, right) => right.length - left.length);
+
+function insertLineBreaksOutsideBrackets(text: string) {
+  let result = "";
+  let bracketDepth = 0;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const currentChar = text[index];
+
+    if (currentChar === "[") {
+      bracketDepth += 1;
+      result += currentChar;
+      continue;
+    }
+
+    if (currentChar === "]") {
+      bracketDepth = Math.max(0, bracketDepth - 1);
+      result += currentChar;
+      continue;
+    }
+
+    if (currentChar === " " && bracketDepth === 0) {
+      const remaining = text.slice(index + 1);
+
+      if (promptFieldLabels.some((label) => remaining.startsWith(label)) || /^\d+\)\s/.test(remaining)) {
+        result += "\n";
+        continue;
+      }
+    }
+
+    result += currentChar;
+  }
+
+  return result;
+}
+
 function formatPromptText(text: string) {
   return text
     .split(/\s{2,}/)
     .map((segment) => segment.trim())
     .filter(Boolean)
     .map((segment) =>
-      segment
-        .replace(/ (?=\p{Lu}[^:\n]{1,40}: )/gu, "\n")
+      insertLineBreaksOutsideBrackets(segment)
         .replace(/: (?=- )/g, ":\n")
         .replace(/ - /g, "\n- ")
-        .replace(/\s(?=\d+\)\s)/g, "\n"),
+        .replace(/\n(?=- )/g, "")
+        .replace(/\n(?=\d+\)\s)/g, "\n"),
     )
     .join("\n\n");
 }
