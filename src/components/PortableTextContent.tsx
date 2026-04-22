@@ -625,23 +625,33 @@ export default function PortableTextContent({ value }: PortableTextContentProps)
         if (chunk.variant === "alternatives") {
           return (
             <section key={chunk.key} className="portable-alternatives-list" aria-label={titleHeader}>
-              {chunk.rows.map((row) => {
-                const [title, ...details] = row.cells;
-
-                return (
-                  <article key={row.key} className="portable-alternative-item">
-                    <h3>{title}</h3>
-                    <dl>
-                      {detailHeaders.map((label, detailIndex) => (
-                        <div key={`${row.key}-${label}`} className="portable-alternative-row">
-                          <dt>{label}</dt>
-                          <dd>{details[detailIndex] || ""}</dd>
-                        </div>
+              <div className="portable-alternatives-scroll">
+                <table className="portable-alternatives-table">
+                  <thead>
+                    <tr>
+                      {chunk.headers.map((header) => (
+                        <th key={`${chunk.key}-${header}`} scope="col">
+                          {header}
+                        </th>
                       ))}
-                    </dl>
-                  </article>
-                );
-              })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {chunk.rows.map((row) => {
+                      const [title, ...details] = row.cells;
+
+                      return (
+                        <tr key={row.key}>
+                          <th scope="row">{title}</th>
+                          {detailHeaders.map((label, detailIndex) => (
+                            <td key={`${row.key}-${label}`}>{details[detailIndex] || ""}</td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </section>
           );
         }
