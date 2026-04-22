@@ -43,6 +43,37 @@ function loadEnvFile(filename) {
 loadEnvFile(".env.local");
 loadEnvFile(".env");
 
+const siteSettingsSeed = {
+  siteName: "AkışAI",
+  shortName: "AkışAI",
+  defaultTitle: "AkışAI | Yapay Zeka Araçları, İncelemeleri, Karşılaştırmaları ve Rehberleri",
+  defaultDescription:
+    "AkışAI, yapay zeka araçlarını detaylıca inceleyen, karşılaştıran, kullanım rehberleri sunan ve doğru aracı seçmenizi kolaylaştıran bağımsız bir platformdur.",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://akisai.com.tr",
+  locale: "tr_TR",
+  organizationDescription:
+    "AkışAI, yapay zeka araçlarını detaylıca inceleyen, karşılaştıran, kullanım rehberleri sunan ve doğru aracı seçmenizi kolaylaştıran bağımsız bir platformdur.",
+  organizationKnowsAbout: [
+    "Yapay Zeka Araçları",
+    "ChatGPT",
+    "Google Gemini",
+    "Claude",
+    "Canva",
+    "CapCut",
+    "ElevenLabs",
+    "Runway ML",
+    "Looka",
+    "Zapier",
+    "AI Görsel Üretimi",
+    "AI Video Üretimi",
+    "AI Ses Üretimi",
+    "Yapay Zeka İnceleme",
+    "Yapay Zeka Rehberleri",
+  ],
+  organizationLanguages: ["tr", "tr-TR"],
+  organizationAreasServed: ["Turkey"],
+};
+
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 const writeToken = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_READ_TOKEN;
@@ -150,6 +181,16 @@ function parseMinutes(value) {
 
   const match = String(value).match(/\d+/);
   return match ? Number(match[0]) : undefined;
+}
+
+function parseStringArray(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => String(item).trim())
+    .filter(Boolean);
 }
 
 function parsePriceAmount(frontmatter) {
@@ -384,6 +425,21 @@ const categoryDocs = categoryEntries.map((entry) => ({
   bodyMarkdown: entry.bodyMarkdown,
 }));
 
+const siteSettingsDoc = {
+  _id: "siteSettings",
+  _type: "siteSettings",
+  siteName: siteSettingsSeed.siteName,
+  shortName: siteSettingsSeed.shortName,
+  siteUrl: siteSettingsSeed.siteUrl,
+  locale: siteSettingsSeed.locale,
+  defaultTitle: siteSettingsSeed.defaultTitle,
+  defaultDescription: siteSettingsSeed.defaultDescription,
+  organizationDescription: siteSettingsSeed.organizationDescription,
+  organizationKnowsAbout: siteSettingsSeed.organizationKnowsAbout,
+  organizationLanguages: siteSettingsSeed.organizationLanguages,
+  organizationAreasServed: siteSettingsSeed.organizationAreasServed,
+};
+
 const toolDocs = toolEntries.map((entry) => {
   const frontmatter = entry.frontmatter;
   const categoryName = String(frontmatter.category);
@@ -484,7 +540,8 @@ const guideDocs = guideEntries.map((entry) => {
       : undefined,
     relatedTools,
     difficulty: frontmatter.difficulty ? String(frontmatter.difficulty) : undefined,
-    estimatedTimeMinutes: parseMinutes(frontmatter.time),
+    estimatedTimeMinutes: parseMinutes(frontmatter.estimatedTimeMinutes || frontmatter.time),
+    supplies: parseStringArray(frontmatter.supplies),
     sources: parseSources(frontmatter),
     faqs: Array.isArray(frontmatter.faqs)
       ? frontmatter.faqs.map((faq) => ({
@@ -570,7 +627,7 @@ for (const author of authorSeed) {
   });
 }
 
-const documents = [...authorDocs, ...categoryDocs, ...toolDocs, ...comparisonDocs, ...guideDocs];
+const documents = [siteSettingsDoc, ...authorDocs, ...categoryDocs, ...toolDocs, ...comparisonDocs, ...guideDocs];
 
 if (isDryRun) {
   console.log(
@@ -578,6 +635,7 @@ if (isDryRun) {
       {
         mode: "dry-run",
         counts: {
+          siteSettings: 1,
           authors: authorDocs.length,
           categories: categoryDocs.length,
           tools: toolDocs.length,
@@ -632,6 +690,7 @@ console.log(
       projectId,
       dataset,
       counts: {
+        siteSettings: 1,
         authors: authorDocs.length,
         categories: categoryDocs.length,
         tools: toolDocs.length,
