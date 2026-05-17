@@ -16,7 +16,7 @@ type PublishedFetchOptions = {
   revalidate?: number | false;
 };
 
-const DEFAULT_SANITY_REVALIDATE_SECONDS = 300;
+const DEFAULT_SANITY_REVALIDATE_SECONDS = 86400;
 
 const serverSanityClient = createClient({
   projectId: sanityProjectId,

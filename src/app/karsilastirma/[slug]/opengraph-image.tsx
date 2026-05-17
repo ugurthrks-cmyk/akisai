@@ -11,6 +11,7 @@ type ComparisonSocialImageProps = {
 };
 
 export { contentType, size };
+export const revalidate = 86400;
 
 export default async function OpenGraphImage({ params }: ComparisonSocialImageProps) {
   const resolvedParams = await params;

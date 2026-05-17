@@ -7,7 +7,7 @@ import { buildMetadata } from "@/lib/metadata";
 import { buildOrganizationSchema } from "@/lib/organization-schema";
 import { getSiteSettings } from "@/lib/site-settings";
 
-export const revalidate = 300;
+export const revalidate = 86400;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();

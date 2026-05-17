@@ -11,6 +11,7 @@ type ToolSocialImageProps = {
 };
 
 export { contentType, size };
+export const revalidate = 86400;
 
 export default async function TwitterImage({ params }: ToolSocialImageProps) {
   const resolvedParams = await params;

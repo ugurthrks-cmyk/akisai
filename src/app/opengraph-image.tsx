@@ -7,6 +7,7 @@ export const size = {
 };
 
 export const contentType = "image/png";
+export const revalidate = 86400;
 
 export default async function OpenGraphImage() {
   const settings = await getSiteSettings();

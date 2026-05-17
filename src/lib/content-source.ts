@@ -722,7 +722,7 @@ const authorBySlugQuery = groq`*[_type == "author" && slug.current == $slug][0] 
   ${authorProjection}
 }`;
 
-const CATEGORY_REVALIDATE_SECONDS = 300;
+const CATEGORY_REVALIDATE_SECONDS = 86400;
 
 function asString(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value : undefined;

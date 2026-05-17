@@ -6,7 +6,7 @@ import { buildSiteMetadata } from "@/lib/metadata";
 import { getSiteSettings } from "@/lib/site-settings";
 import "./[slug]/category.css";
 
-export const revalidate = 300;
+export const revalidate = 86400;
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata({

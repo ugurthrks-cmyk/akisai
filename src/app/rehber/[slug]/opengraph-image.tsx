@@ -11,6 +11,7 @@ type GuideSocialImageProps = {
 };
 
 export { contentType, size };
+export const revalidate = 86400;
 
 export default async function OpenGraphImage({ params }: GuideSocialImageProps) {
   const resolvedParams = await params;

@@ -15,7 +15,7 @@ import { buildMetadata } from "@/lib/metadata";
 import { getSiteSettings } from "@/lib/site-settings";
 import "./category.css";
 
-export const revalidate = 300;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const categories = await getAllCategories();
