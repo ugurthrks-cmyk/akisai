@@ -33,6 +33,7 @@ const nonStepHeadingMatchers = [
   /\bözet\b/i,
   /\bsss\b/i,
   /\bfaq\b/i,
+  /\bsıkça sorulan\b/i,
   /\bkarşılaştırma\b/i,
   /\bgüçlü yönler\b/i,
   /\bsınırlı kaldığı noktalar\b/i,
@@ -51,6 +52,20 @@ function stripInlineMarkdown(input: string) {
     .trim();
 }
 
+function getMarkdownHeadingText(line: string) {
+  const markdownMatch = line.match(/^##\s+(.+)/);
+  if (markdownMatch) {
+    return markdownMatch[1];
+  }
+
+  const htmlMatch = line.match(/^<h2\b[^>]*>([\s\S]+)<\/h2>$/i);
+  return htmlMatch?.[1];
+}
+
+function isMarkdownOrHtmlHeading(line: string) {
+  return line.startsWith("#") || /^<h[1-6]\b/i.test(line);
+}
+
 function extractMarkdownSteps(source: string): HowToStepItem[] {
   const lines = source.split(/\r?\n/);
   const steps: HowToStepItem[] = [];
@@ -67,12 +82,12 @@ function extractMarkdownSteps(source: string): HowToStepItem[] {
       continue;
     }
 
-    const match = line.match(/^##\s+(.+)/);
-    if (!match) {
+    const headingText = getMarkdownHeadingText(line);
+    if (!headingText) {
       continue;
     }
 
-    const name = stripInlineMarkdown(match[1]);
+    const name = stripInlineMarkdown(headingText);
     if (!name || nonStepHeadingMatchers.some((pattern) => pattern.test(name))) {
       continue;
     }
@@ -84,7 +99,7 @@ function extractMarkdownSteps(source: string): HowToStepItem[] {
       if (!nextLine) {
         continue;
       }
-      if (nextLine.startsWith("#")) {
+      if (isMarkdownOrHtmlHeading(nextLine)) {
         break;
       }
 

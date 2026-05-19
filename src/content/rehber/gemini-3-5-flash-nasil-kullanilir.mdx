@@ -9,11 +9,66 @@ difficulty: "Orta"
 estimatedTimeMinutes: 25
 tools:
   - "Gemini 3.5 Flash"
+sources:
+  - label: "Gemini API modelleri"
+    publisher: "Google AI for Developers"
+    url: "https://ai.google.dev/gemini-api/docs/models"
+    note: "Gemini API model bilgileri, bağlam penceresi ve teknik limitler."
+  - label: "Gemini API thinking"
+    publisher: "Google AI for Developers"
+    url: "https://ai.google.dev/gemini-api/docs/thinking"
+    note: "Thinking yapılandırması ve model davranışı."
+  - label: "Google Gemini"
+    publisher: "Google"
+    url: "https://gemini.google.com/"
+    note: "Gemini uygulaması ve ürün erişimi."
 author: "tan"
 date: "2026-05-20"
 datePublished: "2026-05-20"
 dateModified: "2026-05-20"
-faqs: []
+faqs:
+  - question: "Gemini 3.5 Flash nasıl kullanılır?"
+    answer: >-
+      Gemini 3.5 Flash kullanırken önce göreve göre Standard veya Extended mod seçilmelidir. Basit özet ve sohbetlerde Standard, kodlama ve analiz gibi karmaşık işlerde Extended daha uygundur. Prompt kısa, hedef odaklı ve net çıktı formatına sahip olmalıdır.
+  - question: "Gemini 3.5 Flash için en iyi prompt nasıl yazılır?"
+    answer: >-
+      En iyi prompt; görevi, sınırları, çıktı formatını ve doğruluk kuralını açık yazar. Gereksiz “adım adım düşün” talimatları yerine, “Bağlamda kesin veri yoksa tahmin yürütme, Veri yetersiz diyerek reddet” gibi net kurallar eklenmelidir.
+  - question: "Gemini 3.5 Flash prompt örneği nasıl olmalı?"
+    answer: >-
+      İyi bir Gemini 3.5 Flash promptu kısa ve yapılandırılmış olmalıdır. Örneğin kod analizi için dosya, fonksiyon, risk seviyesi, hata nedeni ve minimal patch formatı istenmelidir. Modelden tüm dosyayı yeniden yazması değil, sadece gerekli parçaları düzeltmesi istenmelidir.
+  - question: "Extended Thinking ne işe yarar?"
+    answer: >-
+      Extended Thinking, Gemini 3.5 Flash’ın yanıt vermeden önce arka planda daha fazla muhakeme yapmasını sağlar. Kod analizi, finansal çıkarım, SEO içerik mimarisi ve çok turlu ajan görevlerinde daha iyi sonuç almak için kullanılabilir.
+  - question: "Standard ve Extended mod arasındaki fark nedir?"
+    answer: >-
+      Standard mod hız odaklıdır ve minimal/low düşünme seviyesiyle çalışır. İlk yanıt süresinin kısa olması gereken sohbetler için uygundur. Extended mod ise medium/high düşünme seviyesiyle daha derin analiz, kodlama ve ajan görevleri için tercih edilir.
+  - question: "Gemini 3.5 Flash’ta “adım adım düşün” yazmak gerekir mi?"
+    answer: >-
+      Genellikle gerekmez. Gemini 3.5 Flash’ın muhakeme yapısı yerleşik olduğu için uzun Chain-of-Thought talimatları bağlamı gereksiz şişirebilir. Bunun yerine hedef, çıktı formatı ve güvenlik kuralları net yazılmalıdır.
+  - question: "Gemini 3.5 Flash kod yazmak için iyi mi?"
+    answer: >-
+      Evet, özellikle büyük kod tabanlarını analiz etme, hata bulma ve parça parça refactor önerme işlerinde güçlüdür. Ancak 64K output token sınırı nedeniyle tüm projeyi tek seferde yeniden yazdırmak yerine, sadece değişmesi gereken fonksiyonları üretmesi istenmelidir.
+  - question: "Gemini 3.5 Flash SEO için nasıl kullanılır?"
+    answer: >-
+      Gemini 3.5 Flash SEO tarafında arama niyeti sınıflandırması, pillar/cluster içerik mimarisi, iç linkleme planı ve GEO uyumlu kısa cevap üretimi için kullanılabilir. En iyi sonuç için anahtar kelime listesi, rakip başlıklar ve SERP notları prompta eklenmelidir.
+  - question: "Gemini 3.5 Flash veri analizi yapabilir mi?"
+    answer: >-
+      Evet, veri temizleme kuralları ve çıktı formatı net verilirse Gemini 3.5 Flash transaction verilerinden ortalama, standart sapma, hipotez testi ve A/B test önerileri çıkarabilir. Kritik finansal kararlarda insan kontrolü yine de gereklidir.
+  - question: "Gemini 3.5 Flash’ta 64K output sınırı nasıl yönetilir?"
+    answer: >-
+      Büyük işlerde önce analiz haritası çıkartılmalı, ardından tek tek patch veya bölüm istenmelidir. Prompta “Tüm dosyayı yeniden yazma, sadece değişmesi gereken fonksiyonları ver” kuralı eklenmelidir. Böylece çıktı sınırı aşılmaz ve kontrol kaybolmaz.
+  - question: "includeThoughts true ne işe yarar?"
+    answer: >-
+      includeThoughts: true, geliştiricilerin modelin muhakeme davranışını debug etmesine yardımcı olur. Üretim ortamında sürekli açık bırakılmadan önce log güvenliği, gizlilik ve maliyet etkisi kontrol edilmelidir.
+  - question: "Cached Input ile maliyet nasıl düşer?"
+    answer: >-
+      Sabit sistem promptları, API şemaları ve değişmeyen talimatlar bağlamın başında tutulursa Cached Input devreye girebilir. Bu yapı, girdi maliyetinde %90 indirim sağlayabilir ve özellikle çok turlu ajan sistemlerinde önemlidir.
+  - question: "X-Initiator: agent header’ı neden önemli?"
+    answer: >-
+      X-Initiator: agent, proxy veya BYOK akışlarında ajanın arka plan çağrılarını kullanıcı tetikli premium isteklerden ayırmak için kullanılır. Bu header, yanlış sınıflandırmadan kaynaklanan fatura şişmesini önlemeye yardımcı olur.
+  - question: "Gemini 3.5 Flash Türkçe promptlarda iyi çalışır mı?"
+    answer: >-
+      Türkçe özetleme, içerik planlama ve genel metin işlerinde iyi sonuç verebilir. Ancak finansal hesaplama, hukuki yorum veya kritik karar gerektiren Türkçe görevlerde insan kontrolü önerilir. Promptta belirsizlik durumunda “Veri yetersiz” kuralı mutlaka yer almalıdır.
 ogTitle: "Gemini 3.5 Flash Nasıl Kullanılır? En İyi Promptlar ve Ayarlar"
 ogDescription: "Gemini 3.5 Flash nasıl kullanılır? Extended Thinking, en iyi promptlar, ajan ayarları ve maliyet ipuçlarını pratik örneklerle öğrenin."
 ---
@@ -905,61 +960,3 @@ Maliyet disiplini:
 <p><strong>Extended Thinking</strong>, kodlama, SEO planlama, veri analizi ve çok turlu ajan işlerinde değerli. Ama her işe yüksek düşünme modu açmak iyi fikir değil. Basit işte <strong>Standard</strong> daha hızlı ve ucuzdur. Karmaşık işte <strong>Extended</strong> daha güvenlidir.</p>
 
 <p>Gemini 3.5 Flash’ı en iyi kullanacak ekipler, modele “her şeyi yap” diyenler değil; modelin nerede başlayacağını, nerede duracağını ve ne üretmeyeceğini net söyleyenler olacak.</p>
-
-<h2>Sıkça Sorulan Sorular</h2>
-
-<h3>Gemini 3.5 Flash nasıl kullanılır?</h3>
-
-<p>Gemini 3.5 Flash kullanırken önce göreve göre <strong>Standard</strong> veya <strong>Extended</strong> mod seçilmelidir. Basit özet ve sohbetlerde Standard, kodlama ve analiz gibi karmaşık işlerde Extended daha uygundur. Prompt kısa, hedef odaklı ve net çıktı formatına sahip olmalıdır.</p>
-
-<h3>Gemini 3.5 Flash için en iyi prompt nasıl yazılır?</h3>
-
-<p>En iyi prompt; görevi, sınırları, çıktı formatını ve doğruluk kuralını açık yazar. Gereksiz “adım adım düşün” talimatları yerine, “Bağlamda kesin veri yoksa tahmin yürütme, Veri yetersiz diyerek reddet” gibi net kurallar eklenmelidir.</p>
-
-<h3>Gemini 3.5 Flash prompt örneği nasıl olmalı?</h3>
-
-<p>İyi bir Gemini 3.5 Flash promptu kısa ve yapılandırılmış olmalıdır. Örneğin kod analizi için dosya, fonksiyon, risk seviyesi, hata nedeni ve minimal patch formatı istenmelidir. Modelden tüm dosyayı yeniden yazması değil, sadece gerekli parçaları düzeltmesi istenmelidir.</p>
-
-<h3>Extended Thinking ne işe yarar?</h3>
-
-<p><strong>Extended Thinking</strong>, Gemini 3.5 Flash’ın yanıt vermeden önce arka planda daha fazla muhakeme yapmasını sağlar. Kod analizi, finansal çıkarım, SEO içerik mimarisi ve çok turlu ajan görevlerinde daha iyi sonuç almak için kullanılabilir.</p>
-
-<h3>Standard ve Extended mod arasındaki fark nedir?</h3>
-
-<p><strong>Standard</strong> mod hız odaklıdır ve <strong>minimal/low</strong> düşünme seviyesiyle çalışır. İlk yanıt süresinin kısa olması gereken sohbetler için uygundur. <strong>Extended</strong> mod ise <strong>medium/high</strong> düşünme seviyesiyle daha derin analiz, kodlama ve ajan görevleri için tercih edilir.</p>
-
-<h3>Gemini 3.5 Flash’ta “adım adım düşün” yazmak gerekir mi?</h3>
-
-<p>Genellikle gerekmez. Gemini 3.5 Flash’ın muhakeme yapısı yerleşik olduğu için uzun Chain-of-Thought talimatları bağlamı gereksiz şişirebilir. Bunun yerine hedef, çıktı formatı ve güvenlik kuralları net yazılmalıdır.</p>
-
-<h3>Gemini 3.5 Flash kod yazmak için iyi mi?</h3>
-
-<p>Evet, özellikle büyük kod tabanlarını analiz etme, hata bulma ve parça parça refactor önerme işlerinde güçlüdür. Ancak <strong>64K output token</strong> sınırı nedeniyle tüm projeyi tek seferde yeniden yazdırmak yerine, sadece değişmesi gereken fonksiyonları üretmesi istenmelidir.</p>
-
-<h3>Gemini 3.5 Flash SEO için nasıl kullanılır?</h3>
-
-<p>Gemini 3.5 Flash SEO tarafında arama niyeti sınıflandırması, pillar/cluster içerik mimarisi, iç linkleme planı ve GEO uyumlu kısa cevap üretimi için kullanılabilir. En iyi sonuç için anahtar kelime listesi, rakip başlıklar ve SERP notları prompta eklenmelidir.</p>
-
-<h3>Gemini 3.5 Flash veri analizi yapabilir mi?</h3>
-
-<p>Evet, veri temizleme kuralları ve çıktı formatı net verilirse Gemini 3.5 Flash transaction verilerinden ortalama, standart sapma, hipotez testi ve A/B test önerileri çıkarabilir. Kritik finansal kararlarda insan kontrolü yine de gereklidir.</p>
-
-<h3>Gemini 3.5 Flash’ta 64K output sınırı nasıl yönetilir?</h3>
-
-<p>Büyük işlerde önce analiz haritası çıkartılmalı, ardından tek tek patch veya bölüm istenmelidir. Prompta “Tüm dosyayı yeniden yazma, sadece değişmesi gereken fonksiyonları ver” kuralı eklenmelidir. Böylece çıktı sınırı aşılmaz ve kontrol kaybolmaz.</p>
-
-<h3>includeThoughts true ne işe yarar?</h3>
-
-<p><strong>includeThoughts: true</strong>, geliştiricilerin modelin muhakeme davranışını debug etmesine yardımcı olur. Üretim ortamında sürekli açık bırakılmadan önce log güvenliği, gizlilik ve maliyet etkisi kontrol edilmelidir.</p>
-
-<h3>Cached Input ile maliyet nasıl düşer?</h3>
-
-<p>Sabit sistem promptları, API şemaları ve değişmeyen talimatlar bağlamın başında tutulursa <strong>Cached Input</strong> devreye girebilir. Bu yapı, girdi maliyetinde <strong>%90 indirim</strong> sağlayabilir ve özellikle çok turlu ajan sistemlerinde önemlidir.</p>
-
-<h3>X-Initiator: agent header’ı neden önemli?</h3>
-
-<p><strong>X-Initiator: agent</strong>, proxy veya BYOK akışlarında ajanın arka plan çağrılarını kullanıcı tetikli premium isteklerden ayırmak için kullanılır. Bu header, yanlış sınıflandırmadan kaynaklanan fatura şişmesini önlemeye yardımcı olur.</p>
-
-<h3>Gemini 3.5 Flash Türkçe promptlarda iyi çalışır mı?</h3>
-
-<p>Türkçe özetleme, içerik planlama ve genel metin işlerinde iyi sonuç verebilir. Ancak finansal hesaplama, hukuki yorum veya kritik karar gerektiren Türkçe görevlerde insan kontrolü önerilir. Promptta belirsizlik durumunda “Veri yetersiz” kuralı mutlaka yer almalıdır.</p>
