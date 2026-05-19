@@ -54,9 +54,19 @@ function stripInlineMarkdown(input: string) {
 function extractMarkdownSteps(source: string): HowToStepItem[] {
   const lines = source.split(/\r?\n/);
   const steps: HowToStepItem[] = [];
+  let isInsideFence = false;
 
   for (let i = 0; i < lines.length; i += 1) {
     const line = lines[i].trim();
+    if (line.startsWith("```")) {
+      isInsideFence = !isInsideFence;
+      continue;
+    }
+
+    if (isInsideFence) {
+      continue;
+    }
+
     const match = line.match(/^##\s+(.+)/);
     if (!match) {
       continue;
@@ -90,7 +100,19 @@ function extractMarkdownSteps(source: string): HowToStepItem[] {
   }
 
   const listSteps: HowToStepItem[] = [];
+  isInsideFence = false;
+
   for (const line of lines) {
+    const trimmedLine = line.trim();
+    if (trimmedLine.startsWith("```")) {
+      isInsideFence = !isInsideFence;
+      continue;
+    }
+
+    if (isInsideFence) {
+      continue;
+    }
+
     const match = line.match(/^\s*\d+\.\s+(.+)/);
     if (match) {
       const name = stripInlineMarkdown(match[1]);

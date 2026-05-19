@@ -1,0 +1,965 @@
+---
+title: "Gemini 3.5 Flash Nasıl Kullanılır? En İyi Promptlar ve Ayarlar"
+seoTitle: "Gemini 3.5 Flash Nasıl Kullanılır? En İyi Promptlar ve Ayarlar"
+h1: "Gemini 3.5 Flash Nasıl Kullanılır? En İyi Promptlar ve Ayarlar"
+description: "Gemini 3.5 Flash nasıl kullanılır? Extended Thinking, en iyi promptlar, ajan ayarları ve maliyet ipuçlarını pratik örneklerle öğrenin."
+metaDescription: "Gemini 3.5 Flash nasıl kullanılır? Extended Thinking, en iyi promptlar, ajan ayarları ve maliyet ipuçlarını pratik örneklerle öğrenin."
+category: "Yapay Zeka Asistanları"
+difficulty: "Orta"
+estimatedTimeMinutes: 25
+tools:
+  - "Gemini 3.5 Flash"
+author: "tan"
+date: "2026-05-20"
+datePublished: "2026-05-20"
+dateModified: "2026-05-20"
+faqs: []
+ogTitle: "Gemini 3.5 Flash Nasıl Kullanılır? En İyi Promptlar ve Ayarlar"
+ogDescription: "Gemini 3.5 Flash nasıl kullanılır? Extended Thinking, en iyi promptlar, ajan ayarları ve maliyet ipuçlarını pratik örneklerle öğrenin."
+---
+
+<p>Gemini 3.5 Flash’ı iyi kullanmak için promptu uzatmak gerekmiyor. Hatta çoğu zaman tam tersi gerekiyor: Daha kısa yazmak, daha net sınır koymak ve modeli doğru modda çalıştırmak.</p>
+
+<p>Google’ın 19 Mayıs 2026’daki I/O duyurusuyla öne çıkan <strong>Gemini 3.5 Flash</strong>, özellikle <strong>Extended Thinking</strong>, hızlı yanıt üretimi, ajan kullanımı ve büyük bağlam desteğiyle dikkat çekiyor. Ama modelden iyi sonuç almak için eski prompt alışkanlıklarını biraz bırakmak şart.</p>
+
+<p>Bu rehberde “Gemini 3.5 Flash nasıl kullanılır?” sorusuna doğrudan uygulamalı cevap vereceğiz. Hangi mod ne zaman açılır, <strong>thinkingLevel</strong> nasıl seçilir, <strong>64K output sınırı</strong> nasıl yönetilir, <strong>Cached Input</strong> ile maliyet nasıl düşürülür ve kopyala-yapıştır kullanılabilecek en iyi promptlar nasıl yazılır, hepsini tek tek ele alacağız.</p>
+
+<h2>Gemini 3.5 Flash Nasıl Kullanılır? Önce Doğru Modu Seçin</h2>
+
+<p>Gemini 3.5 Flash’ta ilk karar prompt değil, mod seçimi olmalı.</p>
+
+<p>Çünkü her iş için <strong>Extended Thinking</strong> açmak doğru değil. Bazı görevlerde hız daha önemlidir. Bazılarında ise modelin arka planda daha fazla muhakeme yapması gerekir.</p>
+
+<p>Basit ayrım şöyle:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>İhtiyaç</th>
+      <th>Kullanılacak Mod</th>
+      <th>Ne Zaman Mantıklı?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Hızlı cevap</td>
+      <td><strong>Standard / minimal-low</strong></td>
+      <td>Canlı sohbet, kısa özet, basit yanıt</td>
+    </tr>
+    <tr>
+      <td>Dengeli analiz</td>
+      <td><strong>Extended / medium</strong></td>
+      <td>SEO planı, veri analizi, kod inceleme</td>
+    </tr>
+    <tr>
+      <td>Derin muhakeme</td>
+      <td><strong>Extended / high</strong></td>
+      <td>Zor refactor, çok turlu ajan, karmaşık hesap</td>
+    </tr>
+    <tr>
+      <td>Düşük maliyet</td>
+      <td><strong>Standard / low</strong></td>
+      <td>Düşük riskli, tek turlu işler</td>
+    </tr>
+    <tr>
+      <td>Daha güvenli karar</td>
+      <td><strong>Extended / medium-high</strong></td>
+      <td>Finans, kod, strateji, çok adımlı görev</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Buradaki ana mantık şu:</p>
+
+<p><strong>Standard</strong> mod hızlıdır.<br />
+<strong>Extended</strong> mod daha dikkatli çalışır.</p>
+
+<p>Eğer kullanıcının ilk cevabı 3 saniyeden kısa sürede görmesi gerekiyorsa, <strong>Standard</strong> daha doğru seçimdir. Eğer modelin kod, veri, araç çağrısı veya uzun bağlam üzerinde daha dikkatli düşünmesini istiyorsanız, <strong>Extended</strong> tarafına geçmek gerekir.</p>
+
+<h2>Standard ve Extended Mod Farkı: Hangisini Açmalısınız?</h2>
+
+<p><strong>Standard</strong> mod, Gemini 3.5 Flash’ın hızlı cevap vermesi gereken işler için uygundur. Arayüzde veya API tarafında bu mod genelde <strong>minimal</strong> ve <strong>low</strong> düşünme seviyelerine denk gelir.</p>
+
+<p>Şu işler için Standard yeterlidir:</p>
+
+<ul>
+  <li>Kısa metin düzeltme</li>
+  <li>Basit özet çıkarma</li>
+  <li>Müşteri mesajını yanıt taslağına çevirme</li>
+  <li>Tek turlu fonksiyon çağrısı</li>
+  <li>Basit JSON formatlama</li>
+  <li>Hızlı fikir listesi üretme</li>
+</ul>
+
+<p>Örnek Standard prompt:</p>
+
+
+
+```text
+Aşağıdaki müşteri mesajını kısa ve net bir destek yanıtına çevir.
+
+Kurallar:
+- En fazla 3 cümle yaz.
+- Teknik terim kullanma.
+- Kesin çözüm sözü verme.
+- Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+
+Müşteri mesajı:
+[mesajı buraya yapıştır]
+```
+
+
+<p><strong>Extended</strong> mod ise daha karmaşık işler içindir. Bu modda model yanıt vermeden önce arka planda daha fazla muhakeme yapar. <strong>medium</strong> ve <strong>high</strong> seviyeleri özellikle profesyonel kullanımda daha değerlidir.</p>
+
+<p>Extended mod şu işlerde daha iyi sonuç verir:</p>
+
+<ul>
+  <li>Kod tabanı analizi</li>
+  <li>Refactor planı</li>
+  <li>SEO içerik kümeleri</li>
+  <li>Finansal veri analizi</li>
+  <li>Hipotez testi</li>
+  <li>Çok turlu ajan görevleri</li>
+  <li>Araç kullanan iş akışları</li>
+  <li>Uzun dokümanlardan karar çıkarma</li>
+</ul>
+
+<p>Pratik öneri:</p>
+
+<p>Basit işler için <strong>Standard / low</strong>, profesyonel işler için <strong>Extended / medium</strong>, riskli ve çok adımlı işler için <strong>Extended / high</strong> kullanın.</p>
+
+<h2>Gemini 3.5 Flash Prompt Yazma Mantığı Değişti</h2>
+
+<p>Gemini 3.5 Flash’ta eski nesil prompt alışkanlıklarının bir kısmı artık iyi çalışmıyor.</p>
+
+<p>Özellikle şu kalıp gereksiz hale geldi:</p>
+
+
+
+```text
+Adım adım düşün. Önce problemi analiz et. Sonra seçenekleri değerlendir. Sonra en doğru cevabı ver.
+```
+
+
+<p>Bu tür uzun <strong>Chain-of-Thought</strong> talimatları, Gemini 3.5 Flash’ta çoğu zaman bağlamı şişirir. Modelin zaten yerleşik bir muhakeme motoru var. Sizden beklediği şey uzun uzun nasıl düşüneceğini anlatmanız değil; ne yapacağını, ne üretmeyeceğini ve hangi formatta cevap vereceğini söylemeniz.</p>
+
+<p>Kötü prompt:</p>
+
+
+
+```text
+Lütfen çok dikkatli şekilde adım adım düşünerek, önce bütün ihtimalleri değerlendirip, sonra her aşamayı detaylı analiz ederek aşağıdaki kodu incele ve mümkün olan en iyi çözümü üret.
+```
+
+
+<p>Daha iyi prompt:</p>
+
+
+
+```text
+Aşağıdaki kod tabanında race condition, memory leak ve websocket kapanış hatalarını bul.
+
+Kurallar:
+- Tüm dosyayı yeniden yazma.
+- Sadece değişmesi gereken fonksiyonları öner.
+- Her bulgu için dosya, fonksiyon, hata nedeni ve minimal patch ver.
+- Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+```
+
+
+<p>İkinci prompt daha kısa ama daha profesyonel. Çünkü modelin işini sınırlandırıyor.</p>
+
+<p>Gemini 3.5 Flash için iyi prompt şu dört şeyi net söylemeli:</p>
+
+<ul>
+  <li><strong>Görev:</strong> Ne yapılacak?</li>
+  <li><strong>Sınır:</strong> Ne yapılmayacak?</li>
+  <li><strong>Format:</strong> Çıktı nasıl verilecek?</li>
+  <li><strong>Güvenlik:</strong> Veri yoksa ne olacak?</li>
+</ul>
+
+<h2>Extended Thinking’den Daha İyi Sonuç Almak İçin 5 Kural</h2>
+
+<p><strong>Extended Thinking</strong> açmak tek başına yeterli değil. Promptun da bu yapıyla uyumlu olması gerekir.</p>
+
+<h3>Hedefi tek cümlede kilitleyin</h3>
+
+<p>Promptun başında ana görevi net yazın.</p>
+
+
+
+```text
+Ana hedef: Bu kod tabanındaki websocket bağlantı yönetimi hatalarını bul ve sadece gerekli fonksiyonlar için minimal düzeltme öner.
+```
+
+
+<p>Modelin cevabı boyunca odağı bu cümle belirler.</p>
+
+<h3>Çıktı formatını baştan verin</h3>
+
+<p>“Analiz et” demek yerine, nasıl analiz edeceğini söyleyin.</p>
+
+
+
+```text
+Çıktı formatı:
+- Dosya
+- Fonksiyon
+- Risk seviyesi
+- Hata nedeni
+- Düzeltilmiş kod parçası
+```
+
+
+<p>Bu kural özellikle kod, SEO ve veri analizinde kaliteyi artırır.</p>
+
+<h3>Halüsinasyon bariyerini ekleyin</h3>
+
+<p>Gemini 3.5 Flash hızlı çalıştığı için bilmediği yerde tahmin üretmesini istemezsiniz.</p>
+
+<p>Kullanılacak kural:</p>
+
+
+
+```text
+Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+```
+
+
+<p>Bu cümleyi finans, hukuk, sağlık, teknik dokümantasyon ve veri analizi işlerinde mutlaka ekleyin.</p>
+
+<h3>Çok turlu işlerde thought summary sürekliliği isteyin</h3>
+
+<p>Uzun bir refactor, SEO planı veya veri analizi yapıyorsanız şu cümle işe yarar:</p>
+
+
+
+```text
+Önceki adımlardaki gizli muhakeme mantığını (thought summary) hafızanda tutarak bir sonraki adıma geç.
+```
+
+
+<p>Bunu her basit işte kullanmaya gerek yok. Ama çok turlu akışlarda modelin önceki karar mantığını koruması için faydalıdır.</p>
+
+<h3>Büyük işleri tek cevapta bitirtmeye çalışmayın</h3>
+
+<p>Gemini 3.5 Flash geniş bağlam okuyabilir ama her şeyi tek cevapta üretmesini istemek hatalıdır.</p>
+
+<p>Daha iyi yöntem:</p>
+
+<ul>
+  <li>Önce analiz haritası çıkar.</li>
+  <li>Sonra riskleri sırala.</li>
+  <li>Sonra tek tek düzeltme üret.</li>
+  <li>Her düzeltmede sadece ilgili parçayı yazdır.</li>
+</ul>
+
+<p>Bu hem çıktı sınırını hem de maliyeti kontrol eder.</p>
+
+<h2>Gemini 3.5 Flash Ayarları: thinkingLevel Nasıl Seçilir?</h2>
+
+<p>Gemini 3.5 Flash’ta <strong>thinkingLevel</strong>, modelin arka planda ne kadar muhakeme yapacağını belirleyen ana ayarlardan biridir.</p>
+
+<p>Pratik ayar tablosu:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>thinkingLevel</th>
+      <th>Kullanım Alanı</th>
+      <th>Dikkat Edilecek Nokta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>minimal</strong></td>
+      <td>Canlı sohbet, kısa yanıt, basit görev</td>
+      <td>Hızlıdır ama derin analiz beklenmemeli</td>
+    </tr>
+    <tr>
+      <td><strong>low</strong></td>
+      <td>Basit özet, tek araç çağrısı, düşük riskli görev</td>
+      <td>Hafif muhakeme yeterliyse mantıklı</td>
+    </tr>
+    <tr>
+      <td><strong>medium</strong></td>
+      <td>Kod inceleme, SEO planlama, veri analizi</td>
+      <td>Çoğu profesyonel iş için en dengeli seviye</td>
+    </tr>
+    <tr>
+      <td><strong>high</strong></td>
+      <td>Zor refactor, karmaşık analiz, çok turlu ajan</td>
+      <td>Daha yavaş ve daha maliyetli olabilir</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Önerilen varsayılan yapı:</p>
+
+
+
+```text
+{
+  "thinkingConfig": {
+    "thinkingLevel": "medium"
+  }
+}
+```
+
+
+<p>Geliştirici debug için şu parametreyi de ekleyebilir:</p>
+
+
+
+```text
+{
+  "thinkingConfig": {
+    "thinkingLevel": "medium",
+    "includeThoughts": true
+  }
+}
+```
+
+
+<p><strong>includeThoughts: true</strong>, modelin muhakeme davranışını debug etmek için kullanılabilir. Ancak üretim ortamında sürekli açık bırakmadan önce log güvenliği, kullanıcı verisi ve maliyet etkisi kontrol edilmelidir.</p>
+
+<h2>64K Output Sınırı: Büyük Kod ve Uzun Çıktılar Nasıl Yönetilir?</h2>
+
+<p>Gemini 3.5 Flash’ın güçlü taraflarından biri <strong>1 milyon input token</strong> sınırı. Büyük kod tabanlarını, uzun dokümanları ve kapsamlı veri setlerini modele verebilirsiniz.</p>
+
+<p>Ama çıktı tarafında model tek seferde en fazla <strong>64K output token</strong> üretebilir.</p>
+
+<p>Bu yüzden şu prompt yanlıştır:</p>
+
+
+
+```text
+Bu projeyi baştan sona refactor et ve tüm dosyaları yeni haliyle yaz.
+```
+
+
+<p>Doğru yaklaşım:</p>
+
+
+
+```text
+Önce kod tabanındaki en riskli 10 noktayı çıkar. Henüz kod üretme. Sonra seçtiğim bulgu için sadece gerekli fonksiyonu minimal patch olarak yaz.
+```
+
+
+<p>Büyük işlerde kullanmanız gereken sabit kural:</p>
+
+
+
+```text
+64K output sınırını aşmamak için tüm dosyayı yeniden üretme. Sadece değişmesi gereken fonksiyonları, sınıfları veya minimal patch parçalarını ver.
+```
+
+
+<p>Bu kural hem kodda hem SEO planlarında hem de veri analizinde işe yarar. Modeli “her şeyi tek cevapta yazan” bir araç gibi değil, aşamalı çalışan bir uzman gibi kullanmak gerekir.</p>
+
+<h2>En İyi Gemini 3.5 Flash Promptları: Kod, SEO ve Veri Analizi</h2>
+
+<p>Aşağıdaki promptlar doğrudan kopyalanıp kullanılabilir. Hepsi <strong>Extended Thinking</strong> ile çalışmaya uygun şekilde tasarlandı.</p>
+
+<h3>Kod Yazdırmak İçin Gemini 3.5 Flash Promptu</h3>
+
+<p>Bu şablon, mikrofon girdileri ve websocket paketleriyle çalışan uygulamalarda <strong>race condition</strong>, <strong>memory leak</strong> ve bağlantı yönetimi hatalarını bulmak için hazırlandı.</p>
+
+<p><strong>Önerilen mod:</strong> <strong>Extended / medium-high</strong></p>
+
+
+
+```text
+Bir kıdemli yazılım mimarı gibi davran. Amacın tüm projeyi yeniden yazmak değil, riskli noktaları bulup sadece gerekli parçaları düzeltmek.
+
+İnceleyeceğin sistem:
+Gerçek zamanlı mikrofon girdilerini işleyen, websocket paketlerini yöneten ve ses akışını sunucuya ileten büyük bir kod tabanı.
+
+Ana hedef:
+Kod tabanındaki race condition, memory leak, websocket lifecycle hataları, event listener temizleme eksikleri, kontrolsüz reconnect döngüleri ve kaynak yönetimi problemlerini bul.
+
+Önemli model sınırı:
+Gemini 3.5 Flash 1 milyon input token okuyabilir; ancak tek yanıtta 64K output token sınırı vardır. Bu yüzden tüm dosyaları yeniden yazma. Sadece değişmesi gereken fonksiyonları, sınıfları veya minimal patch parçalarını üret.
+
+Muhakeme sürekliliği:
+Önceki adımlardaki gizli muhakeme mantığını (thought summary) hafızanda tutarak bir sonraki adıma geç.
+
+Doğruluk kuralı:
+Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+
+Özellikle kontrol et:
+1. Mikrofon stream açma ve kapama akışı
+2. WebSocket bağlantısının açılma, kapanma ve yeniden bağlanma mantığı
+3. Aynı audio buffer'a eşzamanlı yazma riski
+4. Event listener temizlenmemesi
+5. AbortController veya cancellation eksikleri
+6. Reconnect sırasında çoğalan bağlantılar
+7. Promise yarışları
+8. Bellekte tutulan eski audio chunk'ları
+9. Backpressure yönetimi
+10. Kullanıcı oturumu kapanınca açık kalan kaynaklar
+
+İlk aşamada sadece analiz yap:
+- En riskli 10 bulguyu listele.
+- Henüz kod üretme.
+- Her bulgu için hangi dosyanın önce ele alınması gerektiğini belirt.
+- Bulguları risk seviyesine göre sırala.
+
+Çıktı formatı:
+
+Bulgu [numara]: [Kısa başlık]
+
+Dosya: [dosya adı]
+Fonksiyon / Sınıf: [ilgili bölüm]
+Risk seviyesi: Düşük / Orta / Yüksek / Kritik
+Sorun tipi: Race condition / Memory leak / WebSocket lifecycle / Resource cleanup / Backpressure / Diğer
+Neden sorun: [kısa teknik açıklama]
+Önerilen müdahale: [net çözüm]
+Patch üretimi gerekli mi?: Evet / Hayır
+Öncelik: 1-10
+
+Sonraki adım:
+Ben belirli bir bulguyu seçtiğimde sadece o bulgu için minimal patch üret. Tüm dosyayı yeniden yazma.
+
+Kod tabanı:
+<code_repository>
+[Buraya ilgili dosyaları, repo özetini veya kritik modülleri yapıştır]
+</code_repository>
+```
+
+
+<p>Bu promptun iyi tarafı, Gemini 3.5 Flash’a hemen kod yazdırmaması. Önce risk haritası çıkarır. Sonra seçilen problem için parça parça düzeltme alınır. Büyük kod tabanlarında en sağlıklı kullanım budur.</p>
+
+<h3>Seçilen Kod Hatası İçin Minimal Patch Promptu</h3>
+
+<p>İlk prompttan sonra belirli bir bulguyu seçip sadece onun düzeltmesini almak için bu şablonu kullanın.</p>
+
+
+
+```text
+Aşağıdaki bulgu için minimal patch üret.
+
+Kurallar:
+- Tüm dosyayı yeniden yazma.
+- Sadece değişmesi gereken fonksiyonları veya sınıfları ver.
+- Kodun neden değiştiğini kısa açıkla.
+- Yeni race condition veya memory leak oluşturma.
+- Bağlamda kesin veri yoksa "Veri yetersiz" diyerek reddet.
+- Output sınırını aşacaksa önce patch planı çıkar, kod üretme.
+
+Seçilen bulgu:
+[Buraya önceki yanıttaki bulguyu yapıştır]
+
+İlgili kod:
+<relevant_code>
+[Buraya sadece ilgili dosya veya fonksiyonları yapıştır]
+</relevant_code>
+
+Çıktı formatı:
+
+Patch Planı
+
+- Değişecek dosya:
+- Değişecek fonksiyon/sınıf:
+- Çözüm mantığı:
+- Risk:
+
+Düzeltilmiş Kod
+
+[Düzeltilmiş kodu burada ver]
+
+Kontrol Listesi
+
+- Race condition giderildi mi?
+- Memory leak riski azaldı mı?
+- WebSocket kapanış akışı güvenli mi?
+- Event listener temizleniyor mu?
+- Geriye dönük uyumluluk riski var mı?
+```
+
+
+<h3>SEO İçerik Planı İçin Gemini 3.5 Flash Promptu</h3>
+
+<p>Bu şablon, bir ana anahtar kelimeden <strong>Pillar Page</strong>, <strong>Cluster Page</strong>, arama niyeti sınıflandırması ve iç linkleme planı çıkarmak için hazırlandı.</p>
+
+<p><strong>Önerilen mod:</strong> <strong>Extended / medium</strong></p>
+
+
+
+```text
+Bir SEO Direktörü gibi davran. Amacın sadece başlık listesi üretmek değil, arama niyetine göre çalışan bir içerik mimarisi kurmak.
+
+Ana anahtar kelime:
+Yapay zeka ajanları ile iş otomasyonu
+
+Ana hedef:
+Bu konu için 1 adet Pillar Page ve 5 adet Cluster Page öner. Anahtar kelimeleri search intent'e göre sınıflandır. Sayfalar arası internal linking stratejisini Markdown tablosu olarak ver.
+
+Muhakeme sürekliliği:
+Önceki adımlardaki gizli muhakeme mantığını (thought summary) hafızanda tutarak bir sonraki adıma geç.
+
+Doğruluk kuralı:
+Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+
+Arama niyeti sınıfları:
+- Informational
+- Commercial
+- Transactional
+- Navigational
+- Comparative
+- Problem-aware
+- Solution-aware
+
+Çıktı yapısı:
+
+Arama Niyeti Haritası
+
+| Anahtar Kelime | Search Intent | Kullanıcı Ne Arıyor? | İçerik Tipi | Öncelik |
+|---|---|---|---|---|
+
+Pillar Page
+
+Başlık:
+URL Slug:
+Hedef Kitle:
+Ana Search Intent:
+Cevaplayacağı Ana Soru:
+H2 Önerileri:
+CTA Önerisi:
+GEO için kısa tanım:
+
+5 Cluster Page
+
+Her cluster için şu formatı kullan:
+
+Cluster [numara]
+
+Başlık:
+Slug:
+Hedef Anahtar Kelime:
+İkincil Anahtar Kelimeler:
+Search Intent:
+Bu içerik hangi sorunu çözer?
+Pillar sayfaya verilecek anchor text:
+Pillar sayfadan alınacak anchor text:
+FAQ önerileri:
+
+Internal Linking Planı
+
+| Kaynak Sayfa | Hedef Sayfa | Anchor Text | Linkleme Nedeni | Öncelik |
+|---|---|---|---|---|
+
+GEO Uyumlu Kısa Cevaplar
+
+Yapay zeka arama motorlarının doğrudan çekebileceği 5 kısa cevap yaz.
+
+Kurallar:
+- Her cevap 40-60 kelime arasında olsun.
+- Her cevap doğrudan bir soruya yanıt versin.
+- Pazarlama dili kullanma.
+- Gereksiz sıfat kullanma.
+
+Ek veri:
+Anahtar kelime listesi:
+[keyword listesini buraya yapıştır]
+
+Rakip başlıklar veya SERP notları:
+[rakip içerik başlıklarını buraya yapıştır]
+```
+
+
+<p>Bu prompt özellikle içerik ekipleri için güçlüdür. Çünkü sadece “ne yazalım?” sorusunu değil, “hangi sayfa neye bağlanmalı?” sorusunu da cevaplar.</p>
+
+<h3>Veri Analizi İçin Gemini 3.5 Flash Promptu</h3>
+
+<p>Bu şablon, yeni kullanıcılar ile geri dönen kullanıcıların sepet tutarlarını karşılaştırmak için tasarlandı. Modelden sadece yorum değil; veri temizliği, <strong>Mean</strong>, <strong>SD</strong>, hipotez testi, A/B testi ve reklam bütçesi önerisi ister.</p>
+
+<p><strong>Önerilen mod:</strong> <strong>Extended / medium-high</strong></p>
+
+
+
+```text
+Bir kıdemli finansal veri analisti gibi davran. Sana verilen transaction verilerini kullanarak yeni kullanıcılar ile geri dönen kullanıcıların sepet tutarlarını karşılaştır.
+
+Ana hipotez:
+Geri dönen kullanıcıların ortalama sepet tutarı, yeni kullanıcıların ortalama sepet tutarından istatistiksel olarak anlamlı derecede yüksektir.
+
+Muhakeme sürekliliği:
+Önceki adımlardaki gizli muhakeme mantığını (thought summary) hafızanda tutarak bir sonraki adıma geç.
+
+Doğruluk kuralı:
+Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+
+Veri temizleme kuralları:
+1. Sepet tutarı boş olan satırları ana analiz dışında bırak.
+2. Negatif sepet tutarı varsa anomali olarak raporla.
+3. Kullanıcı tipi "Yeni" ve "Geri Dönen" dışında ise "Diğer" olarak ayır, ana hipotez testine dahil etme.
+4. Para birimi karışıksa normalize edilmesi gerektiğini belirt.
+5. Uç değerleri silme; önce raporla, sonra etkisini ayrıca yorumla.
+6. Örneklem yetersizse hipotez testi sonucu uydurma.
+
+İstenen hesaplamalar:
+- Yeni kullanıcılar için örneklem sayısı
+- Geri dönen kullanıcılar için örneklem sayısı
+- Yeni kullanıcılar için Ortalama (Mean)
+- Geri dönen kullanıcılar için Ortalama (Mean)
+- Yeni kullanıcılar için Standart Sapma (SD)
+- Geri dönen kullanıcılar için Standart Sapma (SD)
+- Ortalama farkı
+- Uç değer etkisi
+- Uygun hipotez testi önerisi
+- Veri yeterliyse karar yorumu
+- Veri yetersizse "Veri yetersiz" diyerek reddet
+
+Çıktı formatı:
+
+Veri Kalite Kontrolü
+
+| Kontrol | Sonuç | Not |
+|---|---|---|
+
+Tanımlayıcı İstatistikler
+
+| Kullanıcı Tipi | Örneklem Sayısı | Mean | SD | Minimum | Maksimum |
+|---|---:|---:|---:|---:|---:|
+
+Hipotez Testi
+
+H0: Geri dönen kullanıcıların ortalama sepet tutarı, yeni kullanıcıların ortalama sepet tutarından yüksek değildir.
+H1: Geri dönen kullanıcıların ortalama sepet tutarı, yeni kullanıcıların ortalama sepet tutarından yüksektir.
+
+Şu başlıklarla yorum yap:
+- Test için veri yeterli mi?
+- Hangi test uygundur?
+- Sonuç ne anlama gelir?
+- Karar almak için hangi ek veri gerekir?
+
+A/B Testi Tasarımı
+
+| Test Öğesi | Öneri |
+|---|---|
+| Hipotez | |
+| Kontrol Grubu | |
+| Deney Grubu | |
+| Başarı Metriği | |
+| İkincil Metrikler | |
+| Minimum Test Süresi | |
+| Riskler | |
+
+Reklam Bütçesi İçin 3 Aksiyon
+
+Her öneriyi şu formatta yaz:
+
+Aksiyon [numara]: [Başlık]
+
+Ne yapılmalı:
+Neden:
+Hangi metrik izlenmeli:
+Risk:
+
+Transaction verisi:
+<transaction_data>
+| Sipariş ID | Tarih | Kanal | Sepet Tutarı | Kullanıcı Tipi |
+| OR-9021 | 2026-05-01 | Google Search | 1500 | Yeni |
+| OR-9022 | 2026-05-01 | Direct | 4500 | Geri Dönen |
+[Veri tablosunun devamını buraya yapıştır]
+</transaction_data>
+```
+
+
+<p>Bu promptun değeri, Gemini 3.5 Flash’ı “yorum yapan model” yerine “kontrollü analiz yapan yardımcı” gibi çalıştırması. Önce veri kontrolü, sonra hesap, sonra karar.</p>
+
+<h2>Gemini 3.5 Flash API Kullanımı: includeThoughts, Cached Input ve thinkingLevel</h2>
+
+<p>API tarafında Gemini 3.5 Flash kullanırken üç başlığa özellikle dikkat etmek gerekir:</p>
+
+<ul>
+  <li><strong>thinkingLevel</strong></li>
+  <li><strong>includeThoughts</strong></li>
+  <li><strong>Cached Input</strong></li>
+</ul>
+
+<p>Basit örnek yapı:</p>
+
+
+
+```text
+{
+  "thinkingConfig": {
+    "thinkingLevel": "medium",
+    "includeThoughts": true
+  }
+}
+```
+
+
+<p><strong>thinkingLevel</strong>, modelin ne kadar derin muhakeme yapacağını belirler.<br />
+<strong>includeThoughts</strong>, geliştiriciye debug için muhakeme özetlerini izleme imkânı verir.<br />
+<strong>Cached Input</strong>, sabit sistem promptları ve şemalar tekrar kullanıldığında maliyeti düşürür.</p>
+
+<p>Burada en önemli kurumsal taktik şu:</p>
+
+<p>Sabit sistem talimatlarını, araç şemalarını ve değişmeyen kuralları bağlamın başında tutun. Mümkünse ilk <strong>100K token</strong> içinde konumlandırın.</p>
+
+<p>Bunun iki nedeni var:</p>
+
+<ol>
+  <li>Modelin dikkatini kritik kurallara daha yakın tutarsınız.</li>
+  <li><strong>Cached Input</strong> sayesinde girdi maliyetinde <strong>%90 indirim</strong> avantajı yakalayabilirsiniz.</li>
+</ol>
+
+<p>Özellikle çok turlu ajan sistemlerinde aynı sistem promptunu her turda farklı yere koymak kötü fikirdir. Sabit kısmı bağlamın başında tutmak hem daha temiz hem daha ucuzdur.</p>
+
+<h2>Ajan Kullanımında Maliyet Kontrolü: Looping, Cached Input ve X-Initiator</h2>
+
+<p>Gemini 3.5 Flash çoklu ajan sistemlerinde hızlı çalışabilir. Ama hız, kötü sınırlandırılmış bir ajan yapısında maliyeti büyütebilir.</p>
+
+<p>Özellikle Antigravity 2.0, Spark veya benzeri çoklu ajan akışlarında her alt ajanın görevi mikro düzeyde tanımlanmalı.</p>
+
+<p>Kötü ajan tanımı:</p>
+
+
+
+```text
+Sen yazılım ajanısın. İşletim sistemi çekirdeğini yaz, ağ katmanını kur, dosya sistemini düzenle, testleri çalıştır ve hataları düzelt.
+```
+
+
+<p>Daha iyi ajan tanımı:</p>
+
+
+
+```text
+Sen yalnızca ağ protokol soketlerini yazmakla görevli alt ajansın.
+
+Sınırların:
+- Dosya sistemine müdahale etme.
+- Bellek yöneticisi kodunu değiştirme.
+- Scheduler tarafında değişiklik yapma.
+- Sadece /kernel/network/ dizinindeki dosyaları incele.
+- Sadece socket açma, kapama, hata yönetimi ve paket kuyruğu mantığını düzenle.
+
+Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+```
+
+
+<p>Ajanlarda ikinci kritik konu <strong>looping</strong>. Model aynı aracı tekrar çağırabilir, aynı çıktıyı yeniden okuyabilir ve hedefe yaklaştığını sanarak faturayı büyütebilir.</p>
+
+<p>Bunu önlemek için sistem promptuna şu kuralı ekleyin:</p>
+
+
+
+```text
+Her 5 araç çağrısında bir durum analizi yap, hedeften sapıyorsan dur ve insan onayına (human-in-the-loop) başvur.
+```
+
+
+<p>Daha sıkı versiyon:</p>
+
+
+
+```text
+Araç kullanım kuralı:
+Her 5 araç çağrısından sonra aşağıdaki kontrolü yap:
+
+1. Şu ana kadar hangi işlemleri yaptığını özetle.
+2. Ana hedefe ne kadar yaklaştığını değerlendir.
+3. Aynı aracı aynı amaçla tekrar çağırıp çağırmadığını kontrol et.
+4. Eğer hedef sapması, tekrar veya belirsizlik varsa işlemi durdur.
+5. Durduğunda "İnsan onayı gerekli" yaz ve bir sonraki en güvenli adımı öner.
+
+Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+```
+
+
+<p>Bu küçük kural, uzun ajan akışlarında ciddi maliyet farkı yaratabilir.</p>
+
+<h2>Proxy ve BYOK Kullananlar İçin X-Initiator: agent Uyarısı</h2>
+
+<p>GitHub Copilot, Cursor veya BYOK proxy kullanan ekiplerde Gemini 3.5 Flash’ın arka plan ajan çağrıları bazen yanlış sınıflandırılabilir.</p>
+
+<p>Sorun şu: Ajanın kendi kendine yaptığı arka plan adımları, sistem tarafından <strong>kullanıcı tarafından tetiklenen premium istek</strong> gibi görülebilir. Bu da kota ve fatura tarafında şişmeye neden olur.</p>
+
+<p>Bunu önlemek için arka plan ajan çağrılarında HTTP header içine şu değer eklenmeli:</p>
+
+
+
+```text
+X-Initiator: agent
+```
+
+
+<p>Basit JavaScript örneği:</p>
+
+
+
+```text
+const headers = {
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${process.env.GEMINI_API_KEY}`,
+  "X-Initiator": "agent"
+};
+```
+
+
+<p>Daha kontrollü örnek:</p>
+
+
+
+```text
+function buildGeminiHeaders({ isAgentStep }) {
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${process.env.GEMINI_API_KEY}`
+  };
+
+  if (isAgentStep) {
+    headers["X-Initiator"] = "agent";
+  }
+
+  return headers;
+}
+```
+
+
+<p>Bu ayrım özellikle çok turlu ajan sistemlerinde önemlidir. İnsan isteğiyle ajanın arka plan adımı aynı şekilde faturalandırılırsa, küçük bir yanlış sınıflandırma kısa sürede ciddi maliyet farkına dönüşebilir.</p>
+
+<h2>Hazır Gemini 3.5 Flash Sistem Promptu</h2>
+
+<p>Aşağıdaki sistem promptu; kodlama, analiz, SEO planlama ve ajan görevlerinde temel güvenlik katmanı olarak kullanılabilir.</p>
+
+
+
+```text
+Sen Gemini 3.5 Flash üzerinde çalışan teknik bir analiz ve uygulama asistanısın.
+
+Çalışma modu:
+- Basit görevlerde kısa ve doğrudan yanıt ver.
+- Karmaşık kodlama, analiz ve çok adımlı görevlerde Extended Thinking mantığıyla çalış.
+- Gereksiz uzun açıklama üretme.
+- Eski tarz "adım adım düşün" çıktısı verme.
+- Son kullanıcıya yalnızca kararını, gerekçeni ve uygulanabilir sonucu göster.
+
+Süreklilik:
+Önceki adımlardaki gizli muhakeme mantığını (thought summary) hafızanda tutarak bir sonraki adıma geç.
+
+Doğruluk kuralı:
+Bağlamda kesin veri yoksa tahmin yürütme, "Veri yetersiz" diyerek reddet.
+
+Çıktı disiplini:
+- İstenen formatın dışına çıkma.
+- Büyük kod tabanlarında tüm dosyayı yeniden yazma.
+- Sadece değişmesi gereken fonksiyonları, sınıfları veya küçük patch parçalarını ver.
+- Belirsiz alanları açıkça işaretle.
+- 64K output sınırını aşacak işlerde önce plan çıkar, sonra parça parça ilerle.
+
+Ajan güvenliği:
+- Her 5 araç çağrısında bir durum analizi yap.
+- Hedeften sapıyorsan dur ve insan onayına başvur.
+- Aynı aracı aynı amaçla tekrar tekrar çağırma.
+- Gereksiz API çağrısı yapma.
+
+Maliyet disiplini:
+- Sabit şemaları ve değişmeyen talimatları yeniden üretme.
+- Uzun çıktılar yerine aşamalı çıktı ver.
+- Cached Input avantajı için sabit sistem talimatlarını bağlamın başında tut.
+```
+
+
+<p>Bu prompt her iş için birebir kullanılmak zorunda değil. Ama ekip içinde Gemini 3.5 Flash kullanım standardı oluşturmak için iyi bir başlangıç noktasıdır.</p>
+
+<h2>Gemini 3.5 Flash Kullanırken En Sık Yapılan Hatalar</h2>
+
+<p>Gemini 3.5 Flash güçlü bir model, ama yanlış kullanıldığında hızlı şekilde kötü çıktı veya yüksek maliyet üretebilir.</p>
+
+<p>En sık gördüğümüz hatalar şunlar:</p>
+
+<ul>
+  <li>Her işte <strong>Extended / high</strong> açmak</li>
+  <li>Basit özet için gereksiz muhakeme kullandırmak</li>
+  <li>Büyük kod tabanını tek seferde yeniden yazdırmaya çalışmak</li>
+  <li><strong>64K output sınırını</strong> yok saymak</li>
+  <li>Her prompta uzun “adım adım düşün” talimatı eklemek</li>
+  <li>Belirsizlik durumunda “Veri yetersiz” kuralı koymamak</li>
+  <li>Ajanlara çok geniş görev vermek</li>
+  <li>Her 5 araç çağrısında durum kontrolü yaptırmamak</li>
+  <li><strong>Cached Input</strong> avantajını kullanmamak</li>
+  <li>Proxy/BYOK tarafında <strong>X-Initiator: agent</strong> header’ını eklememek</li>
+</ul>
+
+<p>Bu hataların çoğu modelden değil, kullanım tasarımından kaynaklanır.</p>
+
+<h2>akisai.com.tr Yorumu: Bu Model Prompt Değil, Çalışma Disiplini İstiyor</h2>
+
+<p>Gemini 3.5 Flash’tan iyi sonuç almak için uzun promptlar yazmak şart değil. Hatta çoğu zaman kısa, net ve sınırları iyi çizilmiş promptlar daha iyi çalışıyor.</p>
+
+<p>Bu modelde asıl verim üç yerden geliyor:</p>
+
+<ul>
+  <li>Doğru iş için doğru mod: <strong>Standard</strong> veya <strong>Extended</strong></li>
+  <li>Net çıktı disiplini: tablo, patch, liste, karar formatı</li>
+  <li>Maliyet ve güvenlik sınırları: <strong>Cached Input</strong>, <strong>64K output kontrolü</strong>, <strong>X-Initiator: agent</strong>, <strong>human-in-the-loop</strong></li>
+</ul>
+
+<p><strong>Extended Thinking</strong>, kodlama, SEO planlama, veri analizi ve çok turlu ajan işlerinde değerli. Ama her işe yüksek düşünme modu açmak iyi fikir değil. Basit işte <strong>Standard</strong> daha hızlı ve ucuzdur. Karmaşık işte <strong>Extended</strong> daha güvenlidir.</p>
+
+<p>Gemini 3.5 Flash’ı en iyi kullanacak ekipler, modele “her şeyi yap” diyenler değil; modelin nerede başlayacağını, nerede duracağını ve ne üretmeyeceğini net söyleyenler olacak.</p>
+
+<h2>Sıkça Sorulan Sorular</h2>
+
+<h3>Gemini 3.5 Flash nasıl kullanılır?</h3>
+
+<p>Gemini 3.5 Flash kullanırken önce göreve göre <strong>Standard</strong> veya <strong>Extended</strong> mod seçilmelidir. Basit özet ve sohbetlerde Standard, kodlama ve analiz gibi karmaşık işlerde Extended daha uygundur. Prompt kısa, hedef odaklı ve net çıktı formatına sahip olmalıdır.</p>
+
+<h3>Gemini 3.5 Flash için en iyi prompt nasıl yazılır?</h3>
+
+<p>En iyi prompt; görevi, sınırları, çıktı formatını ve doğruluk kuralını açık yazar. Gereksiz “adım adım düşün” talimatları yerine, “Bağlamda kesin veri yoksa tahmin yürütme, Veri yetersiz diyerek reddet” gibi net kurallar eklenmelidir.</p>
+
+<h3>Gemini 3.5 Flash prompt örneği nasıl olmalı?</h3>
+
+<p>İyi bir Gemini 3.5 Flash promptu kısa ve yapılandırılmış olmalıdır. Örneğin kod analizi için dosya, fonksiyon, risk seviyesi, hata nedeni ve minimal patch formatı istenmelidir. Modelden tüm dosyayı yeniden yazması değil, sadece gerekli parçaları düzeltmesi istenmelidir.</p>
+
+<h3>Extended Thinking ne işe yarar?</h3>
+
+<p><strong>Extended Thinking</strong>, Gemini 3.5 Flash’ın yanıt vermeden önce arka planda daha fazla muhakeme yapmasını sağlar. Kod analizi, finansal çıkarım, SEO içerik mimarisi ve çok turlu ajan görevlerinde daha iyi sonuç almak için kullanılabilir.</p>
+
+<h3>Standard ve Extended mod arasındaki fark nedir?</h3>
+
+<p><strong>Standard</strong> mod hız odaklıdır ve <strong>minimal/low</strong> düşünme seviyesiyle çalışır. İlk yanıt süresinin kısa olması gereken sohbetler için uygundur. <strong>Extended</strong> mod ise <strong>medium/high</strong> düşünme seviyesiyle daha derin analiz, kodlama ve ajan görevleri için tercih edilir.</p>
+
+<h3>Gemini 3.5 Flash’ta “adım adım düşün” yazmak gerekir mi?</h3>
+
+<p>Genellikle gerekmez. Gemini 3.5 Flash’ın muhakeme yapısı yerleşik olduğu için uzun Chain-of-Thought talimatları bağlamı gereksiz şişirebilir. Bunun yerine hedef, çıktı formatı ve güvenlik kuralları net yazılmalıdır.</p>
+
+<h3>Gemini 3.5 Flash kod yazmak için iyi mi?</h3>
+
+<p>Evet, özellikle büyük kod tabanlarını analiz etme, hata bulma ve parça parça refactor önerme işlerinde güçlüdür. Ancak <strong>64K output token</strong> sınırı nedeniyle tüm projeyi tek seferde yeniden yazdırmak yerine, sadece değişmesi gereken fonksiyonları üretmesi istenmelidir.</p>
+
+<h3>Gemini 3.5 Flash SEO için nasıl kullanılır?</h3>
+
+<p>Gemini 3.5 Flash SEO tarafında arama niyeti sınıflandırması, pillar/cluster içerik mimarisi, iç linkleme planı ve GEO uyumlu kısa cevap üretimi için kullanılabilir. En iyi sonuç için anahtar kelime listesi, rakip başlıklar ve SERP notları prompta eklenmelidir.</p>
+
+<h3>Gemini 3.5 Flash veri analizi yapabilir mi?</h3>
+
+<p>Evet, veri temizleme kuralları ve çıktı formatı net verilirse Gemini 3.5 Flash transaction verilerinden ortalama, standart sapma, hipotez testi ve A/B test önerileri çıkarabilir. Kritik finansal kararlarda insan kontrolü yine de gereklidir.</p>
+
+<h3>Gemini 3.5 Flash’ta 64K output sınırı nasıl yönetilir?</h3>
+
+<p>Büyük işlerde önce analiz haritası çıkartılmalı, ardından tek tek patch veya bölüm istenmelidir. Prompta “Tüm dosyayı yeniden yazma, sadece değişmesi gereken fonksiyonları ver” kuralı eklenmelidir. Böylece çıktı sınırı aşılmaz ve kontrol kaybolmaz.</p>
+
+<h3>includeThoughts true ne işe yarar?</h3>
+
+<p><strong>includeThoughts: true</strong>, geliştiricilerin modelin muhakeme davranışını debug etmesine yardımcı olur. Üretim ortamında sürekli açık bırakılmadan önce log güvenliği, gizlilik ve maliyet etkisi kontrol edilmelidir.</p>
+
+<h3>Cached Input ile maliyet nasıl düşer?</h3>
+
+<p>Sabit sistem promptları, API şemaları ve değişmeyen talimatlar bağlamın başında tutulursa <strong>Cached Input</strong> devreye girebilir. Bu yapı, girdi maliyetinde <strong>%90 indirim</strong> sağlayabilir ve özellikle çok turlu ajan sistemlerinde önemlidir.</p>
+
+<h3>X-Initiator: agent header’ı neden önemli?</h3>
+
+<p><strong>X-Initiator: agent</strong>, proxy veya BYOK akışlarında ajanın arka plan çağrılarını kullanıcı tetikli premium isteklerden ayırmak için kullanılır. Bu header, yanlış sınıflandırmadan kaynaklanan fatura şişmesini önlemeye yardımcı olur.</p>
+
+<h3>Gemini 3.5 Flash Türkçe promptlarda iyi çalışır mı?</h3>
+
+<p>Türkçe özetleme, içerik planlama ve genel metin işlerinde iyi sonuç verebilir. Ancak finansal hesaplama, hukuki yorum veya kritik karar gerektiren Türkçe görevlerde insan kontrolü önerilir. Promptta belirsizlik durumunda “Veri yetersiz” kuralı mutlaka yer almalıdır.</p>

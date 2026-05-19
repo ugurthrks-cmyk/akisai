@@ -1,0 +1,409 @@
+---
+title: "Gemini 3.5 Flash İncelemesi: ChatGPT ve Claude’u Geçti mi?"
+seoTitle: "Gemini 3.5 Flash İncelemesi: ChatGPT ve Claude’u Geçti mi?"
+h1: "Gemini 3.5 Flash İncelemesi: ChatGPT ve Claude’u Geçti mi?"
+name: "Gemini 3.5 Flash"
+description: "Google'ın Gemini 3.5 Flash modelini hız, maliyet, araç kullanımı, ajan kodlama, Türkçe muhakeme ve güvenilirlik tarafında ChatGPT ve Claude ile karşılaştıran inceleme."
+metaDescription: "Gemini 3.5 Flash İncelemesi: Hız, maliyet, benchmark sonuçları, Türkçe performans ve ChatGPT/Claude kıyasını tarafsızca analiz ettik."
+heroIntro: |-
+  Google, Gemini 3.5 Flash modelini I/O 2026 duyurularının en önemli parçası olarak sahneye çıkardı. Model, Gemini uygulamasında, Google Search tarafındaki AI Mode'da ve geliştirici araçlarında daha hızlı, daha ucuz ve daha "ajan odaklı" bir seçenek olarak konumlanıyor. Duyuru tarafında Google'ın ana mesajı net: Flash artık sadece hafif işler için değil, kod yazan, araç kullanan, çok adımlı işleri yöneten bir model ailesi.
+
+  Peki gerçekten ChatGPT ve Claude modellerini geçti mi?
+
+  Kısa cevap: Bazı işlerde evet. Her işte hayır.
+category: "Yapay Zeka Asistanları"
+author: "tan"
+date: "2026-05-20"
+datePublished: "2026-05-20"
+dateModified: "2026-05-20"
+developerName: "Google"
+developerLocation: "Mountain View, ABD"
+pricing: "API: 1 milyon input token için 1,50$, 1 milyon output token için 9,00$, cached input için 0,15$"
+hasFreeTier: false
+priceCurrency: "USD"
+isTRSupported: true
+trSupportLevel: "partial"
+trSupportNote: "Genel Türkçe yazma, özetleme ve doküman analizi için kullanılabilir; Türkçe finansal hesaplamalarda insan denetimi gerekir."
+websiteUrl: "https://gemini.google.com/"
+tags:
+  - "Google Gemini"
+  - "LLM"
+  - "Ajan kodlama"
+  - "MCP"
+  - "Çok modlu yapay zeka"
+pros:
+  - "Ajan tabanlı kodlama, araç kullanan iş akışları, çok belgeli analiz ve MCP tabanlı entegrasyonlarda ciddi bir aday."
+  - "1 milyon input token sınırı büyük kod deposu, uzun PDF seti veya kurumsal doküman arşivlerini modele verebilmek anlamına geliyor."
+  - "MCP Atlas %83,6, Terminal-Bench 2.1 %76,2 ve Finance Agent v2 %57,9 skorları araç kullanan görevlerde güçlü durduğunu gösteriyor."
+  - "Saniyede 280 output token hızı, IDE içi kod tamamlama ve çok adımlı ajan akışlarında avantaj sağlıyor."
+cons:
+  - "64K output token sınırı büyük bağlamdan aynı büyüklükte çıktıyı tek parçada almayı zorlaştırıyor."
+  - "Bilinmeyen sorularda %61 halüsinasyon oranı tıp, hukuk, finansal denetim ve kritik karar işleri için yüksek."
+  - "Türkçe gibi düşük kaynaklı dillerde matematiksel muhakeme başarısında 20 puanın üzerinde düşüş raporlanıyor."
+  - "Kontrolsüz ajan akışlarında fazla tur sayısı ve platform bazlı kota politikaları toplam maliyeti şişirebilir."
+sources:
+  - label: "Google Gemini"
+    publisher: "Google"
+    url: "https://gemini.google.com/"
+    note: "Gemini uygulaması."
+  - label: "Gemini API modelleri"
+    publisher: "Google AI for Developers"
+    url: "https://ai.google.dev/gemini-api/docs/models"
+    note: "Gemini API model bilgileri ve teknik limitler."
+  - label: "Google DeepMind Gemini"
+    publisher: "Google DeepMind"
+    url: "https://deepmind.google/technologies/gemini/"
+    note: "Gemini ailesi ve model duyuruları."
+faqs:
+  - question: "Gemini 3.5 Flash nedir?"
+    answer: "Gemini 3.5 Flash, Google'ın hızlı, çok modlu ve ajan odaklı yeni Gemini modelidir. Metin, görüntü, ses, video ve PDF girdilerini işleyebilir; çıktı olarak metin üretir. En güçlü tarafı hızlı yanıt, araç kullanımı ve ajan tabanlı kodlama işleridir."
+  - question: "Gemini 3.5 Flash kaç token destekliyor?"
+    answer: "Model 1 milyon input token destekler. Tek seferde verebileceği maksimum çıktı ise 64K output token ile sınırlıdır. Bu yüzden büyük kod tabanları okunabilir, ama çok büyük çıktıların parça parça alınması gerekir."
+  - question: "Gemini 3.5 Flash, ChatGPT'den daha mı iyi?"
+    answer: "Bazı alanlarda evet. MCP Atlas testinde %83,6 ile GPT-5.5 %75,3 skorunun önünde. Ancak Terminal-Bench 2.1 testinde GPT-5.5 %78,2, Gemini 3.5 Flash'ın %76,2 skorunun biraz üstünde. Saf bilgi ve soyut muhakemede de GPT tarafı bazı testlerde daha güçlü görünüyor."
+  - question: "Gemini 3.5 Flash, Claude'dan daha mı iyi?"
+    answer: "Araç kullanımı ve ajan kodlama tarafında çoğu senaryoda daha güçlü görünüyor. Terminal-Bench 2.1 testinde %76,2 ile Claude Opus 4.7 %66,1 skorunu geçiyor. Ancak güvenilirlik ve halüsinasyon tarafında Claude hâlâ avantajlı. Claude 4.5 Haiku bilinmeyen sorularda %26 halüsinasyon oranına sahipken, Gemini 3.5 Flash'ta bu oran %61."
+  - question: "Gemini 3.5 Flash'ın fiyatı ne kadar?"
+    answer: "Küresel bölgelerde fiyatlandırma 1 milyon input token için 1,50$, 1 milyon output token için 9,00$ seviyesinde. Cached input kullanıldığında 1 milyon token maliyeti 0,15$ seviyesine düşüyor."
+  - question: "Gemini 3.5 Flash gerçekten ucuz mu?"
+    answer: "Birim fiyat olarak ucuz görünüyor. Ama otonom görevlerde çok fazla tur atarsa toplam maliyet artabilir. Bir testte Gemini 3.5 Flash'ın toplam çalıştırma maliyeti 1552$, eski Pro modelinin maliyeti ise 892$ olarak ölçülmüş. Bu yüzden sadece token birim fiyatına bakmak yanıltıcıdır."
+  - question: "Gemini 3.5 Flash Türkçe için iyi mi?"
+    answer: "Genel Türkçe yazma, özetleme ve doküman analizi için kullanılabilir. Ancak Türkçe gibi düşük kaynaklı dillerde matematiksel muhakeme başarısında 20 puanın üzerinde düşüş raporlanıyor. Türkçe finansal hesaplamalarda insan denetimi gerekir."
+  - question: "Gemini 3.5 Flash kodlama için iyi mi?"
+    answer: "Evet, özellikle ajan kodlama tarafında güçlü. Terminal-Bench 2.1 testinde %76,2 başarı alıyor. Bu skor Gemini 3.1 Pro %70,3 ve Claude Opus 4.7 %66,1 sonuçlarının üstünde. Ancak tek seferde büyük kod üretimi 64K output token sınırı nedeniyle parçalara bölünmelidir."
+  - question: "Gemini 3.5 Flash'ta Dynamic Thinking nedir?"
+    answer: "Dynamic Thinking, modelin sorgunun zorluğuna göre arka planda ne kadar muhakeme yapacağını ayarlayan yapıdır. API tarafında thinkingLevel parametresiyle yönetilir. Varsayılan seviye medium olarak gelir. Hızlı işler için minimal/low, karmaşık işler için medium/high tercih edilir."
+  - question: "Gemini 3.5 Flash tıp ve hukukta kullanılmalı mı?"
+    answer: "Tek başına kullanılmamalı. Modelin bilinmeyen sorulardaki halüsinasyon oranı %61 seviyesinde. Bu oran tıp, hukuk, finansal denetim ve regülasyon işleri için yüksektir. Bu alanlarda insan kontrolü şarttır."
+  - question: "Gemini 3.5 Flash air-gapped çalışır mı?"
+    answer: "Hayır. Mevcut bilgilerde air-gapped, yani tamamen kapalı devre yerel kurulum desteği yok. Model Google Cloud ve bağlı servis ekosistemine bağımlı çalışır. Savunma, nükleer enerji veya kapalı ağ gerektiren kurumlar için bu önemli bir sınırlamadır."
+  - question: "GitHub Copilot'ta Gemini 3.5 Flash kullanmak mantıklı mı?"
+    answer: "Kodlama performansı açısından mantıklı olabilir, ancak kota tarafına dikkat etmek gerekir. GitHub'ın 14X premium istek çarpanı uygulaması geliştirici kotalarını hızlı tüketebilir. Proxy veya BYOK kullanan ekipler ayrıca X-Initiator: agent başlığıyla faturalandırma hatalarını önlemelidir."
+ogTitle: "Gemini 3.5 Flash İncelemesi: ChatGPT ve Claude’u Geçti mi?"
+ogDescription: "Gemini 3.5 Flash'ın hız, araç kullanımı, maliyet, halüsinasyon ve Türkçe muhakeme tarafındaki güçlü ve riskli yönleri."
+---
+
+Gemini 3.5 Flash, özellikle araç kullanımı, ajan kodlama, hız ve maliyet/performans tarafında çok güçlü duruyor. Ama saf bilgi, Türkçe muhakeme, halüsinasyon ve uzun iş akışlarında maliyet kontrolü tarafında hâlâ ciddi soru işaretleri var.
+
+## İlk bakışta karar: Kime göre iyi, kime göre riskli?
+
+Gemini 3.5 Flash'ın güçlü olduğu yer çok net: Kod tabanı okuyacak, terminalde işlem yapacak, API çağıracak, belge karıştıracak, araçlarla çalışacak sistemlerde ciddi bir aday.
+
+Ama bu modelden "bilmediği konuda susmasını", Türkçe finansal hesaplamalarda hatasız davranmasını veya tıp/hukuk gibi alanlarda tek başına karar vermesini beklemek doğru değil.
+
+En iyi kullanım alanları:
+
+- Ajan tabanlı kodlama
+- Araç kullanan iş akışları
+- Çok belgeli analiz
+- MCP tabanlı entegrasyonlar
+- Hızlı prototipleme
+- Düşük gecikmeli uygulamalar
+
+Dikkat edilmesi gereken alanlar:
+
+- Tıp, hukuk, finansal denetim
+- Türkçe matematiksel muhakeme
+- Kapalı devre / air-gapped kurulum gerektiren kurumlar
+- Çok uzun otonom görevlerde kontrolsüz maliyet
+- Tek seferde büyük kod üretimi
+
+## 1 milyon token var, ama çıktı tarafında duvara çarpıyorsunuz
+
+Gemini 3.5 Flash'ın en dikkat çeken teknik tarafı 1 milyon input token sınırı. Bu, dev bir kod deposunu, uzun bir PDF setini veya büyük bir kurumsal doküman arşivini modele verebilmek anlamına geliyor.
+
+Ama aynı anda bir sorun var: Model tek seferde en fazla 64K output token üretebiliyor. Yani büyük bağlamı besleyebiliyorsunuz, ama aynı büyüklükte çıktıyı tek parçada alamıyorsunuz. Google'ın resmi Gemini 3.5 Flash sayfasında da modelin 1M input token ve 64K output token sınırları listeleniyor.
+
+Bu fark özellikle yazılımcılar için önemli.
+
+Bir örnek düşünelim: 800 bin tokenlık bir monorepo'yu modele verdiniz ve "bunu yeni mimariye göre refactor et" dediniz. Model kodu okuyabilir. Bağlantıları anlayabilir. Dosyalar arasındaki ilişkileri çıkarabilir. Ama size tek seferde tüm yeni kod tabanını yazamaz.
+
+Bu yüzden Gemini 3.5 Flash ile büyük kod işlerinde doğru yöntem şu:
+
+- Tüm depoyu bağlama ver.
+- Modelden önce hata haritası çıkarmasını iste.
+- Sonra dosya dosya, modül modül ilerle.
+- Her istekte sadece değişmesi gereken fonksiyonları üretmesini söyle.
+- Uzun işlerde ara kontrol ve insan onayı ekle.
+
+Aksi halde 1 milyon tokenlık giriş penceresi kulağa güzel gelir ama 64K çıktı sınırı pratikte darboğaz olur. Bu asimetrik yapı, yüklenen teknik analizde de geliştiriciler için manuel segmentasyon ve ardışık istek zinciri ihtiyacı olarak vurgulanıyor.
+
+## Dynamic Thinking: Hızlı mı cevap versin, biraz düşünsün mü?
+
+Gemini 3.5 Flash ile gelen önemli yeniliklerden biri Dynamic Thinking mimarisi. Burada modelin ne kadar "düşüneceğini" belirleyen thinkingLevel parametresi var.
+
+Varsayılan ayar medium.
+
+Pratikte iki ana kullanım modu var:
+
+### Standard: Hız gereken işler için
+
+Standard ayar tarafı minimal ve low seviyelerine yakın çalışıyor. Burada amaç, modelin fazla bekletmeden cevap vermesi.
+
+Şunlar için mantıklı:
+
+- Canlı sohbet botları
+- Basit özetleme
+- Veri formatlama
+- Kısa müşteri yanıtları
+- Tek adımlı araç çağrıları
+
+Bu modda kalite fena değil, ama karmaşık muhakeme beklememek lazım.
+
+### Extended: Kod, analiz ve çok adımlı planlama için
+
+Extended tarafı medium ve high seviyelerine denk geliyor. Model cevap vermeden önce arka planda daha fazla gizli mantık adımı yürütüyor.
+
+Şunlar için daha doğru:
+
+- Kod hatası bulma
+- Finansal analiz
+- Çok adımlı planlama
+- Birden fazla API çağrısı
+- Araç kullanan ajan görevleri
+- Zor matematik ve mantık soruları
+
+Buradaki kritik nokta şu: Gemini 3.5 Flash'a eski tarz "adım adım düşün" diye uzun promptlar yazmak çoğu zaman gereksiz. thinkingLevel: medium veya high zaten bu davranışı API seviyesinde yönetiyor. Prompt tarafında sade ve hedef odaklı kalmak daha iyi sonuç veriyor. Yüklenen prompt mühendisliği notlarında da Gemini 3.5 Flash için uzun Chain-of-Thought talimatları yerine kısa, net, hedefe bağlı promptların önerildiği görülüyor.
+
+## Benchmark tablosu: Nerede gerçekten öne geçiyor?
+
+Gemini 3.5 Flash'ın en iddialı olduğu yer benchmark tarafı. Özellikle ajan kodlama ve araç kullanımı testlerinde sonuçlar güçlü.
+
+| Test | Gemini 3.5 Flash | En yakın önemli rakipler | Yorum |
+| --- | --- | --- | --- |
+| Terminal-Bench 2.1 | %76,2 | GPT-5.5 %78,2, Gemini 3.1 Pro %70,3, Claude Opus 4.7 %66,1 | GPT-5.5 hâlâ önde, ama Flash modeli eski Pro'yu ve Claude Opus'u geçiyor. |
+| MCP Atlas | %83,6 | Claude Opus %79,1, GPT-5.5 %75,3 | Araç kullanımında tablo çok güçlü. |
+| Finance Agent v2 | %57,9 | GPT-5.5 %51,8, Claude Opus %51,5 | Finansal karar ajanlarında lider görünüyor. |
+| ARC-AGI-2 | %72,1 | GPT-5.5 %84,6, Gemini 3.1 Pro %77,1, Claude Opus %75,8 | Saf soyut muhakemede geride. |
+| Humanity's Last Exam | %40,2 | Claude Opus %46,9, Gemini 3.1 Pro %44,4, GPT-5.5 %41,4 | Saf akademik bilgi tarafında zayıf kalıyor. |
+
+Google DeepMind'ın Gemini sayfasındaki benchmark listesi de Terminal-Bench 2.1, MCP Atlas, Finance Agent v2, ARC-AGI-2 ve Humanity's Last Exam gibi testlerde bu kırılımı gösteriyor: Model araç kullanan görevlerde parlıyor, saf bilgi ve soyut muhakemede ise her rakibi geçmiyor.
+
+Burada pazarlama cümlelerine kapılmamak lazım. Gemini 3.5 Flash, Gemini 3.1 Pro'yu her yerde geçmiyor. Şu alanlarda geçiyor:
+
+- Terminal-Bench 2.1: %76,2 vs %70,3
+- MCP Atlas: %83,6 vs %78,2
+- Finance Agent v2: %57,9 vs %43,0
+- GDPval-AA: 1656 Elo vs 1314 Elo
+
+Ama şu alanlarda geçemiyor:
+
+- ARC-AGI-2: %72,1 vs %77,1
+- Humanity's Last Exam: %40,2 vs %44,4
+
+Yani modelin karakteri belli: Dış dünyaya bağlanınca, araç kullanınca, dosya okuyunca, kod çalıştırınca güçleniyor. Kendi içindeki teorik bilgiye sıkışınca daha kırılgan.
+
+## Hız tarafı ciddi: Saniyede 280 token
+
+Gemini 3.5 Flash'ın en elle tutulur avantajlarından biri hız. Verilere göre model saniyede 280 output token üretebiliyor ve benzer sınıftaki rakiplerden yaklaşık %70 daha hızlı çalışıyor.
+
+Bu, sadece "cevap daha çabuk geliyor" meselesi değil.
+
+Hız özellikle şu senaryolarda fark yaratır:
+
+- IDE içinde anlık kod tamamlama
+- Çok adımlı ajan akışları
+- Müşteri destek otomasyonları
+- Gerçek zamanlı veri dönüştürme
+- Çok sayıda küçük API isteği
+- Uzun dokümanlardan hızlı çıkarım
+
+Ama hızın bir bedeli var: Model hızlı olduğu için kontrolsüz ajan akışlarında gereksiz tur sayısı artabiliyor. Yani sistem iyi tasarlanmazsa model çok hızlı şekilde para yakabilir.
+
+## Fiyat ucuz görünüyor, ama toplam fatura her zaman ucuz değil
+
+Gemini 3.5 Flash'ın API fiyatları ilk bakışta makul:
+
+- Input: 1 milyon token için 1,50$
+- Output: 1 milyon token için 9,00$
+- Cached input: 1 milyon token için 0,15$
+
+Buradaki en önemli kalem cached input. Sabit sistem promptlarını, JSON şemalarını, araç tanımlarını ve değişmeyen kuralları bağlamın başında tutarsanız, önbelleğe alınmış girdi maliyeti %90 indirimle 0,15$ seviyesine düşüyor.
+
+Bu, ajan sistemleri için çok büyük fark yaratır. Çünkü ajanlar her turda aynı sistem talimatlarını ve araç şemalarını tekrar taşır. Caching yoksa her turda aynı bağlama tekrar para ödersiniz.
+
+Ama burada rahatsız edici bir paradoks var.
+
+Belirli bir zeka endeksi çalıştırmasında Gemini 3.5 Flash 1552$, eski Gemini 3.1 Pro ise 892$ maliyet üretmiş. Sebep birim fiyat değil; tur sayısı. Flash modeli bazı otonom değerlendirmelerde sonuca ulaşmak için daha fazla turn atıyor ve toplam token tüketimi şişiyor. Bu maliyet anomalisi yüklenen teknik analizde de özellikle vurgulanıyor.
+
+Bu yüzden "Flash ucuz, o halde her yerde Flash kullanalım" yaklaşımı hatalı.
+
+Doğru soru şu olmalı:
+
+Bu görevde model kaç tur atıyor, kaç araç çağırıyor, kaç kez aynı bağlamı tekrar okuyor?
+
+## Copilot krizi: Ucuz model, pahalı kota
+
+Gemini 3.5 Flash'ın GitHub Copilot'a gelmesi geliştiriciler için iyi haber gibi duruyor. Kodlama hızının yüksek olması ve Terminal-Bench 2.1 skorunun %76,2 seviyesine çıkması gerçekten etkileyici.
+
+Ama GitHub tarafındaki kota politikası tartışma yarattı. Model için 14X premium istek çarpanı uygulanıyor. Yani geliştirici, ucuz bir Flash modeli kullandığını düşünürken Copilot kotası beklenenden çok daha hızlı tükenebiliyor.
+
+Buna ek olarak proxy veya BYOK kullanan geliştiricilerde maliyeti artıran bir billing inflation bug raporlandı. Sorunun, otonom ajan adımlarının kullanıcı tetikli istek gibi sayılmasından kaynaklandığı; çözüm olarak HTTP başlığına X-Initiator: agent eklenmesi gerektiği belirtiliyor. Bu kriz ve teknik çözüm, yüklenen analiz dosyasında da Copilot entegrasyonunun en sorunlu başlıklarından biri olarak geçiyor.
+
+Bu şu anlama geliyor: Gemini 3.5 Flash API tarafında ucuz olabilir, ama onu hangi platformdan kullandığınız faturayı tamamen değiştirebilir.
+
+## Halüsinasyon azalmış, ama güven vermek için yetmiyor
+
+Gemini 3 Flash'ın en büyük sorunlarından biri, bilmediği sorularda yüksek oranda uydurma cevap vermesiydi. Eski nesilde bu oran %91 olarak raporlanmıştı.
+
+Gemini 3.5 Flash'ta oran %61 seviyesine düşmüş.
+
+Bu ciddi bir iyileşme. Ama hâlâ iyi değil.
+
+Karşılaştırma şöyle:
+
+| Model | Bilinmeyen sorularda halüsinasyon oranı |
+| --- | --- |
+| Claude 4.5 Haiku | %26 |
+| Claude 4.5 Sonnet | %48 |
+| GPT-5.1 High | %51 |
+| Claude 4.5 Opus | %58 |
+| Gemini 3.5 Flash | %61 |
+| Grok 4.1 | %64 |
+| DeepSeek V3.2 | %82 |
+| Gemini 3 Flash | %91 |
+
+Bu tabloyu basit okuyalım: Gemini 3.5 Flash önceki modele göre daha güvenli, ama hâlâ bilmediği konularda fazla özgüvenli.
+
+Bu yüzden şu alanlarda tek başına kullanılmamalı:
+
+- Tıbbi yönlendirme
+- Hukuki sözleşme yorumu
+- İlaç, doz, teşhis, tedavi
+- Finansal denetim
+- Vergi ve regülasyon kararları
+- Kritik altyapı operasyonları
+
+Bu alanlarda modelin ürettiği cevap mutlaka insan kontrolünden geçmeli.
+
+## Türkçe tarafında kayıp var: Özellikle finansal hesapta dikkat
+
+Gemini 3.5 Flash, İngilizce matematiksel muhakeme testlerinde güçlü görünüyor. Ama düşük kaynaklı dillerde tablo değişiyor. Verilere göre düşük kaynaklı dillerde başarı oranı kümülatif olarak 20 puanın üzerinde düşüyor.
+
+Türkçe burada riskli gruba giriyor.
+
+Bu şu demek değil: "Gemini 3.5 Flash Türkçe kullanılamaz."
+
+Kullanılır. Hatta özetleme, içerik düzenleme, doküman analizi ve basit müşteri yanıtlarında gayet verimli olabilir.
+
+Ama Türkçe finansal hesaplarda, özellikle şu işlerde dikkat gerekir:
+
+- Kredi maliyeti hesaplama
+- Vergi kalemi yorumlama
+- Çok satırlı muhasebe analizi
+- Kur farkı hesaplama
+- Finansal tablo çıkarımı
+- İhale veya sözleşme bedeli karşılaştırma
+
+Bu işlerde human-in-the-loop şart. Model sonucu üretmeli, ama son kararı insan veya ayrı bir doğrulama sistemi vermeli. Yüklenen analizde de Türkçe dahil düşük kaynaklı dillerde otomatik finansal hesapların doğrudan modele bırakılmaması gerektiği belirtiliyor.
+
+## Uzun bağlam iyi, ama 1 milyon tokenın sonuna güvenmeyin
+
+Gemini 3.5 Flash'ın 1 milyon token bağlamı var. Ancak uzun bağlam demek, modelin her noktayı aynı doğrulukla hatırladığı anlamına gelmiyor.
+
+MRCR v2 8-needle testinde tablo şöyle:
+
+- 128K bağlamda geri çağırma: %77,3
+- 1M bağlam sınırında geri çağırma: %26,6
+
+Bu ciddi bir düşüş.
+
+Yani 1 milyon tokenlık bağlamın sonlarına kritik talimat koyarsanız, model onu gözden kaçırabilir. Özellikle ajan sistemlerinde bu risk büyür. Çünkü görev uzadıkça modelin bağlamda nereye dikkat ettiği değişebilir.
+
+Pratik öneri:
+
+- Sabit sistem kurallarını en başta tutun.
+- API şemalarını bağlamın başına yerleştirin.
+- Her 5 araç çağrısında bir ara özet alın.
+- Hedef sapması varsa görevi durdurun.
+- Uzun görevlerde "devam et" demek yerine durumu yeniden bağlayın.
+- Caching kullanarak hem maliyeti hem bağlam tekrarını yönetin.
+
+Prompt mühendisliği notlarında da uzun ajan akışlarında her 5 tool call sonrası durum özeti ve insan onayı mekanizması öneriliyor.
+
+## Air-gapped kurumlar için kötü haber
+
+Gemini 3.5 Flash'ın ajan entegrasyonları Google Cloud, Gemini Spark, MCP ve bağlı servislerle güçlü çalışıyor. Bu modern bulut kullanan ekipler için avantaj.
+
+Ama savunma, nükleer enerji, kritik altyapı veya tamamen kapalı devre çalışan kurumlar için sorun var: Air-gapped kurulum desteği yok.
+
+Yani verinin dışarı çıkmaması gereken, internetten kopuk, yerel kurulum isteyen yapılarda Gemini 3.5 Flash pratik bir seçenek değil.
+
+Bu noktada Claude, OpenAI veya açık ağırlıklı modellerle yapılan kıyas sadece benchmark üzerinden yapılamaz. Bazı kurumlar için "en iyi model", en yüksek skoru alan model değil; çalıştırılabildiği ortamın güvenlik şartlarını karşılayan modeldir.
+
+## Model kartındaki döngü sinir bozucu
+
+Gemini 3.5 Flash tarafındaki bir başka sorun dokümantasyon. Teknik analizde, model kartının kısıtlamalar için Gemini 3 Flash dokümanına, onun da Gemini 3 Pro dokümanına yönlendirdiği bir döngüden bahsediliyor.
+
+Bu küçük bir detay gibi görünebilir ama kurumsal ekipler için değil.
+
+Compliance ekipleri şunu bilmek ister:
+
+- Bu modelin spesifik kısıtları neler?
+- Hangi veri tiplerinde riskli?
+- Hangi kullanım senaryoları test edilmiş?
+- Hangi testler önceki modelden devralınmış?
+- Hangi güvenlik davranışları bu modele özel ölçülmüş?
+
+Bunlar net değilse, üretim ortamında onay almak zorlaşır.
+
+## ChatGPT ve Claude'u geçti mi?
+
+Tek cümleyle: Araç kullanan ajan işlerinde çoğu zaman evet; genel zekâ ve güvenilirlik tarafında hayır.
+
+### Gemini 3.5 Flash'ın öne geçtiği yerler
+
+MCP Atlas skorunda %83,6 ile GPT-5.5 %75,3 ve Claude Opus %79,1 önünde. Bu, araç kullanan çok adımlı iş akışlarında önemli.
+
+Terminal-Bench 2.1 tarafında %76,2 ile Claude Opus 4.7 %66,1 ve Gemini 3.1 Pro %70,3 üstünde. Ancak GPT-5.5 %78,2 ile hâlâ biraz önde.
+
+Finance Agent v2 testinde %57,9 ile rakiplerinden daha iyi görünüyor.
+
+Hızda da saniyede 280 token ciddi avantaj.
+
+### Geride kaldığı yerler
+
+ARC-AGI-2 tarafında %72,1 ile GPT-5.5 %84,6, Gemini 3.1 Pro %77,1 ve Claude Opus %75,8 gerisinde.
+
+Humanity's Last Exam tarafında %40,2 ile Claude Opus %46,9, Gemini 3.1 Pro %44,4 ve GPT-5.5 %41,4 altında.
+
+Halüsinasyon oranı %61 ile hâlâ yüksek.
+
+Türkçe gibi düşük kaynaklı dillerde matematiksel muhakeme kaybı 20 puanın üzerinde.
+
+Bu yüzden Gemini 3.5 Flash için en adil tanım şu olur:
+
+Çok hızlı, araç kullanımında çok güçlü, maliyeti doğru tasarlanırsa verimli; ama tek başına güvenilecek bir genel bilgi otoritesi değil.
+
+## Kim kullanmalı, kim beklemeli?
+
+### Kullanmalı
+
+- Yazılım ekipleri
+- Ajan tabanlı ürün geliştiren startup'lar
+- MCP entegrasyonu yapan ekipler
+- Çok belgeli analiz sistemleri kuran şirketler
+- Hız ve maliyeti aynı anda önemseyen ürün ekipleri
+- Google ekosisteminde çalışan kurumsal yapılar
+
+### Beklemeli veya kontrollü kullanmalı
+
+- Hukuk ekipleri
+- Sağlık teknolojisi şirketleri
+- Finansal denetim yapan kurumlar
+- Türkçe finansal hesaplama yapan ekipler
+- Air-gapped çalışan kurumlar
+- Copilot kotasına hassas geliştiriciler
+- Uzun süreli otonom işlerde maliyeti sıkı izlemeyen ekipler
+
+## akisai.com.tr yorumu: İyi model, ama yanlış yerde pahalıya patlar
+
+Gemini 3.5 Flash'ı sadece "ucuz ve hızlı model" diye görmek hata olur. Bu model, doğru bağlandığında ciddi iş çıkarıyor. Özellikle MCP Atlas %83,6, Terminal-Bench 2.1 %76,2 ve Finance Agent v2 %57,9 skorları, Google'ın Flash ailesini artık basit yanıt modeli olmaktan çıkardığını gösteriyor.
+
+Ama aynı model, kötü tasarlanmış bir ajan döngüsünde fazla tur atıp faturayı şişirebilir. Copilot tarafında 14X premium istek çarpanı ile beklenenden pahalıya gelebilir. Türkçe matematiksel muhakemede hata yapabilir. Bilmediği konuda hâlâ fazla konuşabilir.
+
+Bu yüzden Gemini 3.5 Flash için en mantıklı yaklaşım şu:
+
+Kod ve araç kullanımında deneyin. Caching'i baştan kurun. Uzun görevlerde tur sınırı koyun. Türkçe finansal ve kritik karar işlerinde insan kontrolünü kaldırmayın.
+
+Doğru yerde kullanıldığında ChatGPT ve Claude'a ciddi baskı kuruyor. Yanlış yerde kullanıldığında ise hızla hata ve maliyet üretebiliyor.
