@@ -134,12 +134,14 @@
 
 .author-articles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: 1.4rem;
 }
 
 .author-article-card {
   display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
   padding: 1.5rem;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.82);

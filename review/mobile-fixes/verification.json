@@ -1,0 +1,628 @@
+{
+  "checkedAt": "2026-11-06",
+  "timezone": "Europe/Istanbul",
+  "scope": {
+    "baseUrl": "http://127.0.0.1:3100",
+    "productionChanged": false,
+    "cmsChanged": false,
+    "sourceData": "Existing local published-content snapshot; external query-only fixture adapter, no live CMS writes",
+    "browser": "Brave/Chromium responsive viewport tests; not physical iOS/Android hardware"
+  },
+  "changedSourceFiles": [
+    "src/components/header.css",
+    "src/components/Header.tsx",
+    "src/app/yazar/[slug]/author.css"
+  ],
+  "checks": {
+    "unitTests": {
+      "passed": 11,
+      "failed": 0
+    },
+    "typecheck": "passed",
+    "lint": {
+      "errors": 0,
+      "preexistingWarnings": 1,
+      "warningFile": "src/components/PortableTextContent.tsx:88"
+    },
+    "nextBuild": {
+      "passed": true,
+      "staticGenerationEntries": 58,
+      "prebuildManifestScriptRun": false
+    },
+    "http": {
+      "pages": 44,
+      "normal200": 44,
+      "googlebotUserAgent200": 44,
+      "userAgentSemanticDifferences": 0,
+      "beforeAfterSeoDifferences": [],
+      "jsonLdDocuments": 127,
+      "redirect404AndNoindexChecksUnchanged": true,
+      "extraChecks": [
+        {
+          "path": "/robots.txt",
+          "status": 200,
+          "location": null,
+          "xRobotsTag": null,
+          "robots": null,
+          "canonical": null
+        },
+        {
+          "path": "/sitemap.xml",
+          "status": 200,
+          "location": null,
+          "xRobotsTag": null,
+          "robots": null,
+          "canonical": null
+        },
+        {
+          "path": "/admin",
+          "status": 200,
+          "location": null,
+          "xRobotsTag": "noindex, nofollow, noarchive",
+          "robots": "noindex, nofollow",
+          "canonical": []
+        },
+        {
+          "path": "/arama?q=chatgpt",
+          "status": 200,
+          "location": null,
+          "xRobotsTag": null,
+          "robots": "noindex, follow",
+          "canonical": [
+            "https://akisai.com.tr/arama"
+          ]
+        },
+        {
+          "path": "/__akisai_audit_missing_20261106",
+          "status": 404,
+          "location": null,
+          "xRobotsTag": null,
+          "robots": "noindex",
+          "canonical": []
+        },
+        {
+          "path": "/incelemeler/__akisai_audit_missing_20261106",
+          "status": 404,
+          "location": null,
+          "xRobotsTag": null,
+          "robots": "noindex",
+          "canonical": []
+        },
+        {
+          "path": "/ai/chatgpt",
+          "status": 308,
+          "location": "/incelemeler/chatgpt",
+          "xRobotsTag": null,
+          "robots": null,
+          "canonical": null
+        },
+        {
+          "path": "/karsilastirmalar/chatgpt-mi-claude-mu",
+          "status": 308,
+          "location": "/karsilastirma/chatgpt-mi-claude-mu",
+          "xRobotsTag": null,
+          "robots": null,
+          "canonical": null
+        },
+        {
+          "path": "/search?q=chatgpt",
+          "status": 308,
+          "location": "/arama?q=chatgpt",
+          "xRobotsTag": null,
+          "robots": null,
+          "canonical": null
+        },
+        {
+          "path": "/incelemeler/chatgpt/",
+          "status": 308,
+          "location": "/incelemeler/chatgpt",
+          "xRobotsTag": null,
+          "robots": null,
+          "canonical": null
+        },
+        {
+          "path": "/INCELEMELER/CHATGPT",
+          "status": 308,
+          "location": "/incelemeler/chatgpt",
+          "xRobotsTag": null,
+          "robots": null,
+          "canonical": null
+        },
+        {
+          "path": "/sayfa/hakkimizda",
+          "status": 308,
+          "location": "/hakkimizda",
+          "xRobotsTag": null,
+          "robots": null,
+          "canonical": null
+        }
+      ],
+      "googlebotScope": "User-Agent simulation; not a verified Googlebot IP or Search Console live test"
+    },
+    "builtSeo": {
+      "date": "2026-11-06",
+      "scope": "Built HTML compared with the previous local HTTP response, using the same read-only Sanity snapshot",
+      "pages": 44,
+      "seoIdentical": 44,
+      "linksIdentical": 44,
+      "jsonLdDocuments": 127,
+      "sitemapIdentical": true,
+      "robotsIdentical": true,
+      "changedSourceFiles": [
+        "src/components/header.css",
+        "src/components/Header.tsx",
+        "src/app/yazar/[slug]/author.css"
+      ],
+      "results": [
+        {
+          "path": "/",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 1,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/karsilastirma",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 1,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 1,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kategori",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 1,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/yazar",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 1,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/yazar/batuhan",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/yazar/tan",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/gemini-3-5-flash-inceleme",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/claude-code",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/google-gemini",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/chatgpt",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/looka",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/runway-ml",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/elevenlabs",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/canva",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/capcut",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/incelemeler/zapier",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 5,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/karsilastirma/chatgpt-mi-claude-mu",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kategori/yapay-zeka-asistanlari",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kategori/video-duzenleme",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kategori/video-olusturma",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kategori/is-akisi-otomasyonu",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kategori/gorsel-olusturma",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kategori/ses-olusturma",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kategori/logo-tasarimi",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 2,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/gemini-3-5-flash-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/claude-code-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/google-ai-pro-ogrenci-ucretsiz-mi",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/chatgpt-ile-sunum-hazirlama",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/chatgpt-sesli-konusma",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/chatgpt-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/looka-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/runway-ml-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/elevenlabs-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/canva-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/capcut-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/rehber/zapier-nasil-kullanilir",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 4,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/iletisim",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 0,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/gizlilik",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 0,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/hakkimizda",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 0,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/kullanim-kosullari",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 0,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/yayin-ilkeleri",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 0,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        },
+        {
+          "path": "/cerez-politikasi",
+          "seoDifferences": [],
+          "linksIdentical": true,
+          "jsonLdCount": 0,
+          "closedSearchHidden": true,
+          "closedMenuHidden": true
+        }
+      ]
+    },
+    "responsive": {
+      "cases": 40,
+      "passed": 40,
+      "freshReloadPerCase": true,
+      "widths": [
+        320,
+        360,
+        390,
+        768
+      ],
+      "scrollbarNote": "On this desktop browser, classic scrollbars reduce the DOM client width by 15px; overflow is checked against actual clientWidth.",
+      "failures": []
+    },
+    "interactions": {
+      "closedTabSequence": [
+        {
+          "closedPanel": null,
+          "id": "",
+          "label": "AkışAI ana sayfa",
+          "tag": "A",
+          "visible": true
+        },
+        {
+          "closedPanel": null,
+          "id": "",
+          "label": "Aramayı aç",
+          "tag": "BUTTON",
+          "visible": true
+        },
+        {
+          "closedPanel": null,
+          "id": "home-site-search",
+          "label": null,
+          "tag": "INPUT",
+          "visible": true
+        }
+      ],
+      "menu": [
+        {
+          "width": 320,
+          "height": 640,
+          "contentHeight": 769,
+          "lastFocused": true,
+          "lastHref": "/kategori/logo-tasarimi",
+          "lastLink": "Logo Tasarımı",
+          "lastVisible": true,
+          "linkCount": 11,
+          "overflowY": "auto",
+          "panelHeight": 544,
+          "panelInsideViewport": true,
+          "scrollTop": 225,
+          "searchHidden": true
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "contentHeight": 769,
+          "lastFocused": true,
+          "lastHref": "/kategori/logo-tasarimi",
+          "lastLink": "Logo Tasarımı",
+          "lastVisible": true,
+          "linkCount": 11,
+          "overflowY": "auto",
+          "panelHeight": 748,
+          "panelInsideViewport": true,
+          "scrollTop": 21,
+          "searchHidden": true
+        },
+        {
+          "width": 667,
+          "height": 375,
+          "contentHeight": 769,
+          "lastFocused": true,
+          "lastHref": "/kategori/logo-tasarimi",
+          "lastLink": "Logo Tasarımı",
+          "lastVisible": true,
+          "linkCount": 11,
+          "overflowY": "auto",
+          "panelHeight": 279,
+          "panelInsideViewport": true,
+          "scrollTop": 490,
+          "searchHidden": true
+        }
+      ],
+      "search": {
+        "opened": {
+          "inputVisible": true,
+          "menuHidden": true,
+          "searchHidden": false
+        },
+        "menuExclusive": {
+          "menuHidden": false,
+          "searchHidden": true
+        },
+        "url": "http://127.0.0.1:3100/arama?q=chatgpt",
+        "canonical": "https://akisai.com.tr/arama",
+        "closedPanels": true,
+        "h1": "\"chatgpt\" için arama sonuçları",
+        "robots": "noindex, follow"
+      }
+    },
+    "desktop1440": {
+      "clientWidth": 1425,
+      "desktopNavVisible": true,
+      "documentWidth": 1425,
+      "gridColumns": "318.406px 318.406px 318.406px"
+    }
+  },
+  "evidence": {
+    "responsiveMatrix": "responsive-matrix.json",
+    "screenshots": [
+      "screenshots/menu-320x640.png",
+      "screenshots/menu-390x844.png",
+      "screenshots/menu-667x375.png",
+      "screenshots/author-320.png"
+    ]
+  }
+}

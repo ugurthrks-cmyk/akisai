@@ -231,24 +231,17 @@
   }
 
   .header-mobile-panel {
-    display: block;
     width: min(1360px, calc(100% - 1.2rem));
     margin: 0 auto;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transform: translateY(-0.35rem);
-    transition:
-      max-height 0.28s ease,
-      opacity 0.22s ease,
-      transform 0.22s ease,
-      margin-top 0.22s ease;
+    overflow: auto;
+    overscroll-behavior: contain;
   }
 
-  .header-mobile-panel.is-open {
-    max-height: 560px;
-    opacity: 1;
-    transform: translateY(0);
+  .header-mobile-panel.is-open:not([hidden]) {
+    display: block;
+    /* Leave room for the sticky toolbar; keep every link reachable on short screens. */
+    max-height: calc(100vh - 6rem);
+    max-height: calc(100dvh - 6rem);
     margin-top: 0.7rem;
   }
 

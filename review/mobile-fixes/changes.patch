@@ -1,0 +1,82 @@
+--- a/src/components/header.css
++++ b/src/components/header.css
+@@ -231,24 +231,17 @@
+   }
+ 
+   .header-mobile-panel {
+-    display: block;
+     width: min(1360px, calc(100% - 1.2rem));
+     margin: 0 auto;
+-    max-height: 0;
+-    opacity: 0;
+-    overflow: hidden;
+-    transform: translateY(-0.35rem);
+-    transition:
+-      max-height 0.28s ease,
+-      opacity 0.22s ease,
+-      transform 0.22s ease,
+-      margin-top 0.22s ease;
+-  }
+-
+-  .header-mobile-panel.is-open {
+-    max-height: 560px;
+-    opacity: 1;
+-    transform: translateY(0);
++    overflow: auto;
++    overscroll-behavior: contain;
++  }
++
++  .header-mobile-panel.is-open:not([hidden]) {
++    display: block;
++    /* Leave room for the sticky toolbar; keep every link reachable on short screens. */
++    max-height: calc(100vh - 6rem);
++    max-height: calc(100dvh - 6rem);
+     margin-top: 0.7rem;
+   }
+ 
+--- a/src/components/Header.tsx
++++ b/src/components/Header.tsx
+@@ -181,7 +181,11 @@
+         </div>
+       </div>
+ 
+-      <div id="mobile-search-panel" className={`header-mobile-panel ${isSearchOpen ? "is-open" : ""}`}>
++      <div
++        id="mobile-search-panel"
++        className={`header-mobile-panel ${isSearchOpen ? "is-open" : ""}`}
++        hidden={!isSearchOpen}
++      >
+         <form
+           action="/arama"
+           method="GET"
+@@ -208,7 +212,11 @@
+         </form>
+       </div>
+ 
+-      <div id="mobile-nav-panel" className={`header-mobile-panel ${isMenuOpen ? "is-open" : ""}`}>
++      <div
++        id="mobile-nav-panel"
++        className={`header-mobile-panel ${isMenuOpen ? "is-open" : ""}`}
++        hidden={!isMenuOpen}
++      >
+         <nav className="mobile-nav-links" aria-label="Mobil ana gezinme">
+           {navItems.map((item) => (
+             <Link key={item.href} href={item.href} className="mobile-nav-link" onClick={closePanels}>
+--- a/src/app/yazar/[slug]/author.css
++++ b/src/app/yazar/[slug]/author.css
+@@ -134,12 +134,14 @@
+ 
+ .author-articles-grid {
+   display: grid;
+-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
++  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+   gap: 1.4rem;
+ }
+ 
+ .author-article-card {
+   display: block;
++  min-width: 0;
++  overflow-wrap: anywhere;
+   padding: 1.5rem;
+   border-radius: 24px;
+   background: rgba(255, 255, 255, 0.82);

@@ -181,7 +181,11 @@ export default function Header({ siteName = "AkışAI" }: HeaderProps) {
         </div>
       </div>
 
-      <div id="mobile-search-panel" className={`header-mobile-panel ${isSearchOpen ? "is-open" : ""}`}>
+      <div
+        id="mobile-search-panel"
+        className={`header-mobile-panel ${isSearchOpen ? "is-open" : ""}`}
+        hidden={!isSearchOpen}
+      >
         <form
           action="/arama"
           method="GET"
@@ -208,7 +212,11 @@ export default function Header({ siteName = "AkışAI" }: HeaderProps) {
         </form>
       </div>
 
-      <div id="mobile-nav-panel" className={`header-mobile-panel ${isMenuOpen ? "is-open" : ""}`}>
+      <div
+        id="mobile-nav-panel"
+        className={`header-mobile-panel ${isMenuOpen ? "is-open" : ""}`}
+        hidden={!isMenuOpen}
+      >
         <nav className="mobile-nav-links" aria-label="Mobil ana gezinme">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} className="mobile-nav-link" onClick={closePanels}>
