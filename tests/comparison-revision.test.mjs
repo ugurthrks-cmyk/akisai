@@ -18,7 +18,9 @@ test("the proposed CMS revision guards concurrency and only changes editorial fi
   assert.equal(mdx.data.title, "ChatGPT mi Claude mu? 2026'da Hangisini Kullanmalısın");
   assert.equal(mdx.data.h1, "ChatGPT mi, Claude mu? Kullanım Amacına Göre 2026 Rehberi");
   assert.equal(mdx.data.datePublished, "2026-04-18");
-  assert.equal(patch.set.bodyMarkdown, mdx.content.trim());
+  // Git may normalize the MDX file to LF while JSON preserves escaped CRLF.
+  const normalizeLineEndings = (value) => value.replace(/\r\n/g, "\n");
+  assert.equal(normalizeLineEndings(patch.set.bodyMarkdown), normalizeLineEndings(mdx.content.trim()));
   assert.deepEqual(patch.set.faqs.map(({question, answer}) => ({question, answer})), mdx.data.faqs);
   assert.deepEqual(Object.keys(before.fields).sort(), Object.keys(patch.set).sort());
 });
