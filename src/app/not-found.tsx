@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+// Next.js adds noindex for 404s; avoid also inheriting indexable robots metadata.
+export const metadata: Metadata = {
+  robots: null,
+};
 
 export default function NotFound() {
   return (
