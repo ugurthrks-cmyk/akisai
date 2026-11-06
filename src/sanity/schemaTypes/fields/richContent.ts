@@ -1,12 +1,28 @@
-import { defineArrayMember, defineField } from "sanity";
+import { defineArrayMember, defineField, type ConditionalPropertyCallbackContext } from "sanity";
+import { hasLegacyMarkdown } from "../../../lib/content-body-policy";
 
-export function richContentField(name = "body", title = "İçerik") {
+type RichContentOptions = {
+  legacyMarkdown?: boolean;
+};
+
+export function richContentField(
+  name = "body",
+  title = "İçerik",
+  { legacyMarkdown = false }: RichContentOptions = {},
+) {
   return defineField({
     name,
     title,
     type: "array",
-    description:
-      "Yazının görünen gövdesi. H2/H3, kalın, link, liste ve görsel bloklarını burada yönetin.",
+    description: legacyMarkdown
+      ? "MDX gövdesi doluysa bu alan yayımlanmaz ve salt okunurdur. MDX boşsa yayımlanan içerik bu alandır. Gövde biçimini değiştirmek için önce içerik aktarımı ve önizleme kontrolü gerekir."
+      : "Yazının görünen gövdesi. H2/H3, kalın, link, liste ve görsel bloklarını burada yönetin.",
+    ...(legacyMarkdown
+      ? {
+          readOnly: ({ document }: ConditionalPropertyCallbackContext) =>
+            hasLegacyMarkdown(document?.bodyMarkdown),
+        }
+      : {}),
     of: [
       defineArrayMember({
         type: "block",

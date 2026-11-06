@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllGuides } from "@/lib/content-source";
@@ -59,7 +60,7 @@ export default async function RehberHubPage() {
 
   return (
     <div className="container rehber-container">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionSchema) }} />
 
       <header className="rehber-header">
         <h1 className="rehber-title">Yapay Zeka Nasıl Kullanılır Rehberleri</h1>

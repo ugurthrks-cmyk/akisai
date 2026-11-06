@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import React from "react";
 import "./content-signals.css";
 import { absoluteUrl } from "@/lib/content";
@@ -30,7 +31,7 @@ export default function Breadcrumbs({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
       />
       <nav className="breadcrumbs" aria-label="Breadcrumb">
         <ol>

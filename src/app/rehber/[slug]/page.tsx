@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import type { Metadata } from "next";
 import type { PortableTextBlock } from "next-sanity";
 import Link from "next/link";
@@ -489,9 +490,9 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   return (
     <div className="container workflow-container">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleSchema) }} />
       {howToSchema ? (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(howToSchema) }} />
       ) : null}
 
       <Breadcrumbs

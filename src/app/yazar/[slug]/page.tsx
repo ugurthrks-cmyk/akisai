@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -138,7 +139,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     <div className="container author-profile-container">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(profileGraphSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(profileGraphSchema) }}
       />
 
       <Breadcrumbs

@@ -14,21 +14,23 @@
     "sanity": "sanity",
     "sanity:deploy": "sanity deploy",
     "sanity:seed": "node scripts/seed-sanity-content.mjs",
-    "sanity:seed:pages": "node scripts/seed-managed-pages.mjs"
+    "sanity:seed:pages": "node scripts/seed-managed-pages.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
     "@portabletext/react": "^4.0.3",
     "@sanity/client": "^7.16.0",
     "@sanity/image-url": "^1.2.0",
-    "@sanity/vision": "^5.14.1",
+    "@sanity/vision": "5.31.2",
     "gray-matter": "^4.0.3",
-    "next": "16.1.6",
+    "next": "16.4.5",
     "next-mdx-remote": "^6.0.0",
     "next-sanity": "^12.1.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "remark-gfm": "^4.0.1",
-    "sanity": "^5.14.1",
+    "sanity": "5.31.2",
     "styled-components": "^6.1.15"
   },
   "devDependencies": {
@@ -36,12 +38,29 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "16.4.5",
     "typescript": "^5"
   },
   "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
   "main": "tmp_font_probe.spec.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "overrides": {
+    "@sanity/runtime-cli": {
+      "adm-zip": "0.6.1"
+    },
+    "@vercel/frameworks": {
+      "js-yaml": "3.15.2"
+    },
+    "typeid-js": {
+      "uuid": "11.1.1"
+    },
+    "@oclif/core": {
+      "minimatch": "11.0.1"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    }
+  }
 }

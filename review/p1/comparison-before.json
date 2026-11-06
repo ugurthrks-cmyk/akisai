@@ -1,0 +1,56 @@
+{
+  "_id": "comparison.chatgpt-mi-claude-mu",
+  "_rev": "xhYButGJ9lgKEEy9xMYij1",
+  "fields": {
+    "bodyMarkdown": "## ChatGPT Bize Ne Sunuyor?\n\nWeb araması, görsel üretim, kod çalıştırma, dosya analizi, Deep Research, Canvas ve agentic görev desteği: bunların tamamı tek pencereden erişilebilir durumda. Buna bir de özelleştirilmiş GPT'leri ve büyüyen üçüncü taraf entegrasyonlarını ekleyince ortaya gerçek anlamda geniş bir platform çıkıyor.\n\n\"Bugün ne lazım olur bilmiyorum\" diye açık bırakacağın bir araç arıyorsan ChatGPT bu ihtiyacı karşılıyor.\n\n## Claude Bize Ne Sunuyor?\n\nClaude'un gücü genişlikte değil, derinlikte. Uzun bağlam penceresi sayesinde yüzlerce sayfalık belgeyi bütün olarak işleyebiliyor; talimatları baştan sona tutarlı biçimde takip ediyor; araştırma görevlerinde kaynakları karıştırmıyor.\n\nProjects özelliğiyle bağlamını oturumlar arasında taşıyabiliyor, Artifacts ile çıktıları doğrudan düzenlenebilir hale getirebiliyorsun. Görsel üretim veya otomatik web araştırması bekliyorsan ChatGPT'nin sunduğu yüzeye henüz ulaşmıyor; ama zaten o yarışa girmeye çalışmıyor.\n\n## ChatGPT ve Claude Arasındaki Temel Fark\n\nChatGPT bir platform gibi davranıyor: göreve göre şekil alıyor, araç değiştiriyor, geniş tutuyor. Claude ise daha çok bir çalışma ortamı gibi; içine girdiğinde işin içinde kalıyorsun, araç aramıyorsun. Birinin gücü çeşitlilik, diğerininki odak.\n\nHangi yaklaşımın daha değerli olduğu, günün büyük bölümünü nasıl geçirdiğine bağlı.\n\n## Kim Ne Tercih Etmeli?\n\nAşağıdaki başlıklardan hangisi sana uyuyorsa, cevap orada.\n\n### Genel Amaçlı Kullanım\n\nSabah kalkıp \"bugün ne lazım olur bilmiyorum ama bir yapay zeka açık olsun\" diye düşünüyorsan ChatGPT daha doğru tercih. Hem görsel üretebiliyorsun, hem web'de arama yapabiliyor, hem de dosya yükleyip analiz ettirip kod çalıştırabiliyorsun; hepsini aynı pencereden.\n\nClaude bu senaryoda daha kısıtlı hissettiriyor; güçlü ama odaklı bir araç, her şey için açık tutulacak bir asistan değil.\n\n**Kazanan:** ChatGPT\n\n### İçerik Üretimi\n\nDüzenli içerik üretiyor, uzun makaleler veya blog yazıları yazıyorsan Claude burada fark yaratıyor. Özellikle uzun metinlerde başta kurduğun tonu sona kadar koruması, bölümler arasında bağlamı kaybetmemesi ve talimatlara sıkı sıkıya uyması dikkat çekici.\n\nChatGPT kısa metinlerde rahat ve akıcı; ancak metin uzadıkça ton kayması ve tekrar sorunlarıyla karşılaşmak daha olası.\n\n**Kazanan:** Claude\n\n### Kodlama ve Yazılım\n\nİkisi de ciddi rakip; ama farklı senaryolarda. ChatGPT, Codex entegrasyonu ve Canvas ile daha interaktif bir geliştirme deneyimi sunuyor. Kodu yazarken düzenleyebiliyor, adım adım takip edebiliyor ve farklı araçlar arasında rahatça geçiş yapabiliyorsun.\n\nClaude ise büyük bir kod tabanıyla çalışırken bağlamını daha iyi koruyor. Yüzlerce satır kod yükleyip \"şu fonksiyonu refactor et ama şu mantığa dokunma\" dediğinde talimatı anlaması ve ona uyması daha tutarlı. Cursor ile çalışıyorsan zaten Claude'u arka planda kullanıyor olabilirsin.\n\nKısa scriptler ve anlık sorular için fark küçük. Uzun soluklu proje çalışması için Claude öne geçiyor.\n\n**Kazanan:** Kullanım tipine göre değişiyor; günlük geliştirme için eşit, büyük kod tabanı için Claude\n\n### Araştırma ve Uzun Belge Çalışması\n\n\"Elimde 40 sayfalık bir rapor var, özetlemem lazım\" diyorsan Claude tartışmasız daha güvenli. Belgenin tamamını bağlamına alıyor, önemli kısımları atlayıp genel bir özet vermek yerine gerçekten metnin içinde geziyor. Kaynaklarını kaybetmiyor, tutarsız özetler üretmiyor.\n\nChatGPT'nin Deep Research modu ise farklı bir ihtiyacı karşılıyor: sıfırdan araştırma yapmak istiyorsan, web üzerinde dolaşıp sana derlenmiş bir rapor getirmesini istiyorsan burada ChatGPT daha güçlü.\n\nÖzetle: elinde malzeme varsa Claude, malzemeyi toplamana yardım etmesini istiyorsan ChatGPT.\n\n**Kazanan:** Belge işlemede Claude, web araştırmasında ChatGPT\n\n### Ekip ve Kurumsal Kullanım\n\nŞirket için kullanıyorsan veri politikası önemli. Temel fark şu: Claude, sohbet içeriklerini varsayılan olarak model eğitimine dahil etmiyor. ChatGPT'de ise bu ayarı aktif olarak kapatman gerekiyor. Hassas bilgilerle çalışan bir ekipte bu varsayılan fark önemli olabilir.\n\nSSO, merkezi yönetim ve kurumsal destek açısından her iki platform da bu ihtiyaçları karşılıyor; ölçek ve sektöre göre ayrıca değerlendirmen gerekiyor.\n\n**Kazanan:** Veri hassasiyeti yüksek ekipler için Claude hafif öne geçiyor\n\n### Telefonda Kullananlar İçin\n\nTelefonu birincil cihazın olarak kullanıyorsan bu fark belirleyici olabiliyor. ChatGPT'nin mobil uygulaması masaüstüne en yakın deneyimi sunuyor: sesli mod, görsel üretim, kamerayla fotoğraf analizi ve web araması telefonda da çalışıyor.\n\nClaude'un uygulaması ise daha sade. Metin tabanlı çalışma ve Projects üzerinden bağlam taşıma için yeterli; ama sesli mod ve görsel üretim şu an yok.\n\n**Kazanan:** ChatGPT\n\n### Türkiye'den Kullananlar İçin\n\nHer iki araç da Türkiye'den sorunsuz erişilebilir. ChatGPT arayüzü Türkçe geliyor; Claude'un arayüzü şu an yalnızca İngilizce, ancak Türkçe konuşup Türkçe çıktı almak tamamen mümkün. Arayüz dili pratikte çok büyük fark yaratmıyor.\n\nÖdeme konusunda her iki platform da uluslararası kart kabul ediyor; Türk kartlarıyla zaman zaman sorun yaşanabiliyor, sanal kart genellikle çözüm oluyor.\n\n**Kazanan:** Eşit; ikisi de erişilebilir\n\n## ChatGPT ve Claude Fiyatları: Hangisi Alınmalı?\n\nHer iki araç da ücretsiz başlıyor; ama gerçek gücü görmek için ücretli plana geçmek gerekiyor.\n\n### ChatGPT Ücretli Planları Ne Kadar?\n\n- Free - $0/ay: GPT-5.3'e sınırlı erişim, kısıtlı görsel üretim, sınırlı araştırma modu\n- Go - $6/ay: Daha fazla mesaj hakkı, uzun bellek. Ücretsizin sınırlarını aşmak isteyip $20'a hazır olmayanlar için makul ara durak\n- Plus - $20/ay: Gelişmiş modeller, Deep Research, Codex, görsel üretim\n- Pro - $120/ay: Maksimum kullanım limiti, otonom ajan modu, GPT-5.4 Pro erişimi, yoğun profesyonel kullanım için\n\n### Claude Ücretli Planları Ne Kadar?\n\n- Free - $0/ay: Temel özellikler, mesaj limitli\n- Pro - $20/ay: Claude Code, Deep Research, oturumlar arası hafıza, Cowork\n- Max - $100/ay: Pro'nun 20 katına kadar kullanım limiti, öncelikli erişim, yeni özelliklere erken giriş\n\nChatGPT'nin $6'lık Go planına karşılık gelen bir ara seçenek şu an Claude'da bulunmuyor.\n\n### Aynı Fiyata Hangisi Daha Fazla Sunuyor?\n\nHer iki aracın ana ücretli planı $20. Ama içerik farklı:\n\n- ChatGPT Plus $20: Görsel üretim, web araması, Codex ve Deep Research hepsi bir arada; araç çeşitliliği açısından daha geniş paket\n- Claude Pro $20: Görsel üretim yok; buna karşın Claude Code, gelişmiş hafıza ve Cowork öne çıkıyor\n\nÇok amaçlı kullanım için ChatGPT Plus daha fazla karşılık veriyor. İçerik üretimi veya uzun belge çalışması önceliğinse Claude Pro'nun $20'ı daha verimli harcanıyor.\n\n### Hangi Plan Kime Göre?\n\n- Henüz karar veremediysen: Her iki aracın ücretsiz planını aynı hafta test et; hangisinin oturduğu ilk birkaç günde belli oluyor\n- Günlük çok amaçlı kullanım, görsel üretim veya web araması istiyorsan: ChatGPT Plus\n- Düzenli içerik üretiyor, uzun belgelerle çalışıyor veya kod tabanında AI desteği istiyorsan: Claude Pro\n- İkisini birden ücretli almak çoğu kullanıcı için gerekli değil\n\n## Sonuç: ChatGPT mi, Claude mu?\n\nTek araçla her şeyi halletmek istiyorsan; görsel üret, web'de ara, kod çalıştır, dosya analiz et; ChatGPT bugün de bu alanda tahtında. Araç ekosistemi, hız ve çok yönlülük önceliğin varsa tercih değişmiyor.\n\nAma işin özü uzun metin üretimi, büyük belge analizi veya bağlam yoğun araştırmaysa Claude daha doğru liman. Başladığı yerde bitiriyor; ton kaybetmiyor, bağlamı koruyor.\n\nİkisi arasında kesin bir \"en iyisi\" yok; doğru araç, iş akışına en iyi oturandır. Hangi senaryoda hangisinin öne geçtiğini görmek istiyorsan branş bazlı incelemelerimiz tam bu soruyu yanıtlıyor.",
+    "faqs": [
+      {
+        "_type": "faqItem",
+        "answer": "Evet, ve bazı iş akışları için bu mantıklı. Araştırma ve taslak için Claude, görsel üretim veya web araması için ChatGPT gibi bir ayrım kurabilirsin. Ancak çoğu kullanıcı için tek araçta ustalaşmak, ikisini yarım yarım kullanmaktan daha verimli.",
+        "question": "ChatGPT ve Claude aynı anda kullanılabilir mi?"
+      },
+      {
+        "_type": "faqItem",
+        "answer": "Deneme için evet. Ama her iki aracın da gerçek gücü ücretli planlarda ortaya çıkıyor; özellikle uzun bağlam, Deep Research ve gelişmiş model erişimi açısından. Hangisinin iş akışına daha iyi oturduğuna karar vermeden ödeme yapmak yerine önce ücretsiz katmanı test et.",
+        "question": "Ücretsiz sürümlerle başlamak mantıklı mı?"
+      },
+      {
+        "_type": "faqItem",
+        "answer": "Uzun ve yapılandırılmış Türkçe metinlerde Claude daha tutarlı sonuçlar veriyor; ton koruması, bölümler arası bağlantı ve doğal Türkçe akış açısından fark hissedilir. Kısa içeriklerde ise iki araç arasındaki mesafe çok küçük.",
+        "question": "Türkçe içerik üretiminde hangisi daha başarılı?"
+      },
+      {
+        "_type": "faqItem",
+        "answer": "Pratikte çok az fark yaratıyor. Türkçe yaz, Türkçe cevap al; arayüzdeki buton ve menü isimleri İngilizce olsa da içerik üretimi tamamen Türkçe yürüyor.",
+        "question": "Claude'un arayüzü İngilizce, bu sorun olmaz mı?"
+      },
+      {
+        "_type": "faqItem",
+        "answer": "Kısa ve anlık sorularda fark küçük. Büyük kod tabanlarıyla çalışıyorsan Claude'un bağlam yönetimi öne çıkıyor; agentic iş akışı ve IDE entegrasyonu istiyorsan ChatGPT'nin ekosistemi daha geniş.",
+        "question": "Kodlama için hangisi daha iyi?"
+      },
+      {
+        "_type": "faqItem",
+        "answer": "Kısa sorularda her ikisi de anlık sayılabilecek sürede yanıt veriyor, pratik bir fark yok. Uzun çıktılarda ChatGPT biraz daha hızlı yanıtlıyor; Claude ise uzun bağlam işlerken daha temkinli ilerliyor. Hız senin için birincil kriterse ChatGPT hafif öndedir; ama bu fark çoğu kullanım senaryosunda belirleyici değildir.",
+        "question": "Hangisi daha hızlı?"
+      }
+    ],
+    "sources": [
+      {
+        "_type": "sourceItem",
+        "label": "ChatGPT resmi fiyatlandırma",
+        "publisher": "OpenAI",
+        "url": "https://chatgpt.com/tr-TR/pricing/"
+      },
+      {
+        "_type": "sourceItem",
+        "label": "Claude resmi fiyatlandırma",
+        "publisher": "Anthropic",
+        "url": "https://claude.com/pricing"
+      }
+    ],
+    "lastVerified": "2026-04-18",
+    "dateModified": "2026-04-18T00:00:00.000Z",
+    "verificationNotes": "Resmî plan, özellik ve erişim yüzeyleri 18 Nisan 2026 tarihinde kontrol edildi."
+  }
+}

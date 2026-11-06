@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -138,7 +139,7 @@ export default async function CategoryPage({
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionSchema) }}
       />
 
       <header className="category-header">

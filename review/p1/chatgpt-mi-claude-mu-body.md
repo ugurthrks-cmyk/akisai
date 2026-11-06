@@ -1,0 +1,98 @@
+## ChatGPT Bize Ne Sunuyor?
+
+ChatGPT mi Claude mu sorusunun cevabı, yapmak istediğiniz işe ve kullandığınız plana bağlı. Genel bir asistan, yazı yardımcısı veya kodlama aracı ararken önce ücretsiz katmanlarda aynı görevi deneyin; ardından gerçekten ihtiyaç duyduğunuz özellik için ödeme yapın.
+
+**Kaynak kontrolü: 6 Kasım 2026.** Bu güncelleme resmî plan belgelerine dayalı editoryal bir karşılaştırmadır. Yeni bir hız, Türkçe kalite veya kodlama benchmark testi yapılmadı. Aşağıdaki seçim önerileri ölçülmüş bir üstünlük iddiası taşımaz.
+
+OpenAI'nin [abonelik belgesi](https://learn.chatgpt.com/docs/pricing), ChatGPT planlarıyla Codex erişimi arasındaki ilişkiyi açıklıyor. API kullanımı ayrıca ücretlendirilir; sohbet aboneliğini API kredisi gibi değerlendirmeyin. Hesabınızdaki model, araç ve kullanım sınırlarını satın almadan önce kontrol edin.
+
+## Claude Bize Ne Sunuyor?
+
+Claude'un [resmî plan sayfasında](https://claude.com/pricing) web araması, dosya oluşturma, kod çalıştırma ve Artifacts gibi özellikler listeleniyor. Claude Code da ücretli plan seçeneklerinde yer alıyor. Planların kullanım sınırları aynı değil.
+
+Bu özellikler, uzun belge veya kod üzerinde çalışmak isteyenler için değerlendirmeye değer. Ancak uzun bir dosyayı kabul etmesi, belgedeki her bilgiyi hatasız kullanacağı anlamına gelmez. Kaynakları ve kritik çıktıları iki araçta da kontrol edin.
+
+## ChatGPT ve Claude Arasındaki Temel Fark
+
+Kararı yalnızca model adına veya toplam özellik sayısına göre vermeyin. Kullandığınız dosyalar, günlük iş yükünüz, uygulama bağlantıları, veri gereksinimleriniz ve bütçeniz birlikte belirleyici olur.
+
+Bir araç kendi işinizde daha az düzeltme gerektiriyorsa, sizin için daha iyi seçenek olabilir. Bu sonuç başka bir kullanıcıya veya başka bir modele otomatik olarak genellenemez.
+
+## Kim Ne Tercih Etmeli?
+
+Her senaryoda aynı girdiyi ve aynı başarı ölçütünü kullanın. Böylece iki farklı araçtan aldığınız sonuçları adil biçimde değerlendirebilirsiniz.
+
+### Genel Amaçlı Kullanım
+
+Bir haftalık gerçek işlerinizi yazın: soru yanıtlama, dosya özeti, sunum taslağı, araştırma veya kod yardımı. Sizin hesabınızda kullanılabilen özelliklerin bu işlerden hangilerini tamamladığını kontrol edin. Yalnızca kullanacağınız özellikler için ücretli plana geçin.
+
+ChatGPT'ye alışkınsanız önce mevcut iş akışınızla devam etmek makul olabilir. Claude'u da aynı görev listesiyle deneyerek karar verin; bu sayfa genel kullanım için ölçülmüş bir kazanan ilan etmiyor.
+
+### İçerik Üretimi
+
+Aynı Türkçe brief'i iki araca da verin. Hedef kitle, ton, uzunluk, kaynaklar ve kaçınılacak iddialar açık olsun. Çıktıları doğruluk, tekrar, dil doğallığı ve gereken editörlük süresi açısından karşılaştırın.
+
+Kendi metninizde daha iyi sonuç veren aracı seçin. Burada yeni bir Türkçe kalite testi yapılmadığı için Claude'un veya ChatGPT'nin her uzun metinde üstün olduğunu söylemek doğru olmaz.
+
+### Kodlama ve Yazılım
+
+Küçük bir hata düzeltmesi veya test ekleme göreviyle başlayın. Yalnızca üretilen kodu değil, değişikliğin kapsamını, test sonucunu ve inceleme süresini de değerlendirin. API harcaması ile abonelik kullanımını ayrı takip edin.
+
+ChatGPT ve Codex tarafındaki abonelik kapsamını resmî OpenAI belgesinden, Claude Code kapsamını Claude plan sayfasından kontrol edebilirsiniz. [Claude Code kullanım rehberimiz](/rehber/claude-code-nasil-kullanilir) başlangıç iş akışını, [ChatGPT incelememiz](/incelemeler/chatgpt) ise diğer kullanım alanlarını ele alıyor.
+
+### Araştırma ve Uzun Belge Çalışması
+
+Araştırma için iki araca da aynı kaynakları verin ve her önemli iddiaya sayfa veya bağlantı istemeyi deneyin. Alıntının gerçekten kaynakta bulunması, rakamın doğru aktarılması ve eksik bilginin açıkça belirtilmesi temel kontrol noktalarıdır.
+
+Hiçbir aracı “kaynakları karıştırmaz” veya “tutarsız özet üretmez” diye güvence altına almak mümkün değil. Uzun bağlam kapasitesi ile doğru yanıt üretme başarısını ayrı değerlendirin.
+
+### Ekip ve Kurumsal Kullanım
+
+Bireysel abonelik, ekip ürünü ve API için aynı veri politikası geçerli olmayabilir. Eğitim tercihlerini, saklama koşullarını, yönetici kontrollerini ve sözleşme kapsamını kullandığınız ürün özelinde inceleyin.
+
+Anthropic'in [tüketici veri politikası](https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training), kullanıcının izin vermesi, güvenlik incelemesi ve diğer açık katılım durumlarını açıklıyor. Dolayısıyla “Claude bütün sohbetleri hiçbir koşulda eğitimde kullanmaz” biçiminde genel bir garanti vermiyoruz. Hassas iş verileri için kurumunuzun onaylı plan ve ayarlarını esas alın.
+
+### Telefonda Kullananlar İçin
+
+“Claude'da sesli mod yok” bilgisi güncel değil. [Claude sesli kullanım belgesine](https://support.claude.com/en/articles/11101966-use-voice-mode) göre sesli mod mobil, masaüstü ve web üzerinde tüm planlarda beta olarak sunuluyor; normal kullanım sınırlarına dahil.
+
+Telefonunuzda mikrofon, dosya yükleme, erişilebilirlik ve ihtiyaç duyduğunuz dil desteğini doğrudan deneyin. Bir özelliğin belgede bulunması, sizin cihazınızdaki deneyimin veya Türkçe kalitesinin ölçüldüğü anlamına gelmez.
+
+### Türkiye'den Kullananlar İçin
+
+Arayüz dili, Türkçe çıktı kalitesi, ülke desteği ve ödeme kabulü farklı konular. Herhangi bir kartın veya sanal kartın kesin çalışacağına dair garanti vermiyoruz. Satın almadan önce hesabınızda gösterilen ülke, para birimi ve ödeme seçeneklerini kontrol edin.
+
+Bu sayfadaki USD tutarlarını Türkiye'ye özel TL satış fiyatı olarak okumayın. Yaklaşık TL bütçesi hesaplarken ödemenin yapılacağı kur, kartın döviz maliyeti ve ödeme ekranındaki vergiler sonucu değiştirebilir. Sabit ve doğrulanmış bir TL toplamı vermek için bunların tamamı gerekir.
+
+## ChatGPT ve Claude Fiyatları: Hangisi Alınmalı?
+
+Aşağıdaki rakamlar 6 Kasım 2026 tarihinde kontrol edilen resmî belgelerin USD gösterimidir. Hesabınızdaki ödeme ekranı, bölgesel fiyat ve faturalama dönemi satın alma kararında esas alınmalıdır. Abonelik, ayrıca satın alınan kullanım ve API maliyetlerini birbirine eklemeden önce kapsamlarını kontrol edin.
+
+### ChatGPT Ücretli Planları Ne Kadar?
+
+OpenAI'nin [resmî abonelik belgesinde](https://learn.chatgpt.com/docs/pricing) Free $0, Go $8/ay, Plus $20/ay; Pro için $100, $200 ve $500/ay seçenekleri gösteriliyor. Bu tutarlar Türkiye ödeme ekranı için verilmiş bir teklif değildir.
+
+Belirli bir modelin adını veya “sınırsız kullanım” ifadesini satın alma garantisi olarak kullanmayın. Hesabınızdaki güncel plan kapsamını ve [resmî fiyatlandırma ekranını](https://chatgpt.com/tr-TR/pricing/) kontrol edin.
+
+### Claude Ücretli Planları Ne Kadar?
+
+[Claude fiyatlandırma sayfasında](https://claude.com/pricing) Free $0, Pro aylık $20 veya yıllık peşin $200, Max $100/ay ve Ultra $200/ay gösteriliyor. Max, Pro'nun 5 katı kullanımını beş saatlik ve haftalık dönemlerde; Ultra ise haftalık 10 kat kullanımı listeliyor. Kullanım koşulları geçerli; bunlar sınırsız mesaj garantisi değildir. Sayfa, gösterilen fiyatlara uygulanabilir vergilerin dahil olmadığını belirtiyor.
+
+### Aynı Fiyata Hangisi Daha Fazla Sunuyor?
+
+Plus ve aylık Pro için belgelerde $20 gösterilmesi, iki paketin aynı işi yaptığı veya aynı kullanım hakkını verdiği anlamına gelmez. İhtiyacınız olan görevi, bu görev için gereken planı ve ay boyunca karşılaştığınız sınırları birlikte değerlendirin.
+
+Fiyat karşılaştırmasını aynı faturalama dönemiyle yapın. Bir hizmetin aylık fiyatını diğerinin yıllık peşin ödeme indirimiyle doğrudan karşılaştırmayın.
+
+### Hangi Plan Kime Göre?
+
+- Ara sıra kullanıyorsanız ücretsiz planlarla başlayın; kullanımınızın gerçekten nerede sınıra takıldığını görün.
+- Düzenli içerik veya araştırma işi yapıyorsanız kendi görevinizde gereken düzeltme süresini ölçün.
+- Kodlama için kullanıyorsanız ilgili geliştirme aracının plan kapsamını ve kullanım sınırlarını ayrıca kontrol edin.
+- İki ücretli aboneliği birlikte düşünüyorsanız ikinci aracın size ne kadar ek zaman kazandırdığını ölçün.
+
+## Sonuç: ChatGPT mi, Claude mu?
+
+Kısa cevap: İşinizi daha az düzeltmeyle tamamlayan, bütçenize uyan ve veri gereksinimlerinizi karşılayan aracı seçin. Kararı güncel plan kapsamı ve kendi denemenizle verin. Bu yazı, kaynak kontrolü ile uygulamalı performans testini birbirinden ayırıyor; ölçmediğimiz bir alanda kesin kazanan ilan etmiyoruz.
+
+Sunum hazırlamak önceliğinizse [ChatGPT ile sunum rehberine](/rehber/chatgpt-ile-sunum-hazirlama), telefon üzerinden çalışıyorsanız [ChatGPT sesli konuşma rehberine](/rehber/chatgpt-sesli-konusma) geçebilirsiniz.

@@ -1,3 +1,4 @@
+import { hasLegacyMarkdown } from "../../../lib/content-body-policy";
 import { defineField, defineType } from "sanity";
 import { richContentField } from "@/sanity/schemaTypes/fields/richContent";
 
@@ -76,15 +77,15 @@ export const category = defineType({
     }),
     defineField({
       name: "bodyMarkdown",
-      title: "Eski MDX govdesi",
+      title: "MDX gövdesi (doluysa yayında)",
       type: "text",
       rows: 18,
       group: "editorial",
-      hidden: ({ document }) => !document?.bodyMarkdown,
+      hidden: ({ document }) => !hasLegacyMarkdown(document?.bodyMarkdown),
       description:
-        "Sadece daha once MDX'ten tasinmis eski kategori iceriklerinde gorunur.",
+        "Bu alan doluysa yayımlanan gövde budur; Portable Text alanı yayımlanmaz. Alanı boşaltmak yayın kaynağını değiştirir. Aktarım ve önizleme kontrolü olmadan boşaltmayın.",
     }),
-    richContentField("body", "Kategori icerigi"),
+    richContentField("body", "Kategori icerigi", { legacyMarkdown: true }),
     defineField({
       name: "icon",
       title: "Kategori iconu",

@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllComparisons } from "@/lib/content-source";
@@ -78,7 +79,7 @@ export default async function ComparisonHubPage() {
 
   return (
     <div className="container ai-hub-container">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionSchema) }} />
 
       <header className="ai-hub-header">
         <h1 className="ai-hub-title">Yapay Zeka Araç Karşılaştırmaları</h1>

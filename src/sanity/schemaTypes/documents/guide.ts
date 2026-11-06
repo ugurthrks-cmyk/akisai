@@ -1,3 +1,4 @@
+import { hasLegacyMarkdown } from "../../../lib/content-body-policy";
 import { defineField, defineType } from "sanity";
 import { richContentField } from "@/sanity/schemaTypes/fields/richContent";
 import { slugifyTurkish } from "@/sanity/schemaTypes/utils/slugify";
@@ -87,15 +88,15 @@ export const guide = defineType({
     }),
     defineField({
       name: "bodyMarkdown",
-      title: "Eski MDX govdesi",
+      title: "MDX gövdesi (doluysa yayında)",
       type: "text",
       rows: 24,
       group: "editorial",
-      hidden: ({ document }) => !document?.bodyMarkdown,
+      hidden: ({ document }) => !hasLegacyMarkdown(document?.bodyMarkdown),
       description:
-        "Sadece daha once MDX'ten tasinmis eski iceriklerde gorunur.",
+        "Bu alan doluysa yayımlanan gövde budur; Portable Text alanı yayımlanmaz. Alanı boşaltmak yayın kaynağını değiştirir. Aktarım ve önizleme kontrolü olmadan boşaltmayın.",
     }),
-    richContentField("body", "Rehber govdesi"),
+    richContentField("body", "Rehber govdesi", { legacyMarkdown: true }),
     defineField({
       name: "author",
       title: "Yazar",

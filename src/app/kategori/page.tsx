@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import Image from "next/image";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -95,7 +96,7 @@ export default async function GlobalCategoriesHub() {
 
   return (
     <div className="container category-container">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryHubSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(categoryHubSchema) }} />
       <header className="category-header">
         <h1 className="category-title">Yapay Zeka Kategorileri</h1>
         <p className="category-description">

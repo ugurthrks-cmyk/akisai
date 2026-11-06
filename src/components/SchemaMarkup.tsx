@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import React from "react";
 
 interface SchemaProps {
@@ -12,5 +13,5 @@ export default function SchemaMarkup({ type, data }: SchemaProps) {
     ...data,
   };
 
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }} />;
 }

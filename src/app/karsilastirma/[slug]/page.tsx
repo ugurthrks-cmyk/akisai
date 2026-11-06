@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -223,9 +224,9 @@ export default async function ComparisonDetailPage({ params }: ComparisonPagePro
 
   return (
     <div className="container comparison-container">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleSchema) }} />
       {itemListSchema ? (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListSchema) }} />
       ) : null}
 
       <Breadcrumbs

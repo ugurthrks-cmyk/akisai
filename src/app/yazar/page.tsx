@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,7 +36,7 @@ export default async function AuthorsPage() {
     <div className="authors-hub">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionSchema) }}
       />
 
       <header className="authors-hub-header">

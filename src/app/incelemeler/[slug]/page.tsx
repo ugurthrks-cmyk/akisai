@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import Image from "next/image";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -269,10 +270,10 @@ export default async function ReviewDetailPage({ params }: ToolPageProps) {
 
   return (
     <div className="container tool-container">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(softwareSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleSchema) }} />
       {reviewSchema ? (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(reviewSchema) }} />
       ) : null}
 
       <Breadcrumbs

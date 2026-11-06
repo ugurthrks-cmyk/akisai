@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -61,7 +62,7 @@ export default async function ReviewsHubPage() {
 
   return (
     <div className="container ai-hub-container">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionSchema) }} />
 
       <header className="ai-hub-header">
         <h1 className="ai-hub-title">Yapay Zeka Araç İncelemeleri</h1>

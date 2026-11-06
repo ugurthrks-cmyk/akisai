@@ -1,0 +1,622 @@
+{
+  "checkedAt": "2026-11-06",
+  "environment": {
+    "node": "24.12.0",
+    "npm": "11.6.2",
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "sanity": "5.31.2"
+  },
+  "scope": {
+    "productionMutated": false,
+    "cmsMutated": false,
+    "deploymentPerformed": false,
+    "sourceFixture": "Authenticated Sanity Vision published export: 39 documents + 3 anonymous public image assets",
+    "buildMode": "Direct next build with a query-only external fixture adapter; prebuild manifest script not run"
+  },
+  "checks": {
+    "unitAndCompatibilityTests": {
+      "passed": 11,
+      "failed": 0
+    },
+    "typecheck": {
+      "exitCode": 0
+    },
+    "lint": {
+      "exitCode": 0,
+      "errors": 0,
+      "preexistingWarnings": 1,
+      "warning": "src/components/PortableTextContent.tsx:88 promptFieldLabels unused"
+    },
+    "npmAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "productionBuild": {
+      "exitCode": 0,
+      "generatedEntries": 58
+    },
+    "codeOnlySeoRegression": {
+      "scope": "Built HTML versus production HTTP snapshot; not a local HTTP or browser test",
+      "pages": 44,
+      "unchanged": 44,
+      "sitemapMissing": [],
+      "sitemapAdded": [],
+      "jsonLdDocuments": 127,
+      "results": [
+        {
+          "url": "https://akisai.com.tr",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "88b503c54e01990bb9adfc8cd853215ef6d18a06e73d7bb3011c1d15d754f7ee"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "eecda0c32e3571f84e54421dd4099d269acfe0365b304a3cfb990131868e630c"
+        },
+        {
+          "url": "https://akisai.com.tr/karsilastirma",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "36c70cb2282acdcc92de0716e3c800980de70472dc0cf5353cf33b82339b9146"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "b343d77ec0b8a21c4965974dc7a82a0fb9f6690c9a44a0b8247b45cefd77f95d"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "7e83397c31318852ffd4c159937282c3ca0134957f9f30d0c0022bb7ff3040ee"
+        },
+        {
+          "url": "https://akisai.com.tr/yazar",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "0f47b0959445709ebb01bb9e0f2d523ce27b3dda53f67eaac2f59ee82a6131db"
+        },
+        {
+          "url": "https://akisai.com.tr/yazar/batuhan",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "f49d637c449a2e3c0b0824d38bb8fdd70ac8b2ccd5a062c1aadffc1e363af29e"
+        },
+        {
+          "url": "https://akisai.com.tr/yazar/tan",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "33c528f8fb04ebf4f1d0dad3f1dba474fc5f2888c98de7021c772b167427d1fb"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/gemini-3-5-flash-inceleme",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "e46a7da6cba7f6b0d2a9e33ae19d96e57c6be01e57ec72c88462f3c4f70b34ef"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/claude-code",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "25008a2fe90bd1ffb782229505f4fcae2cb20b379e55c6d90e8682f36eb9e39e"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/google-gemini",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "d6f94a8ee2b36742024903d95c7b6b5a41e0deee7683a85d58be3a051b9f563b"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/chatgpt",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "9fe0d88bc8aa803b37858b3aa5d1a7ed639a1dd8f2dc5350453e567819f06b90"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/looka",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "9d9ccb86051c21ca2b0d387f384881970801090f945da6ffa72e1ab1abb0bc58"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/runway-ml",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "2ad8ee9251fe4e0a0646e6f14eb914c999f209fac7dffc5355a27c3dd3a6e1f1"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/elevenlabs",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "7647dbb01a3f4b8dfc7105c2bc1752975bc94fc12c05b9923cd4a1ff48f1a0e7"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/canva",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "967c0f5212235081039725d44aec5c5bf5f9576e2c787a6c1548d60534e61b38"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/capcut",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "eb7ee69ed6e043af7fab3d20cd3665e2b21a1217e29c902bd6cd30a9cd83e174"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/zapier",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "09107cfce7202f5caa4e7578e9e6d69c921dca8a7104083a3ef0a6c19e907c5c"
+        },
+        {
+          "url": "https://akisai.com.tr/karsilastirma/chatgpt-mi-claude-mu",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "78f2bc290c2379e12a01a8a6e374f64f2bfb665893434ca9ae44b87d93abd9bb"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/yapay-zeka-asistanlari",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "f29cf690a0a1d1fa6759be2fd06f420ce826fad50fc900bcad343f22df189cf9"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/video-duzenleme",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "9111b5f545f01216861e2ba7906bb920422ac5edd2f1891d28380d98b52b2fb1"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/video-olusturma",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "e2498522fff01c77e85d022865f3b03ebf7c6ed199a7476083585b7e73cd247f"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/is-akisi-otomasyonu",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "b4b14240a19fb42fde94e7b14101c4af38ba4b462d0e26df88ec6ff7ccf45c77"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/gorsel-olusturma",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "f24c45fc34c83b0aed4b873d1944ce9d8f1e177e4ad786b04c941bac5f3e25b8"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/ses-olusturma",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "bd37596a93d3f18fafb6ff224f8c2e80ef74580de5b7b7edfedf383138867e42"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/logo-tasarimi",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "057d11a058b59ecc3c7c7bd499738a13c5dbf635e2b8560ca08825ee467e550a"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/gemini-3-5-flash-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "90e9417434df2aecaffc63df1787ea7c6122140ace145b855011119b05e8be28"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/claude-code-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "30ae57f57cb1caa927f3785494f7d75a9b264a8252013983ed1ca38cefd41d0e"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/google-ai-pro-ogrenci-ucretsiz-mi",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "8bbd8f5001a411cbf54186f7bff7a48a440a46362830ebcde47af1f8b762e5d4"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/chatgpt-ile-sunum-hazirlama",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "73bd8cf45505929298f4553a13b9ee701d737e1b15a0ccd012851718f6cd9469"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/chatgpt-sesli-konusma",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "080761e2c0e6fd3dddc049f933d33130ca7bd760c31bcb11e82aeb1f900c3edc"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/chatgpt-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "f6b878cb17a6f477b17578044913afc813d6ef480a6665885bc3c616c1a673f4"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/looka-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "da3a100057ae2e1bf52c1eb79ade1aba1e6bf46cd371f38324785747c52e7bec"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/runway-ml-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "fee2b0b898cf7756406adba6d65ac87c3fa7369253d4019c3e429494d68e98bc"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/elevenlabs-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "46f750b7675a962528dd08473cd34ecee83627b91ea2b6e1cdce0f26e34bc322"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/canva-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "639c98a8f9ac93d01d22fd4f504fec64082d0b203f17863f9d51077c774de9e2"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/capcut-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "700e6a22c98206a8ad5afdf18f8f7422eaffe10ce8ca67526443ad041fb95549"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/zapier-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "4fd0e7212051e260558fe776caf4f03b48411e2d8052f0ca5baec2a8f573d649"
+        },
+        {
+          "url": "https://akisai.com.tr/iletisim",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "62cf79af85dfdb03ff67ca7376fe6f4def53e49d15e82e6408ade8a2f451cd07"
+        },
+        {
+          "url": "https://akisai.com.tr/gizlilik",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "a19722f2fffd335ff4d2a11903bde789f0ba681e42b32f99d8fedd9a911df162"
+        },
+        {
+          "url": "https://akisai.com.tr/hakkimizda",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "70389daac5e3d7206d9af5995b4223e7eddddb56ff62fa30af2b6e6573ea1463"
+        },
+        {
+          "url": "https://akisai.com.tr/kullanim-kosullari",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "a93f4507d0af8aaec91e5d3e959df357a194b216cf3f9a41c4d033aa74ef972d"
+        },
+        {
+          "url": "https://akisai.com.tr/yayin-ilkeleri",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "f871432060cef28bacc55cdf565ce6b6f4a09b99a92fb086e0ce5f237c38d301"
+        },
+        {
+          "url": "https://akisai.com.tr/cerez-politikasi",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "adfa99a2e80de83dbecb11a7db884bdf94c0900b490b3a0e46f97876c3a40c7c"
+        }
+      ]
+    },
+    "proposedCmsSeoRegression": {
+      "scope": "Built HTML versus production HTTP snapshot; not a local HTTP or browser test",
+      "pages": 44,
+      "unchanged": 43,
+      "sitemapMissing": [],
+      "sitemapAdded": [],
+      "jsonLdDocuments": 127,
+      "results": [
+        {
+          "url": "https://akisai.com.tr",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "88b503c54e01990bb9adfc8cd853215ef6d18a06e73d7bb3011c1d15d754f7ee"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "eecda0c32e3571f84e54421dd4099d269acfe0365b304a3cfb990131868e630c"
+        },
+        {
+          "url": "https://akisai.com.tr/karsilastirma",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "36c70cb2282acdcc92de0716e3c800980de70472dc0cf5353cf33b82339b9146"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "b343d77ec0b8a21c4965974dc7a82a0fb9f6690c9a44a0b8247b45cefd77f95d"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "7e83397c31318852ffd4c159937282c3ca0134957f9f30d0c0022bb7ff3040ee"
+        },
+        {
+          "url": "https://akisai.com.tr/yazar",
+          "differences": [],
+          "jsonLdCount": 1,
+          "mainTextSha256": "0f47b0959445709ebb01bb9e0f2d523ce27b3dda53f67eaac2f59ee82a6131db"
+        },
+        {
+          "url": "https://akisai.com.tr/yazar/batuhan",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "f49d637c449a2e3c0b0824d38bb8fdd70ac8b2ccd5a062c1aadffc1e363af29e"
+        },
+        {
+          "url": "https://akisai.com.tr/yazar/tan",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "33c528f8fb04ebf4f1d0dad3f1dba474fc5f2888c98de7021c772b167427d1fb"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/gemini-3-5-flash-inceleme",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "e46a7da6cba7f6b0d2a9e33ae19d96e57c6be01e57ec72c88462f3c4f70b34ef"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/claude-code",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "25008a2fe90bd1ffb782229505f4fcae2cb20b379e55c6d90e8682f36eb9e39e"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/google-gemini",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "d6f94a8ee2b36742024903d95c7b6b5a41e0deee7683a85d58be3a051b9f563b"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/chatgpt",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "9fe0d88bc8aa803b37858b3aa5d1a7ed639a1dd8f2dc5350453e567819f06b90"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/looka",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "9d9ccb86051c21ca2b0d387f384881970801090f945da6ffa72e1ab1abb0bc58"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/runway-ml",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "2ad8ee9251fe4e0a0646e6f14eb914c999f209fac7dffc5355a27c3dd3a6e1f1"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/elevenlabs",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "7647dbb01a3f4b8dfc7105c2bc1752975bc94fc12c05b9923cd4a1ff48f1a0e7"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/canva",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "967c0f5212235081039725d44aec5c5bf5f9576e2c787a6c1548d60534e61b38"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/capcut",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "eb7ee69ed6e043af7fab3d20cd3665e2b21a1217e29c902bd6cd30a9cd83e174"
+        },
+        {
+          "url": "https://akisai.com.tr/incelemeler/zapier",
+          "differences": [],
+          "jsonLdCount": 5,
+          "mainTextSha256": "09107cfce7202f5caa4e7578e9e6d69c921dca8a7104083a3ef0a6c19e907c5c"
+        },
+        {
+          "url": "https://akisai.com.tr/karsilastirma/chatgpt-mi-claude-mu",
+          "differences": [
+            "mainText",
+            "jsonld"
+          ],
+          "jsonLdCount": 4,
+          "mainTextSha256": "cee06da49b65340caac20bc0ef5f6d849cf02f732d0a7f31e11099f2f61bb666",
+          "detail": {
+            "mainText": {
+              "before": "Ana Sayfa Karşılaştırmalar ChatGPT mi, Claude mu? Kullanım Amacına Göre 2026 Rehberi ChatGPT mi, Claude mu? Kullanım Amacına Göre 2026 Rehberi \"ChatGPT mi kullansam, Claude mu?\" sorusu artık sadece me",
+              "after": "Ana Sayfa Karşılaştırmalar ChatGPT mi, Claude mu? Kullanım Amacına Göre 2026 Rehberi ChatGPT mi, Claude mu? Kullanım Amacına Göre 2026 Rehberi \"ChatGPT mi kullansam, Claude mu?\" sorusu artık sadece me"
+            },
+            "jsonld": {
+              "before": "[{'@context': 'https://schema.org', '@type': 'Article', 'headline': 'ChatGPT mi, Claude mu? Kullanım Amacına Göre 2026 Rehberi', 'description': 'ChatGPT ve Claude arasındaki farkı kullanım amacına gör",
+              "after": "[{'@context': 'https://schema.org', '@type': 'Article', 'headline': 'ChatGPT mi, Claude mu? Kullanım Amacına Göre 2026 Rehberi', 'description': 'ChatGPT ve Claude arasındaki farkı kullanım amacına gör"
+            }
+          }
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/yapay-zeka-asistanlari",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "f29cf690a0a1d1fa6759be2fd06f420ce826fad50fc900bcad343f22df189cf9"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/video-duzenleme",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "9111b5f545f01216861e2ba7906bb920422ac5edd2f1891d28380d98b52b2fb1"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/video-olusturma",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "e2498522fff01c77e85d022865f3b03ebf7c6ed199a7476083585b7e73cd247f"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/is-akisi-otomasyonu",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "b4b14240a19fb42fde94e7b14101c4af38ba4b462d0e26df88ec6ff7ccf45c77"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/gorsel-olusturma",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "f24c45fc34c83b0aed4b873d1944ce9d8f1e177e4ad786b04c941bac5f3e25b8"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/ses-olusturma",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "bd37596a93d3f18fafb6ff224f8c2e80ef74580de5b7b7edfedf383138867e42"
+        },
+        {
+          "url": "https://akisai.com.tr/kategori/logo-tasarimi",
+          "differences": [],
+          "jsonLdCount": 2,
+          "mainTextSha256": "057d11a058b59ecc3c7c7bd499738a13c5dbf635e2b8560ca08825ee467e550a"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/gemini-3-5-flash-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "90e9417434df2aecaffc63df1787ea7c6122140ace145b855011119b05e8be28"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/claude-code-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "30ae57f57cb1caa927f3785494f7d75a9b264a8252013983ed1ca38cefd41d0e"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/google-ai-pro-ogrenci-ucretsiz-mi",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "8bbd8f5001a411cbf54186f7bff7a48a440a46362830ebcde47af1f8b762e5d4"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/chatgpt-ile-sunum-hazirlama",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "73bd8cf45505929298f4553a13b9ee701d737e1b15a0ccd012851718f6cd9469"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/chatgpt-sesli-konusma",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "080761e2c0e6fd3dddc049f933d33130ca7bd760c31bcb11e82aeb1f900c3edc"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/chatgpt-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "f6b878cb17a6f477b17578044913afc813d6ef480a6665885bc3c616c1a673f4"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/looka-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "da3a100057ae2e1bf52c1eb79ade1aba1e6bf46cd371f38324785747c52e7bec"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/runway-ml-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "fee2b0b898cf7756406adba6d65ac87c3fa7369253d4019c3e429494d68e98bc"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/elevenlabs-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "46f750b7675a962528dd08473cd34ecee83627b91ea2b6e1cdce0f26e34bc322"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/canva-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "639c98a8f9ac93d01d22fd4f504fec64082d0b203f17863f9d51077c774de9e2"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/capcut-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "700e6a22c98206a8ad5afdf18f8f7422eaffe10ce8ca67526443ad041fb95549"
+        },
+        {
+          "url": "https://akisai.com.tr/rehber/zapier-nasil-kullanilir",
+          "differences": [],
+          "jsonLdCount": 4,
+          "mainTextSha256": "4fd0e7212051e260558fe776caf4f03b48411e2d8052f0ca5baec2a8f573d649"
+        },
+        {
+          "url": "https://akisai.com.tr/iletisim",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "62cf79af85dfdb03ff67ca7376fe6f4def53e49d15e82e6408ade8a2f451cd07"
+        },
+        {
+          "url": "https://akisai.com.tr/gizlilik",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "a19722f2fffd335ff4d2a11903bde789f0ba681e42b32f99d8fedd9a911df162"
+        },
+        {
+          "url": "https://akisai.com.tr/hakkimizda",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "70389daac5e3d7206d9af5995b4223e7eddddb56ff62fa30af2b6e6573ea1463"
+        },
+        {
+          "url": "https://akisai.com.tr/kullanim-kosullari",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "a93f4507d0af8aaec91e5d3e959df357a194b216cf3f9a41c4d033aa74ef972d"
+        },
+        {
+          "url": "https://akisai.com.tr/yayin-ilkeleri",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "f871432060cef28bacc55cdf565ce6b6f4a09b99a92fb086e0ce5f237c38d301"
+        },
+        {
+          "url": "https://akisai.com.tr/cerez-politikasi",
+          "differences": [],
+          "jsonLdCount": 0,
+          "mainTextSha256": "adfa99a2e80de83dbecb11a7db884bdf94c0900b490b3a0e46f97876c3a40c7c"
+        }
+      ]
+    },
+    "proposedCmsProtectedIdentity": {
+      "matchedPages": 44,
+      "fields": [
+        "title",
+        "description",
+        "canonical",
+        "robots",
+        "h1"
+      ]
+    }
+  },
+  "limitations": [
+    "Local next start rejected by automatic approval review: blocked by policy",
+    "Local HTTP status, Googlebot User-Agent, hydration, mobile viewport and Core Web Vitals tests not performed",
+    "No live production read token integration or prebuild manifest run",
+    "Local build emitted a missing NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION warning; verification configuration was not changed",
+    "CMS revision is prepared only and must respect ifRevisionID on any later application"
+  ]
+}

@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/lib/json-ld";
 import React from "react";
 
 type FaqItem = {
@@ -36,7 +37,7 @@ export default function FaqSection({
     <section className="faq-section" id={sectionId}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
       />
       <h2>{title}</h2>
       <div className="faq-list">

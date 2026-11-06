@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import { hasLegacyMarkdown } from "@/lib/content-body-policy";
 import type { PortableTextBlock } from "@portabletext/types";
 import { retiredCategorySlugs, sortCategoriesByTaxonomy } from "@/lib/category-taxonomy";
 import { computeToolRating, type ToolRatingScores } from "@/lib/ratings";
@@ -1091,7 +1092,7 @@ async function getSanityTool(slug: string) {
     return null;
   }
 
-  const bodyMarkdown = asString(item.bodyMarkdown);
+  const bodyMarkdown = hasLegacyMarkdown(item.bodyMarkdown) ? item.bodyMarkdown : undefined;
 
   return {
     ...mapSanityToolSummary(item),
@@ -1127,7 +1128,7 @@ async function getSanityGuide(slug: string) {
     return null;
   }
 
-  const bodyMarkdown = asString(item.bodyMarkdown);
+  const bodyMarkdown = hasLegacyMarkdown(item.bodyMarkdown) ? item.bodyMarkdown : undefined;
 
   return {
     ...mapSanityGuideSummary(item),
@@ -1162,7 +1163,7 @@ async function getSanityComparison(slug: string) {
     return null;
   }
 
-  const bodyMarkdown = asString(item.bodyMarkdown);
+  const bodyMarkdown = hasLegacyMarkdown(item.bodyMarkdown) ? item.bodyMarkdown : undefined;
 
   return {
     ...mapSanityComparisonSummary(item),
@@ -1201,7 +1202,7 @@ async function getSanityCategory(slug: string) {
     return null;
   }
 
-  const bodyMarkdown = asString(item.bodyMarkdown);
+  const bodyMarkdown = hasLegacyMarkdown(item.bodyMarkdown) ? item.bodyMarkdown : undefined;
 
   return {
     ...mapSanityCategorySummary(item),
