@@ -9,6 +9,16 @@ type MdxContentProps = {
 };
 
 const mdxComponents = {
+  table: ({ children, ...props }: React.ComponentPropsWithoutRef<"table">) => (
+    <div
+      className="mdx-table-scroll"
+      role="region"
+      aria-label="İçerik tablosu"
+      tabIndex={0}
+    >
+      <table {...props}>{children}</table>
+    </div>
+  ),
   a: (props: React.ComponentPropsWithoutRef<"a">) => {
     const href = typeof props.href === "string" ? props.href : "";
     const { children, ...rest } = props;

@@ -1215,6 +1215,19 @@ p {
   color: inherit;
 }
 
+.mdx-table-scroll {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.mdx-table-scroll:focus-visible {
+  outline: 2px solid var(--text-base);
+  outline-offset: 2px;
+}
+
 .mdx-content table {
   width: 100%;
   margin: 1.15rem 0;
